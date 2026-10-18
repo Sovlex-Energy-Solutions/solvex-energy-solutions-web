@@ -249,7 +249,7 @@ export default function HeroSlider() {
   return (
     <section
       aria-label="Clean Energy Infrastructure & Innovation Showcase"
-      className="w-full bg-[#FAFAFA] py-14 lg:py-20 overflow-hidden"
+      className="relative w-full bg-gradient-to-b from-white via-[#FAFAFA] to-white py-14 lg:py-20 overflow-hidden"
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col gap-8">
         {/* Showcase Header */}

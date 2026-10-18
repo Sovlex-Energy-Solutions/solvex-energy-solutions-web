@@ -39,7 +39,7 @@ export default function ProjectsSection() {
   ];
 
   return (
-    <section className="w-full py-20 lg:py-28 bg-[#F4F6F9] border-b border-black/[0.08]" id="projects">
+    <section className="relative w-full py-20 lg:py-28 bg-gradient-to-b from-white via-[#F4F6F9] to-white overflow-hidden" id="projects">
       <div className="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col gap-12">
         <MotionReveal>
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 pb-2">

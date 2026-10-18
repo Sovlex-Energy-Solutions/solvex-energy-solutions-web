@@ -35,7 +35,7 @@ export default function NewsSection() {
   ];
 
   return (
-    <section className="w-full py-20 lg:py-28 bg-[#FAFAFA] relative" id="news">
+    <section className="relative w-full py-20 lg:py-28 bg-gradient-to-b from-white via-[#FAFAFA] to-white overflow-hidden" id="news">
       <div className="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col gap-12">
         {/* Section Header */}
         <MotionReveal>

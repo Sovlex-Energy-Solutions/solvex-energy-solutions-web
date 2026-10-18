@@ -48,19 +48,25 @@ export default function WhyChooseSection() {
   ];
 
   return (
-    <section className="relative w-full py-20 lg:py-28 bg-[#FFFFFF] border-b border-black/[0.08] overflow-hidden" id="why-choose">
+    <section className="relative w-full py-20 lg:py-28 bg-[#FFFFFF] overflow-hidden" id="why-choose">
       {/* Cinematic Background Media & Multi-Stop Gradient Overlays */}
-      <div className="absolute inset-0 pointer-events-none select-none z-0 overflow-hidden">
+      <div
+        className="absolute inset-0 pointer-events-none select-none z-0 overflow-hidden"
+        style={{
+          maskImage: "linear-gradient(to bottom, transparent 0%, black 18%, black 82%, transparent 100%)",
+          WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 18%, black 82%, transparent 100%)",
+        }}
+      >
         <img
           src="/media/optimized/clean_energy_wind_hub.webp"
           alt=""
           aria-hidden="true"
           className="w-full h-full object-cover opacity-50 sm:opacity-60"
         />
-        {/* Top & Bottom edge blend gradients with solid seam margins */}
-        <div className="absolute inset-x-0 top-0 h-44 bg-gradient-to-b from-white via-white/95 to-transparent z-[1]" />
+        {/* Soft edge blend gradients to dissolve seamlessly into white */}
+        <div className="absolute inset-x-0 top-0 h-44 bg-gradient-to-b from-white via-white/80 to-transparent z-[1]" />
         <div className="absolute inset-0 bg-white/35 z-[2]" />
-        <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-white via-white/95 to-transparent z-[3]" />
+        <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-white via-white/80 to-transparent z-[3]" />
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 flex flex-col gap-12">
