@@ -15,11 +15,6 @@ interface RawComboItem {
   nameHi: string;
   systemTypeEn: string;
   systemTypeHi: string;
-  originalPrice: string;
-  discountedPrice: string;
-  discountPercent: string;
-  subsidyAmount?: string;
-  netEffectivePrice?: string;
   dailyGenerationEn: string;
   dailyGenerationHi: string;
   image: string;
@@ -40,11 +35,6 @@ const rawCombos: RawComboItem[] = [
     nameHi: "Solvex Prime 3.2kW मोनोक्रिस्टलाइन ग्रिड-टाइड सुइट",
     systemTypeEn: "Single-Phase Synchronous Array",
     systemTypeHi: "सिंगल-फेज सिंक्रोनस एरे",
-    originalPrice: "₹1,77,931",
-    discountedPrice: "₹1,19,999",
-    discountPercent: "33% OFF",
-    subsidyAmount: "₹78,000",
-    netEffectivePrice: "₹41,999",
     dailyGenerationEn: "12-14 Units / Day",
     dailyGenerationHi: "12-14 यूनिट / प्रतिदिन",
     image: "/images/combos/combo_3kw.png",
@@ -53,8 +43,8 @@ const rawCombos: RawComboItem[] = [
     badgeEn: "RESIDENTIAL BENCHMARK",
     badgeHi: "आवासीय बेंचमार्क",
     isPopular: true,
-    subsidyTextEn: "Effective cost post-₹78,000 Direct Benefit Transfer",
-    subsidyTextHi: "₹78,000 प्रत्यक्ष लाभ अंतरण (DBT) के पश्चात प्रभावी लागत",
+    subsidyTextEn: "PM Surya Ghar DBT Subsidy Eligible (Up to ₹78,000)",
+    subsidyTextHi: "पीएम सूर्य घर योजना के तहत ₹78,000 तक डीबीटी सब्सिडी हेतु मान्य",
   },
   {
     id: "combo-5kw",
@@ -63,11 +53,6 @@ const rawCombos: RawComboItem[] = [
     nameHi: "Solvex Apex 5kW थ्री-फेज उच्च-क्षमता एरे",
     systemTypeEn: "Three-Phase Synchronous Grid-Tie",
     systemTypeHi: "थ्री-फेज सिंक्रोनस ग्रिड-टाई",
-    originalPrice: "₹3,77,000",
-    discountedPrice: "₹2,14,000",
-    discountPercent: "43% OFF",
-    subsidyAmount: "₹78,000",
-    netEffectivePrice: "₹1,36,000",
     dailyGenerationEn: "20-22 Units / Day",
     dailyGenerationHi: "20-22 यूनिट / प्रतिदिन",
     image: "/images/combos/combo_5kw.png",
@@ -75,8 +60,8 @@ const rawCombos: RawComboItem[] = [
     recommendedForHi: "बड़े बंगले, डुप्लेक्स एवं बहुमंजिला विला",
     badgeEn: "SUPERIOR HARVEST",
     badgeHi: "उत्कृष्ट उत्पादन",
-    subsidyTextEn: "Effective cost post-₹78,000 Direct Benefit Transfer",
-    subsidyTextHi: "₹78,000 प्रत्यक्ष लाभ अंतरण (DBT) के पश्चात प्रभावी लागत",
+    subsidyTextEn: "PM Surya Ghar DBT Subsidy Eligible (Up to ₹78,000)",
+    subsidyTextHi: "पीएम सूर्य घर योजना के तहत ₹78,000 तक डीबीटी सब्सिडी हेतु मान्य",
   },
   {
     id: "combo-500w",
@@ -85,9 +70,6 @@ const rawCombos: RawComboItem[] = [
     nameHi: "Solvex Nomad 500W ऑटोनॉमस माइक्रो-जेनरेशन किट",
     systemTypeEn: "Islanded Off-Grid DC/AC Core",
     systemTypeHi: "आइसलैंडेड ऑफ-ग्रिड DC/AC कोर",
-    originalPrice: "₹37,492",
-    discountedPrice: "₹29,759",
-    discountPercent: "21% OFF",
     dailyGenerationEn: "2-2.5 Units / Day",
     dailyGenerationHi: "2-2.5 यूनिट / प्रतिदिन",
     image: "/images/combos/combo_500w.png",
@@ -105,9 +87,6 @@ const rawCombos: RawComboItem[] = [
     nameHi: "Solvex Enterprise 10kW थ्री-फेज कमर्शियल सुइट",
     systemTypeEn: "High-Yield C&I Synchronous Array",
     systemTypeHi: "उच्च-उत्पादन सीएंडआई सिंक्रोनस एरे",
-    originalPrice: "₹4,72,810",
-    discountedPrice: "₹3,77,000",
-    discountPercent: "20% OFF",
     dailyGenerationEn: "40-45 Units / Day",
     dailyGenerationHi: "40-45 यूनिट / प्रतिदिन",
     image: "/images/combos/combo_10kw.png",
@@ -130,11 +109,6 @@ export default function TopSellingCombosSection() {
       category: c.category,
       name: isHindi ? c.nameHi : c.nameEn,
       systemType: isHindi ? c.systemTypeHi : c.systemTypeEn,
-      originalPrice: c.originalPrice,
-      discountedPrice: c.discountedPrice,
-      discountPercent: c.discountPercent,
-      subsidyAmount: c.subsidyAmount,
-      netEffectivePrice: c.netEffectivePrice,
       dailyGeneration: isHindi ? c.dailyGenerationHi : c.dailyGenerationEn,
       image: c.image,
       recommendedFor: isHindi ? c.recommendedForHi : c.recommendedForEn,
@@ -150,8 +124,27 @@ export default function TopSellingCombosSection() {
       : combos.filter((c) => c.category === activeFilter);
 
   return (
-    <section className="w-full py-20 lg:py-28 bg-white" id="spgs-combos">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col gap-14">
+    <section className="relative w-full py-20 lg:py-28 bg-white border-b border-black/[0.08] overflow-hidden" id="spgs-combos">
+      {/* Cinematic Background Media & Multi-Stop Gradient Overlays */}
+      <div className="absolute inset-0 pointer-events-none select-none z-0 overflow-hidden">
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="metadata"
+          poster="/media/optimized/rooftop_solar_engineering.webp"
+          className="w-full h-full object-cover opacity-50 sm:opacity-60"
+        >
+          <source src="/media/optimized/rooftop_solar_generation_cinematic.mp4" type="video/mp4" />
+        </video>
+        {/* Top & Bottom edge blend gradients with solid seam margins */}
+        <div className="absolute inset-x-0 top-0 h-44 bg-gradient-to-b from-white via-white/95 to-transparent z-[1]" />
+        <div className="absolute inset-0 bg-white/35 z-[2]" />
+        <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-white via-white/95 to-transparent z-[3]" />
+      </div>
+
+      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 flex flex-col gap-14">
         {/* Header Section */}
         <MotionReveal className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 lg:gap-8 pb-2">
           <div className="flex flex-col gap-4 max-w-2xl">
@@ -208,9 +201,6 @@ export default function TopSellingCombosSection() {
                       {combo.badge}
                     </span>
                   )}
-                  <span className="absolute top-3 right-3 text-xs text-[#18181B] font-normal">
-                    {combo.discountPercent}
-                  </span>
                 </div>
 
                 {/* Content */}
@@ -232,14 +222,14 @@ export default function TopSellingCombosSection() {
                     <span className="truncate">{combo.recommendedFor}</span>
                   </div>
 
-                  {/* Price */}
-                  <div className="pt-4 border-t border-black/5 flex flex-col gap-1">
-                    <div className="flex items-baseline justify-between">
-                      <span className="text-2xl font-normal text-[#18181B] tracking-[-0.5px]">
-                        {combo.netEffectivePrice || combo.discountedPrice}
+                  {/* Pricing & Benefit Status */}
+                  <div className="pt-4 border-t border-black/5 flex flex-col gap-1.5">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-medium text-[#18181B]">
+                        {isHindi ? "मूल्य: अनुरोध पर उपलब्ध" : "Price: On Request"}
                       </span>
-                      <span className="text-xs line-through text-[#71717A]">
-                        {combo.originalPrice}
+                      <span className="inline-flex items-center gap-1 text-[11px] text-primary font-medium">
+                        {isHindi ? "कोटेशन मांगें" : "Get Quote"}
                       </span>
                     </div>
                     <span className="text-[11px] text-[#71717A] leading-tight">

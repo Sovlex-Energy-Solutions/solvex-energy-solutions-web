@@ -31,10 +31,6 @@ export interface InverterProduct {
   categoryLabel: string;
   capacity: string;
   voltage: string;
-  originalPrice: string;
-  salePrice: string;
-  discount: string;
-  saveAmount: string;
   image: string;
   badge?: string;
   isPopular?: boolean;
@@ -58,10 +54,6 @@ const inverters: InverterProduct[] = [
     categoryLabel: "Rapid-MPPT Series",
     capacity: "800W Load",
     voltage: "12V Single Battery",
-    originalPrice: "₹16,189",
-    salePrice: "₹11,199",
-    discount: "31% OFF",
-    saveAmount: "₹4,990",
     image: "/images/inverters/gamma_1kva.png",
     badge: "RESIDENTIAL FLAGSHIP",
     isPopular: true,
@@ -87,10 +79,6 @@ const inverters: InverterProduct[] = [
     categoryLabel: "Rapid-MPPT Series",
     capacity: "560W Load",
     voltage: "12V Single Battery",
-    originalPrice: "₹7,808",
-    salePrice: "₹5,350",
-    discount: "31% OFF",
-    saveAmount: "₹2,458",
     image: "/images/inverters/sunplus_pro_920.png",
     badge: "HIGH VALUE COMPACT",
     idealFor: "Compact Dwellings, Micro-Retail & Rural Power Backups",
@@ -115,10 +103,6 @@ const inverters: InverterProduct[] = [
     categoryLabel: "Industrial High-kVA",
     capacity: "1600W Load (2kVA)",
     voltage: "24V Dual Battery",
-    originalPrice: "₹25,063",
-    salePrice: "₹17,620",
-    discount: "30% OFF",
-    saveAmount: "₹7,443",
     image: "/images/inverters/gamma_2600.png",
     badge: "DUAL-BATTERY ASSET",
     isPopular: true,
@@ -144,10 +128,6 @@ const inverters: InverterProduct[] = [
     categoryLabel: "Rapid-MPPT Series",
     capacity: "720W Load (900 VA)",
     voltage: "12V Single Battery",
-    originalPrice: "₹8,923",
-    salePrice: "₹6,110",
-    discount: "32% OFF",
-    saveAmount: "₹2,813",
     image: "/images/inverters/sunplus_pro_1020.png",
     badge: "WHISPER QUIET",
     idealFor: "Multi-Room Urban Residences, Consultancies & Office Suites",
@@ -172,10 +152,6 @@ const inverters: InverterProduct[] = [
     categoryLabel: "Lithium BMS Ready",
     capacity: "1000W Load (1.2kVA)",
     voltage: "Lithium LiFePO4",
-    originalPrice: "₹62,990",
-    salePrice: "₹33,250",
-    discount: "47% OFF",
-    saveAmount: "₹29,740",
     image: "/images/inverters/gamma_lion_1200.png",
     badge: "NEXT-GEN LITHIUM",
     idealFor: "Luxury Condos, Enterprise Server Nodes & Modern Smart Homes",
@@ -200,10 +176,6 @@ const inverters: InverterProduct[] = [
     categoryLabel: "Industrial High-kVA",
     capacity: "2800W Load (3.4kVA)",
     voltage: "24V Dual Battery",
-    originalPrice: "₹30,300",
-    salePrice: "₹21,270",
-    discount: "30% OFF",
-    saveAmount: "₹9,030",
     image: "/images/inverters/gamma_3400.png",
     badge: "HIGH-DUTY CYCLE",
     idealFor: "Light Industrial Units, Educational Campuses & Departmental Outlets",
@@ -228,10 +200,6 @@ const inverters: InverterProduct[] = [
     categoryLabel: "Lithium BMS Ready",
     capacity: "1 kVA All-in-One",
     voltage: "Built-In LiFePO4",
-    originalPrice: "₹22,499",
-    salePrice: "₹21,520",
-    discount: "4% OFF",
-    saveAmount: "₹979",
     image: "/images/inverters/sunlion_1000.png",
     badge: "ARCHITECTURAL MONOLITH",
     idealFor: "Designer Villas, Penthouse Lounges & Minimalist Studio Offices",
@@ -309,8 +277,27 @@ export default function TopSellingInvertersSection() {
       : inverters.filter((inv) => inv.category === selectedFilter);
 
   return (
-    <section className="w-full py-20 lg:py-28 bg-[#FAFAFA]" id="solar-inverters">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col gap-12">
+    <section className="relative w-full py-20 lg:py-28 bg-[#F4F6F9] border-b border-black/[0.08] overflow-hidden" id="solar-inverters">
+      {/* Cinematic Background Media & Multi-Stop Gradient Overlays */}
+      <div className="absolute inset-0 pointer-events-none select-none z-0 overflow-hidden">
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="metadata"
+          poster="/media/optimized/energy_activation_sparks.webp"
+          className="w-full h-full object-cover opacity-45 sm:opacity-55"
+        >
+          <source src="/media/optimized/energy_activation_sparks_16x9.mp4" type="video/mp4" />
+        </video>
+        {/* Top & Bottom edge blend gradients with solid seam margins */}
+        <div className="absolute inset-x-0 top-0 h-44 bg-gradient-to-b from-[#F4F6F9] via-[#F4F6F9]/95 to-transparent z-[1]" />
+        <div className="absolute inset-0 bg-[#F4F6F9]/40 z-[2]" />
+        <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-[#F4F6F9] via-[#F4F6F9]/95 to-transparent z-[3]" />
+      </div>
+
+      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 flex flex-col gap-12">
         {/* Section Header */}
         <MotionReveal className="flex flex-col xl:flex-row xl:items-end justify-between gap-6 lg:gap-8 pb-2">
           <div className="flex flex-col gap-4 max-w-2xl">
@@ -561,22 +548,14 @@ export default function TopSellingInvertersSection() {
                   <p className="body-sm text-xs text-[#71717A]">
                     {isHindi ? "उपयुक्त:" : "Recommended for:"} {activeModalProduct.idealFor}
                   </p>
-                  <div className="flex items-baseline gap-2 pt-1 font-sans">
-                    <span className="text-2xl font-normal text-[#18181B] tracking-[-0.5px]">
-                      {activeModalProduct.salePrice}
+                  <div className="flex items-center gap-2 pt-1 font-sans">
+                    <span className="text-sm font-medium text-[#18181B]">
+                      {isHindi ? "मूल्य: अनुरोध पर उपलब्ध" : "Pricing: Available on Request"}
                     </span>
-                    <span className="text-xs line-through text-[#71717A]">
-                      {activeModalProduct.originalPrice}
-                    </span>
-                    <span className="px-2.5 py-0.5 rounded-full border border-black/10 bg-black/5 text-[#18181B] text-xs font-normal">
-                      {activeModalProduct.discount}
+                    <span className="px-2.5 py-0.5 rounded-full border border-primary/20 bg-primary/10 text-primary text-xs font-medium">
+                      {isHindi ? "फैक्ट्री डायरेक्ट" : "Factory Direct"}
                     </span>
                   </div>
-                  <span className="font-sans text-[11px] text-[#71717A]">
-                    {isHindi
-                      ? `${activeModalProduct.saveAmount} की तत्काल बचत (सभी कर सहित)`
-                      : `Instant Savings of ${activeModalProduct.saveAmount} (Inclusive of all taxes)`}
-                  </span>
                 </div>
               </div>
 
@@ -627,9 +606,11 @@ export default function TopSellingInvertersSection() {
             <div className="sticky bottom-0 p-6 bg-white border-t border-black/10 rounded-b-lg flex items-center justify-between gap-4">
               <div>
                 <span className="font-sans text-[11px] text-[#71717A]">
-                  {isHindi ? "मानक टैरिफ:" : "BENCHMARK TARIFF:"}
+                  {isHindi ? "मूल्य निर्धारण:" : "PRICING:"}
                 </span>
-                <p className="font-sans text-lg font-normal text-[#18181B]">{activeModalProduct.salePrice}</p>
+                <p className="font-sans text-sm font-medium text-[#18181B]">
+                  {isHindi ? "अनुरोध पर उपलब्ध" : "Available on Request"}
+                </p>
               </div>
               <div className="flex flex-wrap items-center gap-2">
                 <button
@@ -716,11 +697,6 @@ function InverterCard({
             height={128}
             className="project-card__image max-h-32 max-w-[85%] object-contain"
           />
-          {item.discount && (
-            <span className="absolute top-3 right-3 font-sans text-[11px] text-white bg-primary px-2.5 py-0.5 rounded-full font-normal tracking-[-0.1px]">
-              {item.discount}
-            </span>
-          )}
         </div>
 
         {/* Minimal Body */}
@@ -739,17 +715,12 @@ function InverterCard({
           </p>
 
           {/* Pricing */}
-          <div className="pt-3 border-t border-black/10 flex items-baseline justify-between">
-            <div className="flex items-baseline gap-2">
-              <span className="font-sans text-2xl font-normal text-[#18181B] tracking-tight">
-                {item.salePrice}
-              </span>
-              <span className="font-sans text-xs line-through text-[#71717A]">
-                {item.originalPrice}
-              </span>
-            </div>
-            <span className="font-sans text-[11px] text-[#18181B] font-normal">
-              {isHindi ? `बचत ${item.saveAmount}` : `Save ${item.saveAmount}`}
+          <div className="pt-3 border-t border-black/10 flex items-center justify-between">
+            <span className="font-sans text-sm font-medium text-[#18181B]">
+              {isHindi ? "मूल्य: अनुरोध पर उपलब्ध" : "Price: On Request"}
+            </span>
+            <span className="font-sans text-[11px] text-primary font-medium">
+              {isHindi ? "कोटेशन मांगें" : "Request Quote"}
             </span>
           </div>
         </div>

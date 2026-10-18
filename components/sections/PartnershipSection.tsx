@@ -8,8 +8,22 @@ export default function PartnershipSection() {
   const { t } = useLanguage();
 
   return (
-    <section className="w-full py-20 lg:py-28 bg-[#FAFAFA]" id="partnerships">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col gap-12">
+    <section className="relative w-full py-20 lg:py-28 bg-[#F4F6F9] border-b border-black/[0.08] overflow-hidden" id="partnerships">
+      {/* Cinematic Background Media & Multi-Stop Gradient Overlays */}
+      <div className="absolute inset-0 pointer-events-none select-none z-0 overflow-hidden">
+        <img
+          src="/media/optimized/india_solar_grid.webp"
+          alt=""
+          aria-hidden="true"
+          className="w-full h-full object-cover opacity-50 sm:opacity-60"
+        />
+        {/* Top & Bottom edge blend gradients with solid seam margins */}
+        <div className="absolute inset-x-0 top-0 h-44 bg-gradient-to-b from-[#F4F6F9] via-[#F4F6F9]/95 to-transparent z-[1]" />
+        <div className="absolute inset-0 bg-[#F4F6F9]/40 z-[2]" />
+        <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-[#F4F6F9] via-[#F4F6F9]/95 to-transparent z-[3]" />
+      </div>
+
+      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 flex flex-col gap-12">
         <MotionReveal>
           <div className="flex flex-col items-center text-center gap-4 max-w-2xl mx-auto">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary text-white text-xs font-normal tracking-[-0.1px]">

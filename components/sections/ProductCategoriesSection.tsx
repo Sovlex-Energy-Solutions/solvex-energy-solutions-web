@@ -158,8 +158,24 @@ export default function ProductCategoriesSection() {
       : categories.filter((c) => c.category === filter);
 
   return (
-    <section className="w-full py-20 lg:py-28 bg-[#FAFAFA]" id="products-categories">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col gap-14">
+    <section className="relative w-full py-20 lg:py-28 bg-[#F4F6F9] border-b border-black/[0.08] overflow-hidden" id="products-categories">
+      {/* Background Hardware Showcase Image & Gradient Overlays */}
+      <div className="absolute inset-0 pointer-events-none select-none z-0 overflow-hidden">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/media/optimized/bifacial_hardware_showcase.webp"
+          alt="Bifacial solar hardware engineering showcase"
+          loading="lazy"
+          decoding="async"
+          className="w-full h-full object-cover opacity-50 sm:opacity-60"
+        />
+        {/* Multi-stop protective gradient washes with solid seam margins */}
+        <div className="absolute inset-x-0 top-0 h-44 bg-gradient-to-b from-[#F4F6F9] via-[#F4F6F9]/95 to-transparent z-[1]" />
+        <div className="absolute inset-0 bg-[#F4F6F9]/40 z-[2]" />
+        <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-[#F4F6F9] via-[#F4F6F9]/95 to-transparent z-[3]" />
+      </div>
+
+      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 flex flex-col gap-14">
         {/* Header Row */}
         <MotionReveal className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 lg:gap-8 pb-2">
           <div className="flex flex-col gap-4 max-w-2xl">

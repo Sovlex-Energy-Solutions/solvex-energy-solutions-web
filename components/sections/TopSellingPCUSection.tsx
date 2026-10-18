@@ -26,10 +26,6 @@ export interface PCUProduct {
   loadPower: string;
   voltage: string;
   batteryCount: string;
-  originalPrice: string;
-  salePrice: string;
-  discount: string;
-  saveAmount: string;
   image: string;
   badge?: string;
   badgeHi?: string;
@@ -69,10 +65,6 @@ const pcuProducts: PCUProduct[] = [
     loadPower: "2400W True Continuous Capacity",
     voltage: "48V DC Bus",
     batteryCount: "4 Batteries (4x 12V)",
-    originalPrice: "₹51,397",
-    salePrice: "₹42,465",
-    discount: "17% OFF",
-    saveAmount: "₹8,932",
     image: "/images/pcu/alfa_pro_pcu.png",
     badge: "COMPACT COMMERCIAL",
     badgeHi: "कॉम्पैक्ट कमर्शियल",
@@ -117,10 +109,6 @@ const pcuProducts: PCUProduct[] = [
     loadPower: "4000W True Continuous Capacity",
     voltage: "48V DC Bus",
     batteryCount: "4 Batteries (4x 12V)",
-    originalPrice: "₹74,077",
-    salePrice: "₹52,429",
-    discount: "29% OFF",
-    saveAmount: "₹21,648",
     image: "/images/pcu/alfa_pro_pcu.png",
     badge: "BEST SELLER",
     badgeHi: "बेस्ट सेलर",
@@ -166,10 +154,6 @@ const pcuProducts: PCUProduct[] = [
     loadPower: "6000W True Continuous Capacity",
     voltage: "96V High Voltage",
     batteryCount: "8 Batteries (8x 12V)",
-    originalPrice: "₹101,304",
-    salePrice: "₹82,816",
-    discount: "18% OFF",
-    saveAmount: "₹18,488",
     image: "/images/pcu/alfa_pro_pcu.png",
     badge: "INSTITUTIONAL CORE",
     badgeHi: "संस्थागत कोर",
@@ -214,10 +198,6 @@ const pcuProducts: PCUProduct[] = [
     loadPower: "8000W True Continuous Capacity",
     voltage: "180V High Voltage",
     batteryCount: "15 Batteries (15x 12V)",
-    originalPrice: "₹151,200",
-    salePrice: "₹129,906",
-    discount: "14% OFF",
-    saveAmount: "₹21,294",
     image: "/images/pcu/alfa_pro_pcu.png",
     badge: "ENTERPRISE MONOLITH",
     badgeHi: "एंटरप्राइज कोर",
@@ -269,8 +249,22 @@ export default function TopSellingPCUSection() {
       : pcuProducts.filter((p) => p.category === activeTab);
 
   return (
-    <section className="w-full py-20 lg:py-28 bg-[#FFFFFF]" id="solar-pcu">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col gap-12">
+    <section className="relative w-full py-20 lg:py-28 bg-[#FFFFFF] border-b border-black/[0.08] overflow-hidden" id="solar-pcu">
+      {/* Cinematic Background Media & Multi-Stop Gradient Overlays */}
+      <div className="absolute inset-0 pointer-events-none select-none z-0 overflow-hidden">
+        <img
+          src="/media/optimized/rooftop_solar_engineering.webp"
+          alt=""
+          aria-hidden="true"
+          className="w-full h-full object-cover opacity-50 sm:opacity-60"
+        />
+        {/* Top & Bottom edge blend gradients with solid seam margins */}
+        <div className="absolute inset-x-0 top-0 h-44 bg-gradient-to-b from-white via-white/95 to-transparent z-[1]" />
+        <div className="absolute inset-0 bg-white/35 z-[2]" />
+        <div className="absolute inset-x-0 bottom-0 h-56 bg-gradient-to-t from-white via-white/95 to-transparent z-[3]" />
+      </div>
+
+      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 flex flex-col gap-12">
         {/* Section Header */}
         <MotionReveal>
           <div className="flex flex-col xl:flex-row xl:items-end justify-between gap-6 lg:gap-8 pb-2">
@@ -340,11 +334,6 @@ export default function TopSellingPCUSection() {
                       height={128}
                       className="project-card__image max-h-32 max-w-[85%] object-contain"
                     />
-                    {pcu.discount && (
-                      <span className="absolute top-3 right-3 font-sans text-[11px] text-white bg-primary px-2.5 py-0.5 rounded-full font-normal tracking-[-0.1px]">
-                        {pcu.discount}
-                      </span>
-                    )}
                   </div>
 
                   {/* Minimal Card Content */}
@@ -363,17 +352,12 @@ export default function TopSellingPCUSection() {
                     </p>
 
                     {/* Pricing */}
-                    <div className="pt-3 border-t border-black/10 flex items-baseline justify-between">
-                      <div className="flex items-baseline gap-2">
-                        <span className="font-sans text-2xl font-normal text-[#18181B] tracking-tight">
-                          {pcu.salePrice}
-                        </span>
-                        <span className="font-sans text-xs line-through text-[#71717A]">
-                          {pcu.originalPrice}
-                        </span>
-                      </div>
-                      <span className="font-sans text-[11px] text-[#18181B] font-normal">
-                        {isHindi ? `बचत ${pcu.saveAmount}` : `Save ${pcu.saveAmount}`}
+                    <div className="pt-3 border-t border-black/10 flex items-center justify-between">
+                      <span className="font-sans text-sm font-medium text-[#18181B]">
+                        {isHindi ? "मूल्य: अनुरोध पर उपलब्ध" : "Price: On Request"}
+                      </span>
+                      <span className="font-sans text-[11px] text-primary font-medium">
+                        {isHindi ? "कोटेशन मांगें" : "Request Quote"}
                       </span>
                     </div>
                   </div>
@@ -448,13 +432,6 @@ export default function TopSellingPCUSection() {
                     <td className="p-3 text-[#18181B] bg-black/5">80A / 48V</td>
                     <td className="p-3 text-[#18181B]">75A / 96V</td>
                     <td className="p-3 text-[#18181B]">65A / 180V</td>
-                  </tr>
-                  <tr className="bg-white">
-                    <td className="p-3 text-[#71717A]">{t("pcu.matrixHeaders.tariff", "Direct Tariff")}</td>
-                    <td className="p-3 font-normal text-[#18181B]">₹42,465</td>
-                    <td className="p-3 font-normal text-[#18181B] bg-black/5">₹52,429</td>
-                    <td className="p-3 font-normal text-[#18181B]">₹82,816</td>
-                    <td className="p-3 font-normal text-[#18181B]">₹1,29,906</td>
                   </tr>
                 </tbody>
               </table>
@@ -570,22 +547,14 @@ export default function TopSellingPCUSection() {
                     {isHindi ? "अनुशंसित अनुप्रयोग: " : "Recommended for: "}
                     {isHindi && activeModalProduct.idealForHi ? activeModalProduct.idealForHi : activeModalProduct.idealFor}
                   </p>
-                  <div className="flex items-baseline gap-2 pt-1 font-sans">
-                    <span className="text-2xl font-normal text-[#18181B] tracking-[-0.5px]">
-                      {activeModalProduct.salePrice}
+                  <div className="flex items-center gap-2 pt-1 font-sans">
+                    <span className="text-sm font-medium text-[#18181B]">
+                      {isHindi ? "मूल्य: अनुरोध पर उपलब्ध" : "Pricing: Available on Request"}
                     </span>
-                    <span className="text-xs line-through text-[#71717A]">
-                      {activeModalProduct.originalPrice}
-                    </span>
-                    <span className="px-2.5 py-0.5 rounded-full border border-black/10 bg-black/5 text-[#18181B] text-xs font-normal">
-                      {activeModalProduct.discount}
+                    <span className="px-2.5 py-0.5 rounded-full border border-primary/20 bg-primary/10 text-primary text-xs font-medium">
+                      {isHindi ? "कमर्शियल ग्रेड" : "Commercial Grade"}
                     </span>
                   </div>
-                  <span className="font-sans text-[11px] text-[#71717A]">
-                    {isHindi
-                      ? `${activeModalProduct.saveAmount} की तत्काल बचत (सभी कर सहित)`
-                      : `Instant Savings of ${activeModalProduct.saveAmount} (Inclusive of all taxes)`}
-                  </span>
                 </div>
               </div>
 
@@ -678,9 +647,11 @@ export default function TopSellingPCUSection() {
             <div className="sticky bottom-0 p-6 bg-white border-t border-black/10 rounded-b-lg flex items-center justify-between gap-4">
               <div>
                 <span className="font-sans text-[11px] text-[#71717A]">
-                  {isHindi ? "कमर्शियल फैक्ट्री टैरिफ:" : "COMMERCIAL FACTORY TARIFF:"}
+                  {isHindi ? "मूल्य निर्धारण:" : "PRICING:"}
                 </span>
-                <p className="font-sans text-lg font-normal text-[#18181B]">{activeModalProduct.salePrice}</p>
+                <p className="font-sans text-sm font-medium text-[#18181B]">
+                  {isHindi ? "अनुरोध पर उपलब्ध" : "Available on Request"}
+                </p>
               </div>
               <div className="flex flex-wrap items-center gap-2">
                 <button

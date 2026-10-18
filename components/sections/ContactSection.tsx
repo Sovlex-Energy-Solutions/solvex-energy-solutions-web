@@ -6,7 +6,6 @@ import {
   MapPin,
   Mail,
   Clock,
-  FileCheck2,
   AlertCircle,
   CheckCircle2,
   Lock,

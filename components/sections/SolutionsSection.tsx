@@ -32,8 +32,27 @@ export default function SolutionsSection() {
   ];
 
   return (
-    <section className="w-full py-20 lg:py-28 bg-[#FFFFFF]" id="solutions">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col gap-12">
+    <section className="relative w-full py-20 lg:py-28 bg-[#FFFFFF] border-b border-black/[0.08] overflow-hidden" id="solutions">
+      {/* Cinematic Background Media & Multi-Stop Gradient Overlays */}
+      <div className="absolute inset-0 pointer-events-none select-none z-0 overflow-hidden">
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="metadata"
+          poster="/media/optimized/india_solar_grid.webp"
+          className="w-full h-full object-cover opacity-50 sm:opacity-60"
+        >
+          <source src="/media/optimized/india_solar_network_cinematic.mp4" type="video/mp4" />
+        </video>
+        {/* Top & Bottom edge blend gradients with solid seam margins */}
+        <div className="absolute inset-x-0 top-0 h-44 bg-gradient-to-b from-white via-white/95 to-transparent z-[1]" />
+        <div className="absolute inset-0 bg-white/35 z-[2]" />
+        <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-white via-white/95 to-transparent z-[3]" />
+      </div>
+
+      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 flex flex-col gap-12">
         <MotionReveal>
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 pb-2">
             <div className="flex flex-col gap-4 max-w-2xl">

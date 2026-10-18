@@ -15,8 +15,27 @@ export default function AboutUsSection() {
   const { isHindi } = useLanguage();
 
   return (
-    <section className="w-full py-20 lg:py-28 bg-white" id="about-us">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col gap-14">
+    <section className="relative w-full py-20 lg:py-28 bg-white border-b border-black/[0.08] overflow-hidden" id="about-us">
+      {/* Cinematic Background Video & Overlay Gradients */}
+      <div className="absolute inset-0 pointer-events-none select-none z-0 overflow-hidden">
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="metadata"
+          poster="/media/optimized/clean_energy_wind_hub.webp"
+          className="w-full h-full object-cover opacity-50 sm:opacity-60"
+        >
+          <source src="/media/optimized/solar_panels_architecture_cinematic.mp4" type="video/mp4" />
+        </video>
+        {/* Multi-stop protective gradient washes with solid seam margins */}
+        <div className="absolute inset-x-0 top-0 h-44 bg-gradient-to-b from-white via-white/95 to-transparent z-[1]" />
+        <div className="absolute inset-0 bg-white/35 z-[2]" />
+        <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-white via-white/95 to-transparent z-[3]" />
+      </div>
+
+      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 flex flex-col gap-14">
         {/* Header Row */}
         <MotionReveal className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 pb-8 border-b border-black/10">
           <div className="flex flex-col gap-4 max-w-2xl">
