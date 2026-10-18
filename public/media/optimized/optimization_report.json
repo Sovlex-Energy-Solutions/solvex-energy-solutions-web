@@ -1,0 +1,92 @@
+[
+  {
+    "original_file": "India_solar_network_animation_1080p_20261018145354.mp4",
+    "clean_name": "india_solar_network_cinematic.mp4",
+    "type": "video",
+    "resolution": "1920x1080",
+    "original_size_bytes": 5969568,
+    "optimized_size_bytes": 2821550,
+    "savings_pct": 52.734435724662156
+  },
+  {
+    "original_file": "Renewable_energy_hero_animation_1080p_20261018144024.mp4",
+    "clean_name": "renewable_energy_hub_cinematic.mp4",
+    "type": "video",
+    "resolution": "1920x1080",
+    "original_size_bytes": 5982139,
+    "optimized_size_bytes": 2840250,
+    "savings_pct": 52.521163416630735
+  },
+  {
+    "original_file": "Rooftop_solar_video_generation_p\u2026_20261018150045.mp4",
+    "clean_name": "rooftop_solar_generation_cinematic.mp4",
+    "type": "video",
+    "resolution": "1920x1080",
+    "original_size_bytes": 4890570,
+    "optimized_size_bytes": 2289903,
+    "savings_pct": 53.17717566664009
+  },
+  {
+    "original_file": "Solar_panels_video_prompt_1080p_20261018142259.mp4",
+    "clean_name": "solar_panels_architecture_cinematic.mp4",
+    "type": "video",
+    "resolution": "1920x1080",
+    "original_size_bytes": 5149781,
+    "optimized_size_bytes": 2675760,
+    "savings_pct": 48.04128563913689
+  },
+  {
+    "original_file": "VID_20261006_164941_527_bsl.mp4",
+    "clean_name": "energy_activation_sparks.mp4",
+    "type": "video",
+    "resolution": "2160x3840",
+    "original_size_bytes": 29183547,
+    "optimized_size_bytes": 2182063,
+    "savings_pct": 92.52296850687821
+  },
+  {
+    "original_file": "file_0000000049fc81f4a491111b8a0807aa.png",
+    "clean_name": "india_solar_grid.webp",
+    "type": "image",
+    "resolution": "1672x941",
+    "original_size_bytes": 2362219,
+    "optimized_size_bytes": 229122,
+    "savings_pct": 90.30056061694533
+  },
+  {
+    "original_file": "file_00000000d8c881f49743e030cf93139f(1).png",
+    "clean_name": "clean_energy_wind_hub_duplicate.webp",
+    "type": "image",
+    "resolution": "1672x941",
+    "original_size_bytes": 2142653,
+    "optimized_size_bytes": 194178,
+    "savings_pct": 90.93749664551376
+  },
+  {
+    "original_file": "file_00000000d8c881f49743e030cf93139f.png",
+    "clean_name": "clean_energy_wind_hub.webp",
+    "type": "image",
+    "resolution": "1672x941",
+    "original_size_bytes": 2142653,
+    "optimized_size_bytes": 194178,
+    "savings_pct": 90.93749664551376
+  },
+  {
+    "original_file": "file_00000000ea248246a9b37dc621afaabf.png",
+    "clean_name": "rooftop_solar_engineering.webp",
+    "type": "image",
+    "resolution": "1672x941",
+    "original_size_bytes": 2162536,
+    "optimized_size_bytes": 159864,
+    "savings_pct": 92.60756815146661
+  },
+  {
+    "original_file": "file_00000000f1d481f4948bcf4f3ee01fbb.png",
+    "clean_name": "bifacial_hardware_showcase.webp",
+    "type": "image",
+    "resolution": "1672x941",
+    "original_size_bytes": 1973330,
+    "optimized_size_bytes": 142870,
+    "savings_pct": 92.75995398640876
+  }
+]

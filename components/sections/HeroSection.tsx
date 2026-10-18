@@ -12,26 +12,20 @@ import { useCinematicReveal } from "@/components/ui/cinematic-load-reveal";
 import { useLanguage } from "@/context/LanguageContext";
 import FranchiseApplicationDialog from "@/components/forms/FranchiseApplicationDialog";
 
+import HeroMediaSlider from "@/components/ui/HeroMediaSlider";
+
 export default function HeroSection() {
   const { isRevealed } = useCinematicReveal();
   const { isHindi } = useLanguage();
   const [isFranchiseOpen, setIsFranchiseOpen] = useState(false);
 
   const heroRef = useRef<HTMLElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
   const statusChipRef = useRef<HTMLDivElement>(null);
   const headlineRef = useRef<HTMLHeadingElement>(null);
   const subheadRef = useRef<HTMLParagraphElement>(null);
   const actionsRef = useRef<HTMLDivElement>(null);
   const trustRef = useRef<HTMLDivElement>(null);
   const hasAnimatedRef = useRef(false);
-
-  // Ensure video plays continuously across browsers
-  useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.play().catch(() => {});
-    }
-  }, []);
 
   useEffect(() => {
     if (!isRevealed) {
@@ -43,7 +37,6 @@ export default function HeroSection() {
 
     // Check reduced motion
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      if (videoRef.current) gsap.set(videoRef.current, { scale: 1 });
       const allEls = [
         statusChipRef.current,
         headlineRef.current,
@@ -56,22 +49,7 @@ export default function HeroSection() {
     }
 
     const ctx = gsap.context(() => {
-      // 1. Solar video background dramatic cinematic deceleration
-      if (videoRef.current) {
-        gsap.fromTo(
-          videoRef.current,
-          { scale: 1.15, opacity: 0.9 },
-          {
-            scale: 1.0,
-            opacity: 1,
-            duration: 2.2,
-            ease: "power3.out",
-            clearProps: "willChange",
-          }
-        );
-      }
-
-      // 2. Typography & action buttons with coordinated stagger
+      // Typography & action buttons with coordinated stagger
       const leftElements = [
         statusChipRef.current,
         headlineRef.current,
@@ -100,49 +78,11 @@ export default function HeroSection() {
   return (
     <section
       ref={heroRef}
-      className="relative w-full overflow-hidden min-h-[720px] lg:min-h-[840px] flex items-center pt-28 pb-20 lg:pt-36 lg:pb-28"
+      className="relative w-full overflow-hidden min-h-[740px] lg:min-h-[860px] flex items-center pt-28 pb-24 lg:pt-36 lg:pb-32"
       id="hero"
     >
-      {/* Cinematic Solar Power Video Background */}
-      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none select-none">
-        <video
-          ref={videoRef}
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="auto"
-          poster="/images/solar_hero_landscape.jpg"
-          className="w-full h-full object-cover object-center will-change-transform"
-        >
-          <source src="/hero_bg.mp4" type="video/mp4" />
-          {/* Fallback image if video cannot be played */}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/images/solar_hero_landscape.jpg"
-            alt="Clean Energy Solar Farm Landscape"
-            className="w-full h-full object-cover object-center"
-          />
-        </video>
-
-        {/* Balanced Video Overlay Gradient: calibrated for high text legibility on the left while showcasing the solar video on the right */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              "linear-gradient(90deg, rgba(8, 12, 22, 0.75) 0%, rgba(8, 12, 22, 0.50) 45%, rgba(8, 12, 22, 0.16) 100%)",
-          }}
-        />
-
-        {/* Soft bottom blend to seamlessly meet page content */}
-        <div
-          className="absolute inset-x-0 bottom-0 h-28"
-          style={{
-            background:
-              "linear-gradient(to top, rgba(255, 255, 255, 0.20) 0%, transparent 100%)",
-          }}
-        />
-      </div>
+      {/* Dynamic Background Media Slider with Cross-Fade & Calibrated Scrim */}
+      <HeroMediaSlider />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10 w-full">
         {/* Editorial Typography & Action */}
