@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   ArrowRight,
   ShieldCheck,
@@ -10,10 +10,12 @@ import {
 import gsap from "gsap";
 import { useCinematicReveal } from "@/components/ui/cinematic-load-reveal";
 import { useLanguage } from "@/context/LanguageContext";
+import FranchiseApplicationDialog from "@/components/forms/FranchiseApplicationDialog";
 
 export default function HeroSection() {
   const { isRevealed } = useCinematicReveal();
   const { isHindi } = useLanguage();
+  const [isFranchiseOpen, setIsFranchiseOpen] = useState(false);
 
   const heroRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -186,13 +188,14 @@ export default function HeroSection() {
             ref={actionsRef}
             className="flex flex-wrap items-center gap-4 pt-2 will-change-[transform,opacity]"
           >
-            <a
-              href="#partner-form"
-              className="group h-[52px] px-8 bg-primary text-white hover:bg-primary-hover rounded-full text-base font-normal tracking-[-0.2px] inline-flex items-center justify-center gap-2 transition-all duration-200 shadow-xl active:scale-[0.98] cursor-pointer"
+            <button
+              type="button"
+              onClick={() => setIsFranchiseOpen(true)}
+              className="group h-[52px] px-8 bg-primary text-white hover:bg-primary-hover rounded-full text-base font-normal tracking-[-0.2px] inline-flex items-center justify-center gap-2 transition-all duration-200 shadow-md hover:shadow-lg active:scale-[0.98] cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#059669] focus:ring-offset-2"
             >
-              <span>{isHindi ? "फ्रैंचाइज़ी प्रोग्राम से जुड़ें" : "Launch Your Franchise"}</span>
+              <span>{isHindi ? "आवेदन करें" : "Apply"}</span>
               <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
-            </a>
+            </button>
             <a
               href="#about-us"
               className="h-[52px] px-8 bg-black/40 text-white backdrop-blur-md border border-white/35 hover:bg-black/60 rounded-full text-base font-normal tracking-[-0.2px] inline-flex items-center justify-center gap-2 transition-all duration-200 active:scale-[0.98] cursor-pointer shadow-md"
@@ -221,6 +224,12 @@ export default function HeroSection() {
           </div>
         </div>
       </div>
+
+      {/* Franchise Partner Application Dialog (shadcn + react-hook-form + zod) */}
+      <FranchiseApplicationDialog
+        open={isFranchiseOpen}
+        onOpenChange={setIsFranchiseOpen}
+      />
     </section>
   );
 }
