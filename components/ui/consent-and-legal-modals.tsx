@@ -1,8 +1,23 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { ShieldCheck, Cookie, FileText, Lock, ExternalLink } from "lucide-react";
-import { useLanguage } from "@/context/LanguageContext";
+import {
+  ShieldCheck,
+  Cookie,
+  FileText,
+  Lock,
+  Building2,
+  Truck,
+  RotateCcw,
+  Zap,
+  PhoneCall,
+  MessageSquare,
+  Database,
+  Sliders,
+  Scale,
+  Receipt,
+  AlertTriangle,
+} from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -23,126 +38,368 @@ export function openLegalModal(tab: LegalTab = "privacy") {
 }
 
 /**
- * Privacy Policy Content (compliant with India's DPDP Act 2023)
+ * Enterprise Privacy Policy Content
+ * Comprehensive coverage: Data collection, forms, WhatsApp/calls, CRM, analytics, cookies, storage, sharing & rights.
  */
 export function PrivacyPolicyContent() {
   return (
-    <div className="space-y-5 text-xs sm:text-sm text-zinc-700 leading-relaxed font-sans">
-      <div>
-        <h3 className="text-sm sm:text-base font-bold text-zinc-900 mb-1">
-          1. Institutional Commitment & Governance
-        </h3>
-        <p>
-          Solvex Energy Solutions Private Limited (CIN: U43219GJ2025PTC168167) respects the integrity and confidentiality of commercial data submitted by prospective franchise partners, channel EPC distributors, and institutional clients. This Privacy Policy outlines our compliance with India&apos;s Digital Personal Data Protection Act (DPDP Act 2023) and international best practices.
+    <div className="space-y-6 text-xs sm:text-sm text-zinc-700 leading-relaxed font-sans">
+      {/* Overview Notice */}
+      <div className="p-3.5 sm:p-4 rounded-xl bg-emerald-50/70 border border-emerald-200/80 text-emerald-950 flex items-start gap-3">
+        <ShieldCheck className="w-5 h-5 text-emerald-700 shrink-0 mt-0.5" />
+        <p className="text-xs leading-relaxed">
+          <strong>Digital Personal Data Protection (DPDP) Act 2023 Notice:</strong> Solvex Energy Solutions Private Limited is committed to transparent data fiduciary practices. This policy details how we collect, process, store, and safeguard your commercial and personal information.
         </p>
       </div>
 
-      <div>
-        <h3 className="text-sm sm:text-base font-bold text-zinc-900 mb-1">
-          2. Collection of Commercial Onboarding Data
+      {/* 1. Institutional Commitment & Scope */}
+      <section className="space-y-2">
+        <h3 className="text-sm sm:text-base font-bold text-zinc-900 flex items-center gap-2">
+          <Building2 className="w-4 h-4 text-emerald-700 shrink-0" />
+          1. Institutional Commitment & Legal Identity
         </h3>
         <p>
-          When you submit an application through the Commercial Enrollment Dossier, we collect:
+          This Privacy Policy applies to all digital platforms, portal interfaces, and customer interaction channels operated by <strong>Solvex Energy Solutions Private Limited</strong> (CIN: U43219GJ2025PTC168167), having its corporate office at 204 Capital Square, Parvat Godadara BRTS Road, Surat 395010, Gujarat, India (&ldquo;Solvex&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo;, or &ldquo;our&rdquo;). We act as a <em>Data Fiduciary</em> under the provisions of the Digital Personal Data Protection Act 2023 (DPDP Act) and the Information Technology Act 2000.
         </p>
-        <ul className="list-disc pl-5 mt-1.5 space-y-1">
-          <li>Authorized executive contact credentials (Name, Official Email, Phone).</li>
-          <li>Territorial jurisdiction details (District, City, Operating State).</li>
-          <li>Commercial tier preferences and capital allocation ranges.</li>
-          <li>Electrical trade footprint, GSTIN details, and rooftop EPC track record.</li>
+      </section>
+
+      {/* 2. User Data Collection */}
+      <section className="space-y-2">
+        <h3 className="text-sm sm:text-base font-bold text-zinc-900 flex items-center gap-2">
+          <Database className="w-4 h-4 text-emerald-700 shrink-0" />
+          2. Categories of Data Collected
+        </h3>
+        <p>
+          We collect personal and commercial data through authorized user interactions:
+        </p>
+        <ul className="list-disc pl-5 space-y-1.5 text-zinc-600">
+          <li>
+            <strong>Enquiry & Partner Application Forms:</strong> Full name, authorized corporate designation, registered business name, corporate email address, 10-digit mobile number, operating state, district, city, pin code, commercial investment capacity, current electrical/solar trade experience, and Goods and Services Tax Identification Number (GSTIN).
+          </li>
+          <li>
+            <strong>Rooftop Sizing & Calculation Data:</strong> Monthly electricity consumption (units/kWh), estimated sanctioned load, roof surface area, utility provider (DISCOM), and preference for PM Surya Ghar subsidy processing.
+          </li>
+          <li>
+            <strong>Technical & Telemetry Identifiers:</strong> Internet Protocol (IP) address, approximate geographical location (state/city level), browser specification, operating system, session duration, and referrer URL headers.
+          </li>
         </ul>
-      </div>
+      </section>
 
-      <div>
-        <h3 className="text-sm sm:text-base font-bold text-zinc-900 mb-1">
-          3. Non-Disclosure & Territorial Exclusivity Protections
+      {/* 3. WhatsApp, SMS & Phone Interactions */}
+      <section className="space-y-2">
+        <h3 className="text-sm sm:text-base font-bold text-zinc-900 flex items-center gap-2">
+          <PhoneCall className="w-4 h-4 text-emerald-700 shrink-0" />
+          3. WhatsApp, Telephonic & Multi-Channel Communications
         </h3>
         <p>
-          All applications undergo confidential internal vetting by our Commercial Committee. We do not sell, rent, or lease applicant lists or trade secrets to any third parties. Applicant information is strictly utilized to:
+          When you submit an inquiry or apply for territorial dealership:
         </p>
-        <ul className="list-disc pl-5 mt-1.5 space-y-1">
-          <li>Evaluate territorial non-compete buffers and district franchise exclusivity.</li>
-          <li>Verify MNRE ALMM hardware allocation quotas and DISCOM liaison feasibility.</li>
-          <li>Process direct factory tariff agreements and PM Surya Ghar scheme documentation.</li>
+        <ul className="list-disc pl-5 space-y-1 text-zinc-600">
+          <li>
+            You grant express consent for our authorized regional expansion desk to contact you via telephone, SMS, and the official WhatsApp Business API regarding product pricing, feasibility assessments, and procurement schedules.
+          </li>
+          <li>
+            Telephonic calls may be monitored or recorded strictly for quality assurance, engineering specification verification, and commercial record-keeping.
+          </li>
+          <li>
+            You may revoke communication consent at any time by replying &ldquo;STOP&rdquo; on WhatsApp or emailing <code>corporate@solvexenergy.com</code>.
+          </li>
         </ul>
-      </div>
+      </section>
 
-      <div>
-        <h3 className="text-sm sm:text-base font-bold text-zinc-900 mb-1">
-          4. Data Security & Retention
+      {/* 4. CRM & Enterprise Workflow Integrations */}
+      <section className="space-y-2">
+        <h3 className="text-sm sm:text-base font-bold text-zinc-900 flex items-center gap-2">
+          <Sliders className="w-4 h-4 text-emerald-700 shrink-0" />
+          4. Enterprise CRM & Lead Pipeline Routing
         </h3>
         <p>
-          Submitted dossiers are encrypted in transit via TLS 1.3 and stored in compliant Tier-IV data centers. Information is retained for the active duration of the commercial relationship or up to 24 months post-evaluation for statutory audits.
+          Prospective dealer dossiers and hardware inquiries are synchronized into our private, access-restricted Customer Relationship Management (CRM) and Enterprise Resource Planning (ERP) systems. Data access is governed by strict Role-Based Access Controls (RBAC), ensuring that only authorized territory managers and technical EPC coordinators access your application.
         </p>
-      </div>
+      </section>
 
-      <div>
-        <h3 className="text-sm sm:text-base font-bold text-zinc-900 mb-1">
-          5. Grievance Redressal Officer
+      {/* 5. Analytics & Session Metrics */}
+      <section className="space-y-2">
+        <h3 className="text-sm sm:text-base font-bold text-zinc-900 flex items-center gap-2">
+          <Zap className="w-4 h-4 text-emerald-700 shrink-0" />
+          5. Regional Analytics & Telemetry
         </h3>
         <p>
-          In accordance with the DPDP Act 2023, for inquiries, access requests, or deletion notices, contact:
+          We process anonymous, aggregated analytics to measure regional clean-energy interest across Indian states, identify high-demand solar hardware configurations, and optimize web application performance. No personal identifiable information (PII) is sold, auctioned, or made publicly accessible.
         </p>
-        <div className="mt-2 p-3 rounded-xl bg-zinc-100 text-zinc-800 text-xs font-mono">
-          Grievance Officer: Legal & Regulatory Desk<br />
-          Solvex Energy Solutions Pvt. Ltd.<br />
-          204 Capital Square, Parvat Godadara BRTS Road, Surat 395010, Gujarat, India<br />
-          Email: corporate@solvexenergy.com | Phone: +91-98765-43210
+      </section>
+
+      {/* 6. Cookies & Consent Mechanisms */}
+      <section className="space-y-2">
+        <h3 className="text-sm sm:text-base font-bold text-zinc-900 flex items-center gap-2">
+          <Cookie className="w-4 h-4 text-emerald-700 shrink-0" />
+          6. Cookies & Local Storage Management
+        </h3>
+        <p>
+          Our portal utilizes cookies and secure browser storage (`localStorage`) divided into three distinct tiers:
+        </p>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1 text-xs">
+          <div className="p-3 rounded-lg border border-black/10 bg-zinc-50">
+            <span className="font-semibold text-zinc-900 block">Strictly Necessary</span>
+            <span className="text-zinc-500 text-[11px]">Session security, token caching, CSRF protection, and language choice. Always active.</span>
+          </div>
+          <div className="p-3 rounded-lg border border-black/10 bg-zinc-50">
+            <span className="font-semibold text-zinc-900 block">Regional Analytics</span>
+            <span className="text-zinc-500 text-[11px]">Anonymized district-level traffic patterns to scale clean energy supply pipelines.</span>
+          </div>
+          <div className="p-3 rounded-lg border border-black/10 bg-zinc-50">
+            <span className="font-semibold text-zinc-900 block">Marketing & Ads</span>
+            <span className="text-zinc-500 text-[11px]">B2B commercial campaign attribution and retargeting analytics across partner networks.</span>
+          </div>
         </div>
-      </div>
+        <p className="text-xs text-zinc-500 pt-1">
+          You can update your cookie preferences at any time via the consent widget located in the bottom-right corner of the website.
+        </p>
+      </section>
+
+      {/* 7. Purpose of Processing */}
+      <section className="space-y-2">
+        <h3 className="text-sm sm:text-base font-bold text-zinc-900 flex items-center gap-2">
+          <FileText className="w-4 h-4 text-emerald-700 shrink-0" />
+          7. Lawful Purpose & Data Utilization
+        </h3>
+        <p>We process collected information strictly for legitimate commercial purposes:</p>
+        <ul className="list-disc pl-5 space-y-1 text-zinc-600">
+          <li>Evaluating territorial franchise exclusivity and calculating distributor non-compete buffers.</li>
+          <li>Generating engineered bill-of-materials (BOM), quotations, and solar yield projections.</li>
+          <li>Facilitating DISCOM net-metering synchronization and government DBT subsidy documentation under PM Surya Ghar.</li>
+          <li>Fulfilling legal obligations, including tax withholding, GST compliance, and statutory audits.</li>
+        </ul>
+      </section>
+
+      {/* 8. Data Storage & Security Safeguards */}
+      <section className="space-y-2">
+        <h3 className="text-sm sm:text-base font-bold text-zinc-900 flex items-center gap-2">
+          <Lock className="w-4 h-4 text-emerald-700 shrink-0" />
+          8. Storage Infrastructure & Security Controls
+        </h3>
+        <p>
+          All digital records are encrypted in transit via Transport Layer Security (TLS 1.3) and stored with Advanced Encryption Standard (AES-256) at rest. Servers and databases are hosted in certified Tier-IV enterprise data center facilities physically located within India, adhering to strict data sovereignty standards. Records are retained for the duration of the commercial relationship or up to 24 months post-enquiry for statutory compliance.
+        </p>
+      </section>
+
+      {/* 9. Data Sharing & Third-Party Disclosures */}
+      <section className="space-y-2">
+        <h3 className="text-sm sm:text-base font-bold text-zinc-900 flex items-center gap-2">
+          <Truck className="w-4 h-4 text-emerald-700 shrink-0" />
+          9. Third-Party Sharing & Safeguards
+        </h3>
+        <p>
+          <strong>Solvex strictly enforces a zero-sale policy:</strong> we never sell, lease, or monetize customer or distributor data. Information is disclosed solely to:
+        </p>
+        <ul className="list-disc pl-5 space-y-1 text-zinc-600">
+          <li><strong>Vetted Logistics & Freight Partners:</strong> For direct factory dispatch and consignment tracking.</li>
+          <li><strong>Electric Utilities & DISCOMs:</strong> For bi-directional net-metering clearance and grid synchronizations.</li>
+          <li><strong>Accredited Financial Institutions & NBFCs:</strong> Only upon your explicit request for solar rooftop consumer loans or working capital credit lines.</li>
+          <li><strong>Statutory & Regulatory Authorities:</strong> In compliance with valid court summons, GST audits, or law enforcement mandates.</li>
+        </ul>
+      </section>
+
+      {/* 10. User Rights under DPDP Act 2023 */}
+      <section className="space-y-2">
+        <h3 className="text-sm sm:text-base font-bold text-zinc-900 flex items-center gap-2">
+          <Scale className="w-4 h-4 text-emerald-700 shrink-0" />
+          10. Data Principal Rights
+        </h3>
+        <p>Under the DPDP Act 2023, you retain the following enforceable rights:</p>
+        <ul className="list-disc pl-5 space-y-1 text-zinc-600">
+          <li><strong>Right to Access:</strong> Request a summary of personal and commercial data processed by Solvex.</li>
+          <li><strong>Right to Correction & Erasure:</strong> Request the correction of misleading or outdated details, or deletion of records where commercial obligations have ceased.</li>
+          <li><strong>Right to Grievance Redressal:</strong> Submit complaints regarding data mishandling directly to our designated Grievance Officer.</li>
+          <li><strong>Right to Withdraw Consent:</strong> Revoke consent for optional marketing communications and analytics at any time.</li>
+        </ul>
+      </section>
+
+      {/* 11. Grievance Redressal Officer */}
+      <section className="p-4 rounded-xl bg-zinc-100/80 border border-black/10 space-y-1.5">
+        <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-900">
+          Grievance Redressal & Data Protection Officer
+        </h4>
+        <p className="text-xs text-zinc-600 leading-relaxed font-mono">
+          Attention: Legal & Regulatory Desk<br />
+          Solvex Energy Solutions Private Limited<br />
+          204 Capital Square, Parvat Godadara BRTS Road, Surat 395010, Gujarat, India<br />
+          Email: corporate@solvexenergy.com | Direct Line: +91-98765-43210
+        </p>
+      </section>
     </div>
   );
 }
 
 /**
- * Commercial Terms of Service Content
+ * Enterprise Terms & Conditions Content
+ * Comprehensive coverage: Website usage, enquiries, quotations, pricing, GST, shipping, warranties, refunds, partner terms, liability.
  */
 export function TermsOfServiceContent() {
   return (
-    <div className="space-y-5 text-xs sm:text-sm text-zinc-700 leading-relaxed font-sans">
-      <div>
-        <h3 className="text-sm sm:text-base font-bold text-zinc-900 mb-1">
-          1. Acceptance of Commercial Terms
-        </h3>
-        <p>
-          By accessing the Solvex Energy Solutions commercial portal, browsing technical spec sheets, or submitting a Partnership Evaluation Form, you agree to be bound by these Terms of Commercial Service.
+    <div className="space-y-6 text-xs sm:text-sm text-zinc-700 leading-relaxed font-sans">
+      {/* Overview Notice */}
+      <div className="p-3.5 sm:p-4 rounded-xl bg-zinc-100 border border-black/10 text-zinc-900 flex items-start gap-3">
+        <Scale className="w-5 h-5 text-emerald-700 shrink-0 mt-0.5" />
+        <p className="text-xs leading-relaxed">
+          <strong>Commercial Governance & Master Terms:</strong> These Terms of Service govern your access to the Solvex Energy Solutions commercial portal, hardware spec sheets, quotation requests, and commercial partner onboarding agreements.
         </p>
       </div>
 
-      <div>
-        <h3 className="text-sm sm:text-base font-bold text-zinc-900 mb-1">
-          2. Territorial Allocation & Dealership Rights
+      {/* 1. Website Usage & Intellectual Property */}
+      <section className="space-y-2">
+        <h3 className="text-sm sm:text-base font-bold text-zinc-900 flex items-center gap-2">
+          <Building2 className="w-4 h-4 text-emerald-700 shrink-0" />
+          1. Authorized Portal Usage & Proprietary Rights
         </h3>
         <p>
-          Submission of an enrollment dossier does not constitute an automatic grant of franchise or distributorship. Solvex reserves the unilateral right to approve or decline applicants based on existing territorial saturation, credit assessments, and technical EPC capabilities. Official rights are conferred only upon execution of a bilateral Master Franchise Agreement.
+          By accessing this website, requesting product specifications, or utilizing our Solar ROI Calculator, you agree to comply with these Terms. All proprietary content, including &ldquo;Solvex&rdquo; trademarks, industrial PCB topologies, rMPPT firmware documentation, high-yield combo configurations, and technical brochures, remain the sole intellectual property of <strong>Solvex Energy Solutions Private Limited</strong>.
         </p>
-      </div>
+        <p className="text-zinc-600">
+          You agree not to decompile, reverse-engineer, systematically scrape, copy, or distribute our technical assets without express prior written authorization.
+        </p>
+      </section>
 
-      <div>
-        <h3 className="text-sm sm:text-base font-bold text-zinc-900 mb-1">
-          3. Hardware Specifications & MNRE ALMM Standards
+      {/* 2. Product Enquiries & Quotation Validity */}
+      <section className="space-y-2">
+        <h3 className="text-sm sm:text-base font-bold text-zinc-900 flex items-center gap-2">
+          <Receipt className="w-4 h-4 text-emerald-700 shrink-0" />
+          2. Product Enquiries & Quotation Validity
         </h3>
         <p>
-          All photovoltaic modules, hybrid inverters, and heavy-duty PCUs supplied by Solvex adhere strictly to Ministry of New and Renewable Energy (MNRE) Approved Models and Manufacturers (ALMM) regulations and BIS standards. Solvex warrants linear performance metrics as detailed in official product warranty certificates.
+          Technical spec sheets, system sizing simulations, and preliminary savings projections are provided for engineering assessment purposes. Formal commercial quotations generated by Solvex are strictly valid for <strong>15 calendar days</strong> from the date of issuance, after which prices may be adjusted to reflect prevailing silicon wafer, copper, aluminium, and international semiconductor commodity indices.
         </p>
-      </div>
+      </section>
 
-      <div>
-        <h3 className="text-sm sm:text-base font-bold text-zinc-900 mb-1">
-          4. Intellectual Property
+      {/* 3. Pricing, Commercial Availability & Batch Runs */}
+      <section className="space-y-2">
+        <h3 className="text-sm sm:text-base font-bold text-zinc-900 flex items-center gap-2">
+          <Zap className="w-4 h-4 text-emerald-700 shrink-0" />
+          3. Wholesale Pricing & Stock Availability
         </h3>
         <p>
-          &ldquo;Solvex&rdquo;, the Solvex Energy Solutions badge, rMPPT proprietary algorithms, circuit layouts, and marketing assets remain the exclusive intellectual property of Solvex Energy Solutions Private Limited. Channel partners are granted limited, revocable licenses strictly within their authorized territory.
+          All commercial pricing listed on the portal represents indicative wholesale ex-factory rates in Indian Rupees (INR) for certified partners. Solvex reserves the right to revise catalog specifications, hardware models, and batch minimum order quantities (MOQs) without prior notice. Orders are confirmed only upon receipt of an authorized Purchase Order (PO) and clearance of commercial payment terms.
         </p>
-      </div>
+      </section>
 
-      <div>
-        <h3 className="text-sm sm:text-base font-bold text-zinc-900 mb-1">
-          5. Governing Law & Dispute Resolution
+      {/* 4. Goods and Services Tax (GST) & Invoicing */}
+      <section className="space-y-2">
+        <h3 className="text-sm sm:text-base font-bold text-zinc-900 flex items-center gap-2">
+          <Receipt className="w-4 h-4 text-emerald-700 shrink-0" />
+          4. Goods and Services Tax (GST) & Fiscal Compliance
         </h3>
         <p>
-          These terms are governed by the laws of the Republic of India. Any legal disputes arising from commercial partnerships or platform use shall be subject to the exclusive jurisdiction of the competent courts in Surat, Gujarat, India.
+          All dispatches are accompanied by tax-compliant GST invoices and electronic waybills (e-Way Bills). Goods and Services Tax (GST) is levied at statutory rates:
         </p>
-      </div>
+        <ul className="list-disc pl-5 space-y-1 text-zinc-600">
+          <li>12% on complete Grid-Interactive Solar Photovoltaic Generating Packages (SPGS) and solar modules under statutory concessional notifications.</li>
+          <li>18% on standalone inverters, electronic spares, balance-of-system hardware, and consultancy services.</li>
+        </ul>
+        <p className="text-zinc-600">
+          B2B purchasers must furnish a valid, active GSTIN at the time of purchase order submission to ensure eligible Input Tax Credit (ITC) reflection in GSTR-2B.
+        </p>
+      </section>
+
+      {/* 5. Shipping, Logistics & Transit Insurance */}
+      <section className="space-y-2">
+        <h3 className="text-sm sm:text-base font-bold text-zinc-900 flex items-center gap-2">
+          <Truck className="w-4 h-4 text-emerald-700 shrink-0" />
+          5. Shipping, Logistics & Consignment Inspection
+        </h3>
+        <p>
+          Shipments are executed under Ex-Factory or Freight On Road (FOR) terms as documented in the bilateral sales contract. Solvex ensures transit insurance coverage up to physical handover at the designated delivery terminal.
+        </p>
+        <div className="p-3 rounded-lg bg-amber-50 border border-amber-200 text-amber-900 text-xs">
+          <strong>Mandatory Unboxing Protocol:</strong> The recipient must inspect crate seals and outer packaging upon delivery. Any visible transit damage, glass fracture, or shortages must be explicitly endorsed on the carrier Proof of Delivery (POD) and reported to Solvex within <strong>48 hours</strong> accompanied by unboxing photographs and video footage.
+        </div>
+      </section>
+
+      {/* 6. Manufacturer Warranties & MNRE ALMM Standards */}
+      <section className="space-y-2">
+        <h3 className="text-sm sm:text-base font-bold text-zinc-900 flex items-center gap-2">
+          <ShieldCheck className="w-4 h-4 text-emerald-700 shrink-0" />
+          6. Warranties & MNRE ALMM Compliance
+        </h3>
+        <p>
+          Solvex equipment complies with Ministry of New and Renewable Energy (MNRE) Approved Models and Manufacturers (ALMM) mandates, Bureau of Indian Standards (BIS), and IEC certifications:
+        </p>
+        <ul className="list-disc pl-5 space-y-1 text-zinc-600">
+          <li><strong>Bifacial Solar Modules:</strong> 10–12 years limited product workmanship warranty and 25–30 years linear power output degradation warranty (&ge;80% rated yield at Year 25/30).</li>
+          <li><strong>Solar Inverters & PCU Units:</strong> 2 to 5 years standard manufacturer warranty covering electronic component replacement or factory repair.</li>
+          <li><strong>Exclusions:</strong> Warranties do not cover damage resulting from direct lightning strikes, improper earthing/grounding, grid surge levels beyond rated tolerances, external physical impact, unauthorized firmware flashing, or water ingress exceeding IP ratings.</li>
+        </ul>
+      </section>
+
+      {/* 7. Cancellations, Returns & Refunds */}
+      <section className="space-y-2">
+        <h3 className="text-sm sm:text-base font-bold text-zinc-900 flex items-center gap-2">
+          <RotateCcw className="w-4 h-4 text-emerald-700 shrink-0" />
+          7. Commercial Cancellations, Returns & RMA Process
+        </h3>
+        <p>
+          Due to the custom-engineered nature of high-capacity clean energy equipment:
+        </p>
+        <ul className="list-disc pl-5 space-y-1 text-zinc-600">
+          <li>B2B wholesale purchase orders cannot be cancelled once manufacturing batch allocation or freight dispatch has commenced.</li>
+          <li>Pre-dispatch cancellation requests accepted at Solvex&apos;s sole discretion may incur a restocking and administrative charge of up to 10% of total order value.</li>
+          <li>Defective units under warranty must be routed through our Return Merchandise Authorization (RMA) process for testing and certified factory restoration.</li>
+        </ul>
+      </section>
+
+      {/* 8. Partner Programme Terms */}
+      <section className="space-y-2">
+        <h3 className="text-sm sm:text-base font-bold text-zinc-900 flex items-center gap-2">
+          <Building2 className="w-4 h-4 text-emerald-700 shrink-0" />
+          8. Channel Partner, Dealer & Distributor Governance
+        </h3>
+        <p>
+          Submitting a partnership application does not confer automatic dealership or territorial rights. Official commercial partnership is finalized exclusively upon execution of a bilateral Master Franchise Agreement. Partners agree to:
+        </p>
+        <ul className="list-disc pl-5 space-y-1 text-zinc-600">
+          <li>Maintain authorized technical training standards for rooftop EPC installations.</li>
+          <li>Adhere strictly to designated district non-compete geographic boundaries.</li>
+          <li>Refrain from dealing in unauthorized, refurbished, or counterfeit components under the Solvex trademark.</li>
+        </ul>
+      </section>
+
+      {/* 9. Disclaimers & Subsidy Estimates */}
+      <section className="space-y-2">
+        <h3 className="text-sm sm:text-base font-bold text-zinc-900 flex items-center gap-2">
+          <AlertTriangle className="w-4 h-4 text-emerald-700 shrink-0" />
+          9. Operational Disclaimers & Government Subsidies
+        </h3>
+        <p className="text-zinc-600">
+          Energy yield estimates on this website are modeled based on Standard Test Conditions (STC: 1000 W/m&sup2;, 25&deg;C cell temperature, AM 1.5). Actual daily kilowatt-hour generation fluctuates according to local weather, shading, seasonal irradiation, and DISCOM grid uptime.
+        </p>
+        <p className="text-zinc-600">
+          Government subsidies (including up to ₹78,000 for residential systems under PM Surya Ghar Muft Bijli Yojana) are disbursed directly by central and state nodal authorities via Direct Benefit Transfer (DBT). Solvex acts solely as a certified equipment manufacturer/EPC facilitator and assumes no liability for administrative delays by electricity boards or government treasury departments.
+        </p>
+      </section>
+
+      {/* 10. Limitation of Liability */}
+      <section className="space-y-2">
+        <h3 className="text-sm sm:text-base font-bold text-zinc-900 flex items-center gap-2">
+          <Scale className="w-4 h-4 text-emerald-700 shrink-0" />
+          10. Limitation of Liability & Force Majeure
+        </h3>
+        <p className="text-zinc-600">
+          To the maximum extent permissible under Indian law, Solvex Energy Solutions Private Limited shall not be liable for any indirect, consequential, punitive, or incidental damages, including loss of power generation revenue, grid tariff credits, or business interruption. Our total aggregate liability under any claim shall not exceed the net purchase price paid for the specific hardware unit giving rise to the claim.
+        </p>
+        <p className="text-zinc-600">
+          Neither party shall be liable for delivery or fulfillment delays caused by Force Majeure events, including natural catastrophes, severe grid failures, statutory embargoes, or raw material supply chain disruptions beyond reasonable control.
+        </p>
+      </section>
+
+      {/* 11. Governing Law & Dispute Resolution */}
+      <section className="space-y-2">
+        <h3 className="text-sm sm:text-base font-bold text-zinc-900 flex items-center gap-2">
+          <Scale className="w-4 h-4 text-emerald-700 shrink-0" />
+          11. Governing Law & Arbitration
+        </h3>
+        <p className="text-zinc-600">
+          These Terms of Service and all commercial purchase contracts are governed by and construed in accordance with the laws of the Republic of India. Any controversy, dispute, or claim arising out of commercial relationships shall be submitted to binding arbitration in Surat, Gujarat, in accordance with the Arbitration and Conciliation Act, 1996. The competent civil courts situated in <strong>Surat, Gujarat, India</strong> shall possess exclusive jurisdiction.
+        </p>
+      </section>
     </div>
   );
 }
@@ -199,7 +456,7 @@ export function LegalModal() {
             className={cn(
               "py-3 px-4 text-xs font-semibold uppercase tracking-wider border-b-2 transition-all cursor-pointer",
               activeTab === "privacy"
-                ? "border-emerald-600 text-emerald-700 bg-white"
+                ? "border-emerald-600 text-emerald-700 bg-white shadow-xs"
                 : "border-transparent text-zinc-600 hover:text-zinc-900"
             )}
           >
@@ -211,7 +468,7 @@ export function LegalModal() {
             className={cn(
               "py-3 px-4 text-xs font-semibold uppercase tracking-wider border-b-2 transition-all cursor-pointer",
               activeTab === "terms"
-                ? "border-emerald-600 text-emerald-700 bg-white"
+                ? "border-emerald-600 text-emerald-700 bg-white shadow-xs"
                 : "border-transparent text-zinc-600 hover:text-zinc-900"
             )}
           >

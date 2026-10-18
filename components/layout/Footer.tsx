@@ -2,12 +2,10 @@
 
 import Link from "next/link";
 import { MotionReveal } from "@/components/ui/motion-reveal";
-import { useCinematicReveal } from "@/components/ui/cinematic-load-reveal";
 import { useLanguage } from "@/context/LanguageContext";
 import { openLegalModal } from "@/components/ui/consent-and-legal-modals";
 
 export default function Footer() {
-  const { replay } = useCinematicReveal();
   const { t } = useLanguage();
 
   const services = [
@@ -180,15 +178,6 @@ export default function Footer() {
             >
               {t("footer.sitemap")}
             </a>
-            <button
-              type="button"
-              onClick={replay}
-              className="text-zinc-950 hover:text-[#059669] transition-colors font-semibold cursor-pointer flex items-center gap-1.5"
-              title="Replay intro animation"
-            >
-              <span>{t("footer.replayIntro")}</span>
-              <span className="text-[11px]">↺</span>
-            </button>
           </div>
         </div>
       </div>
