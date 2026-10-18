@@ -1,0 +1,678 @@
+{
+  "common": {
+    "solvex": "Solvex",
+    "energySolutions": "Energy Solutions",
+    "pmSuryaGharPartner": "PM Surya Ghar Partner",
+    "partnerLogin": "Partner Login",
+    "enquireNow": "Enquire Now",
+    "learnMore": "Learn More",
+    "viewSpecs": "Inspect Architecture & Specs",
+    "requestDossier": "Request Project Dossier",
+    "calculateSavings": "Calculate Solar Savings",
+    "close": "Dismiss",
+    "all": "All",
+    "save": "Save",
+    "instantSavings": "Instant Savings of",
+    "inclusiveTaxes": "(Inclusive of all taxes)",
+    "officialTariff": "Benchmark Tariff:",
+    "commercialTariff": "Commercial Factory Tariff:",
+    "requestAllocation": "Request Commercial Allocation",
+    "requestSpecSheet": "Request Spec Sheet & Allocation"
+  },
+  "navigation": {
+    "about": "About",
+    "products": "Products",
+    "combos": "Combos",
+    "inverters": "Inverters",
+    "pcu": "PCU",
+    "solutions": "Solutions",
+    "calculator": "Calculator",
+    "faq": "FAQ"
+  },
+  "hero": {
+    "badge": "MNRE & BIS CERTIFIED CLEAN TECH INFRASTRUCTURE",
+    "titleLine1": "Engineering India's",
+    "titleLine2": "Decentralized Solar Transition",
+    "description": "Empowering regional energy entrepreneurs with Tier-1 bifacial photovoltaic hardware, smart MPPT inverters, and turnkey PM Surya Ghar EPC project execution.",
+    "exploreHardware": "EXPLORE SPGS HARDWARE",
+    "franchiseProgram": "FRANCHISE PROGRAM",
+    "telemetry": {
+      "title": "Surat Grid Telemetry",
+      "status": "Active Feed Synchronized",
+      "generationLabel": "Daily Generation",
+      "generationVal": "42.8 kWh",
+      "systemStatusLabel": "System Status",
+      "systemStatusVal": "100% Optimal",
+      "carbonOffsetLabel": "Carbon Offset",
+      "carbonOffsetVal": "34.2 kg CO₂"
+    },
+    "trustIndicators": {
+      "subsidy": {
+        "title": "Central DBT Subsidy",
+        "desc": "₹78,000 direct benefit transfer linked"
+      },
+      "hardware": {
+        "title": "Tier-1 ALMM Hardware",
+        "desc": "Bifacial TOPCon & Monocrystalline arrays"
+      },
+      "metering": {
+        "title": "Guaranteed Net-Metering",
+        "desc": "Turnkey DISCOM synchronization & liaison"
+      }
+    }
+  },
+  "heroSlider": {
+    "badge": "TECHNOLOGY SHOWCASE",
+    "title": "Featured Clean Tech Portfolio",
+    "description": "Explore our utility-scale arrays, industrial hybrid inverters, and high-cycle storage architectures.",
+    "slides": {
+      "rooftop": {
+        "badge": "PM SURYA GHAR ELIGIBLE",
+        "title": "Turnkey Commercial & Residential Rooftop Arrays",
+        "desc": "Integrated grid-tied photovoltaic solutions delivering immediate kilowatt-hour savings with guaranteed DISCOM net-metering synchronization.",
+        "specs": "1 kW – 100 kW+ Systems · ALMM Tier-1 Modules · 25-Yr Performance Guarantee",
+        "cta": "Explore Rooftop EPC"
+      },
+      "panels": {
+        "badge": "N-TYPE TOPCON TECHNOLOGY",
+        "title": "Ultra-High Efficiency Bifacial Photovoltaic Modules",
+        "desc": "Next-generation dual-glass modules harvesting sunlight from both surfaces, engineered for superior high-temperature and diffuse-light yield.",
+        "specs": "Up to 590W+ Rating · 22.8% Conversion Efficiency · 30-Yr Linear Output",
+        "cta": "Review Module Specs"
+      },
+      "gamma": {
+        "badge": "PROPRIETARY rMPPT LOGIC",
+        "title": "Gamma+ Intelligent Solar Hybrid Conditioning Units",
+        "desc": "Microprocessor-governed pure sine wave inverters featuring rapid MPPT tracking, multi-chemistry battery charging, and zero-hum performance.",
+        "specs": "1kVA – 5kVA · 40A rMPPT Extraction · Universal Tubular & Lithium Ready",
+        "cta": "Inspect Inverter Architecture"
+      },
+      "storage": {
+        "badge": "EXTREME DEEP-DISCHARGE",
+        "title": "C10 Tall Tubular Deep-Cycle Heavy Energy Storage",
+        "desc": "Industrial-grade lead-antimony spine tubular batteries built to endure continuous deep discharges across extreme tropical temperature swings.",
+        "specs": "150Ah – 240Ah C10 Rating · High Electrolyte Reserve · Ultra-Low Maintenance",
+        "cta": "Explore Battery Banks"
+      },
+      "pcu": {
+        "badge": "GALVANIC COPPER CORE",
+        "title": "Alfa+ Pro Heavy-Duty Three-Phase Industrial PCUs",
+        "desc": "High-capacity power conditioning units with 100% electrolytic copper transformers built for hospitals, data rooms, and industrial shop floors.",
+        "specs": "3kVA – 10kVA · 48V–180V DC Bus · 300% Peak Motor Inrush Overhead",
+        "cta": "View Industrial PCUs"
+      },
+      "combos": {
+        "badge": "PRE-COMMISSIONED SUITES",
+        "title": "Solvex Prime Factory-Configured SPGS Generation Kits",
+        "desc": "Complete rooftop photovoltaic generating systems bundled with Tier-1 DCR panels, matching inverter, mounting frames, and DC/AC distribution boxes.",
+        "specs": "3.2kW – 10kW · Up to ₹78,000 Direct DBT Subsidy · Turnkey BOS Included",
+        "cta": "Browse Combo Kits"
+      },
+      "bess": {
+        "badge": "SMART BMS INTEGRATION",
+        "title": "Modular LiFePO4 Energy Storage & Peak-Shaving Systems",
+        "desc": "Compact wall-mounted lithium battery modules with active BMS telemetry, 2-hour fast charging, and a 6,000+ lifecycle expectation.",
+        "specs": "Lithium Iron Phosphate · 6,000+ Deep Cycles · 10-Year Operational Lifespan",
+        "cta": "Explore Lithium Systems"
+      },
+      "franchise": {
+        "badge": "PROTECTED TERRITORIES",
+        "title": "Solvex Regional Clean Energy Enterprise Franchise",
+        "desc": "Establish a high-margin clean energy enterprise with exclusive district rights, factory procurement lines, and central technical training.",
+        "specs": "District & Master Distributor Tiers · 18%–26% Margins · Turnkey Lead Routing",
+        "cta": "Apply for Territory"
+      }
+    }
+  },
+  "about": {
+    "badge": "CORPORATE OVERVIEW",
+    "title": "Engineering Decentralized Energy Independence",
+    "cin": "CIN: U35105GJ2024PTC150137 · Surat, Gujarat",
+    "p1": "Headquartered in Surat, Gujarat, Solvex Energy Solutions Pvt Ltd is a premier clean tech enterprise pioneering decentralized solar infrastructure and high-yield clean power generation across India.",
+    "p2": "Under the visionary PM Surya Ghar: Muft Bijli Yojana, we bridge the gap between Tier-1 manufacturing excellence and regional distribution. We empower entrepreneurs with certified technical training, wholesale supply lines, and end-to-end DISCOM net-metering liaison.",
+    "stat1": {
+      "val": "₹78,000",
+      "label": "Max Central DBT Subsidy",
+      "sub": "Direct-to-bank subsidy under PM Surya Ghar"
+    },
+    "stat2": {
+      "val": "48 Hours",
+      "label": "SLA Technical Resolution",
+      "sub": "Rapid regional field response and RMA support"
+    },
+    "stat3": {
+      "val": "600+",
+      "label": "Certified Field Engineers",
+      "sub": "Skilled installer fleet across India"
+    },
+    "stat4": {
+      "val": "100%",
+      "label": "ALMM & BIS Compliant",
+      "sub": "Ministry approved Tier-1 certified components"
+    },
+    "epcTitle": "Turnkey EPC Infrastructure & Statutory Liaison",
+    "epcSubtitle": "From 3D shadow analysis to net-meter commissioning, we handle the complete engineering workflow.",
+    "epcFeature1": "3D Solar Shadow Analysis & Structural Load Engineering",
+    "epcFeature2": "Bi-Directional DISCOM Net-Metering Sanctions & Permits",
+    "epcFeature3": "Integrated PM Surya Ghar National Portal Subsidy Processing",
+    "epcCta": "Partner With Solvex"
+  },
+  "categories": {
+    "badge": "COMPREHENSIVE HARDWARE SUITE",
+    "title": "Engineered Photovoltaic & Energy Storage Hardware",
+    "description": "From utility-grade bifacial TOPCon modules to rapid MPPT conditioning units, explore our certified clean tech portfolio.",
+    "tabs": {
+      "all": "All Categories",
+      "rooftop": "Rooftop Systems",
+      "panels": "Solar Panels",
+      "inverters": "Inverters",
+      "batteries": "Solar Batteries"
+    },
+    "items": {
+      "rooftop": {
+        "name": "Turnkey Rooftop Solar Systems",
+        "desc": "Engineered on-grid photovoltaic arrays custom-built for residential, institutional, and commercial rooftops under PM Surya Ghar.",
+        "badge": "SUBSIDY VALIDATED",
+        "f1": "Direct DBT Subsidy Linked",
+        "f2": "Bi-Directional Net Metering",
+        "f3": "Turnkey Structural EPC"
+      },
+      "panels": {
+        "name": "High-Density Bifacial PV Modules",
+        "desc": "N-Type TOPCon and Mono PERC dual-glass panels delivering enhanced low-light absorption and rear-side albedo energy boost.",
+        "badge": "TOPCON / MONO PERC",
+        "f1": "Up to 22.8% Conversion Efficiency",
+        "f2": "30-Year Linear Power Warranty",
+        "f3": "ALMM Tier-1 Certified Standard"
+      },
+      "batteries": {
+        "name": "Heavy-Duty Tall Tubular Solar Batteries",
+        "desc": "Thick-plate antimonial spine lead-acid batteries with enhanced electrolyte reserve, engineered to withstand continuous deep discharges.",
+        "badge": "EXTREME CYCLIC LIFE",
+        "f1": "C10 Deep Cycle Endurance",
+        "f2": "Micro-Porous Ceramic Vent Plugs",
+        "f3": "Ultra-Low Self-Discharge"
+      },
+      "solarInverters": {
+        "name": "Intelligent Hybrid & Solar Inverters",
+        "desc": "Microprocessor-governed pure sine wave inverters featuring rapid MPPT tracking, multi-chemistry battery charging, and zero harmonic buzz.",
+        "badge": "rMPPT & LITHIUM READY",
+        "f1": "Dynamic rMPPT Extraction Core",
+        "f2": "Pure Sine Wave Output (THD < 3%)",
+        "f3": "Onboard WiFi & Cloud Telemetry"
+      },
+      "pcu": {
+        "name": "Commercial Power Conditioning Units (PCU)",
+        "desc": "Heavy-duty galvanically isolated power conditioning systems engineered to support high-surge inductive loads in institutions and hospitals.",
+        "badge": "INSTITUTIONAL GRADE",
+        "f1": "100% Copper Galvanic Transformer",
+        "f2": "300% Peak Motor Inrush Capacity",
+        "f3": "Zero-Switchover UPS Precision"
+      },
+      "combos": {
+        "name": "Complete Turnkey SPGS Generating Packages",
+        "desc": "Pre-engineered solar photovoltaic generating suites bundled with Tier-1 panels, intelligent inverter, and certified balance of systems.",
+        "badge": "TURNKEY SOLUTION",
+        "f1": "Guaranteed Subsidy Eligibility",
+        "f2": "Factory Matched Components",
+        "f3": "End-to-End Installation & Testing"
+      }
+    },
+    "featuresStrip": {
+      "f1Title": "EXPRESS DEPOT DISPATCH",
+      "f1Desc": "Pre-staged inventory shipped from regional hubs within 48 business hours",
+      "f2Title": "FLEXIBLE COMMERCIAL TERMS",
+      "f2Desc": "Institutional credit facilities and structured franchise procurement tiers",
+      "f3Title": "DIRECT ENGINEERING HELPLINE",
+      "f3Desc": "Direct escalation desk for on-site wiring, net-metering and firmware diagnostics",
+      "f4Title": "TIER-1 OEM WARRANTY",
+      "f4Desc": "Comprehensive factory warranties backed by pan-India on-site technician service"
+    }
+  },
+  "combos": {
+    "badge": "Integrated Generation Kits",
+    "title": "High-Yield Solar Photovoltaic Generating Packages",
+    "description": "Pre-commissioned rooftop generation suites engineered for guaranteed DISCOM compliance, rapid PM Surya Ghar DBT settlement, and maximum kilowatt-hour yield per square meter.",
+    "tabs": {
+      "all": "All Configurations",
+      "residential": "Residential Grid-Tied",
+      "commercial": "Commercial & C&I",
+      "offgrid": "Autonomous Off-Grid"
+    },
+    "items": {
+      "combo3kw": {
+        "name": "Solvex Prime 3.2kW Monocrystalline Grid-Tied Suite",
+        "systemType": "Single-Phase Synchronous Array",
+        "recommendedFor": "Urban 2-3 BHK Residences & Independent Floors",
+        "badge": "RESIDENTIAL BENCHMARK",
+        "generation": "12-14 Units / Day",
+        "specs": [
+          "ALMM-Listed Mono DCR TOPCon Cells (22.5%+ Efficiency)",
+          "Solvex ShineX 3.2kW Dual-MPPT Intelligent Inverter",
+          "Zero-Export Ready with Turnkey DISCOM Net-Metering"
+        ],
+        "subsidyText": "Effective cost post-₹78,000 Direct Benefit Transfer"
+      },
+      "combo5kw": {
+        "name": "Solvex Apex 5kW Three-Phase High-Capacity Array",
+        "systemType": "Three-Phase Synchronous Grid-Tie",
+        "recommendedFor": "Bungalows, Duplexes & Multi-Story Villas",
+        "badge": "SUPERIOR HARVEST",
+        "generation": "20-22 Units / Day",
+        "specs": [
+          "Bifacial Glass-to-Glass Monocrystalline Modules",
+          "Solvex ShineX 5kW 3-Phase Cloud-Telemetry Inverter",
+          "Hot-Dip Galvanized Mounting with Dual Surge Protection"
+        ],
+        "subsidyText": "Effective cost post-₹78,000 Direct Benefit Transfer"
+      },
+      "combo500w": {
+        "name": "Solvex Nomad 500W Autonomous Micro-Generation Kit",
+        "systemType": "Islanded Off-Grid DC/AC Core",
+        "recommendedFor": "Farmhouses, Outposts & Remote Agri-Stations",
+        "badge": "TRUE GRID INDEPENDENCE",
+        "generation": "2-2.5 Units / Day",
+        "specs": [
+          "500W High-Irradiance Monocrystalline Module",
+          "Intelligent Hybrid Solar Charge Controller",
+          "C10 Tall Tubular Deep-Discharge Storage Core"
+        ],
+        "subsidyText": "100% Autonomous Storage — Zero Grid Dependency"
+      },
+      "combo10kw": {
+        "name": "Solvex Enterprise 10kW Three-Phase Commercial Suite",
+        "systemType": "High-Yield C&I Synchronous Array",
+        "recommendedFor": "Corporate Showrooms, Clinics & Light Factories",
+        "badge": "COMMERCIAL ASSET",
+        "generation": "40-45 Units / Day",
+        "specs": [
+          "Commercial-Tier Monocrystalline TOPCon Arrays",
+          "Solvex ShineX 10kW IP65 Multi-String Central Core",
+          "Section 32 Accelerated 40% Capital Depreciation"
+        ],
+        "subsidyText": "Qualifies for Section 32 40% Tax Depreciation"
+      }
+    },
+    "customBanner": {
+      "title": "Require Engineered Capacities from 15 kW to 500 kW+?",
+      "description": "Solvex technical auditors conduct 3D shading simulations, structural load stress tests, and end-to-end DISCOM synchronization reports.",
+      "cta": "Commission Feasibility Audit"
+    },
+    "cta": "Request Full Bill of Materials"
+  },
+  "inverters": {
+    "badge": "Advanced Inversion Architecture",
+    "title": "High-Performance Solar Hybrid & Grid Inverters",
+    "description": "Microprocessor-governed pure sine wave inverters featuring rapid MPPT tracking, smart multi-chemistry battery conditioning, and industrial-grade surge protection.",
+    "tabs": {
+      "all": "Entire Portfolio (7)",
+      "rmppt": "Rapid-MPPT Series",
+      "lithium": "Lithium BMS Ready",
+      "heavyDuty": "Industrial High-kVA"
+    },
+    "features": {
+      "rmpptTitle": "DYNAMIC rMPPT EXTRACTION",
+      "rmpptDesc": "Recovers up to 30% additional harvest under diffuse dawn, dusk, and overcast skies",
+      "chemistryTitle": "UNIVERSAL STORAGE COMPATIBILITY",
+      "chemistryDesc": "Fully certified for C10 Tall Tubular, VRLA/SMF, and modular LiFePO4 packs",
+      "warrantyTitle": "DIRECT FIELD ASSURANCE",
+      "warrantyDesc": "Rapid SLA doorstep technical resolution backed by regional service depots",
+      "sineTitle": "PRECISION SINE WAVE PURITY",
+      "sineDesc": "Shields sensitive refrigeration compressors, audio gear, and mission-critical computers"
+    },
+    "modal": {
+      "techSpecs": "Technical Specifications",
+      "highlights": "Engineering Highlights",
+      "solarCharger": "Solar Charger",
+      "outputWaveform": "Output Waveform",
+      "displayDashboard": "Display Dashboard",
+      "maxPvInput": "Max PV Panel Input",
+      "batteryCompatibility": "Battery Compatibility",
+      "manufacturerWarranty": "Manufacturer Warranty"
+    }
+  },
+  "pcu": {
+    "badge": "INDUSTRIAL & INSTITUTIONAL CORES",
+    "title": "Commercial Power Conditioning Units (PCU)",
+    "description": "Galvanically-isolated, heavy-copper MPPT power conditioning architectures engineered for medical campuses, data nodes, and three-phase commercial estates.",
+    "tabs": {
+      "all": "All Capacities (4)",
+      "fortyEight": "48V Commercial Banks",
+      "highVoltage": "High-Voltage Bus (96V–180V)"
+    },
+    "compare": "COMPARE ALL 4 CAPACITIES",
+    "hideCompare": "COLLAPSE MATRIX",
+    "matrixTitle": "Solvex Alfa+ Pro Industrial PCU Matrix",
+    "matrixHeaders": {
+      "spec": "SPECIFICATION",
+      "output": "Continuous Output",
+      "battery": "Battery Voltage",
+      "maxPv": "Max PV Input",
+      "controller": "MPPT Controller",
+      "tariff": "Direct Tariff"
+    },
+    "badges": {
+      "medical": "HEALTHCARE & CRITICAL LABS",
+      "medicalDesc": "Zero-break transfer protecting diagnostic machinery, cold storage, and surgical lighting",
+      "dsp": "DUAL-PROCESSOR BRAIN",
+      "dspDesc": "Samples PV irradiance, battery health, and utility fluctuations at microsecond fidelity",
+      "galvanic": "COPPER GALVANIC BARRIER",
+      "galvanicDesc": "Heavy pure copper transformer safeguards sensitive electronics from surges and lightning spikes",
+      "inrush": "300% INRUSH OVERHEAD",
+      "inrushDesc": "Effortlessly fires up inductive chiller compressors, vacuum pumps, and heavy motors"
+    }
+  },
+  "pillars": {
+    "badge": "FOUNDATIONAL MANDATE",
+    "title": "Core Tenets of Our Energy Transformation",
+    "description": "Architecting resilient, commercially-viable solar infrastructure across India's industrial and domestic sectors, accelerating decentralized power sovereignty through local franchise enterprise.",
+    "p1": {
+      "title": "Ecological Stewardship",
+      "desc": "Targeted carbon mitigation via high-yield photovoltaic systems engineered for 25+ years of continuous generation."
+    },
+    "p2": {
+      "title": "Architectural Precision",
+      "desc": "Deploying high-efficiency TOPCon cells, rMPPT conversion logic, and structural mounting tested to 150 km/h wind shear."
+    },
+    "p3": {
+      "title": "Statutory Integrity",
+      "desc": "Rigorous compliance with MNRE guidelines, DISCOM grid-synchronization codes, and fast-track PM Surya Ghar subsidy disbursement."
+    },
+    "p4": {
+      "title": "Franchise Partnership",
+      "desc": "Empowering regional energy entrepreneurs with turnkey inventory, technician upskilling, and dedicated telemetry support."
+    }
+  },
+  "solutions": {
+    "badge": "TURNKEY GENERATION ECOSYSTEM",
+    "title": "Integrated Clean Energy Architectures",
+    "description": "From shadow simulation and DISCOM bi-directional approval to precision EPC commissioning and continuous cloud generation telemetry.",
+    "cta": "VIEW TECHNICAL PORTFOLIO",
+    "s1": {
+      "title": "Grid-Tied Photovoltaic Arrays",
+      "desc": "ALMM-compliant Monocrystalline TOPCon rooftop and elevated installations built to withstand industrial wind shear and coastal corrosion."
+    },
+    "s2": {
+      "title": "Synchronous Microgrid Hybrid Systems",
+      "desc": "Dynamic integration of solar generation, battery banks, and existing diesel generator assets for uninterrupted facility operation."
+    },
+    "s3": {
+      "title": "BESS Electrochemical Storage",
+      "desc": "Modular LiFePO4 battery energy storage architectures engineered for peak-tariff shaving, critical load buffering, and zero downtime."
+    },
+    "s4": {
+      "title": "Full-Cycle EPC Project Execution",
+      "desc": "Complete civil and electrical drafting, high-voltage transformer stepping, earthing pit testing, and DISCOM net-meter commissioning."
+    }
+  },
+  "partnership": {
+    "badge": "COMMERCIAL ALLIANCE MATRIX",
+    "title": "Establish Your Regional Energy Franchise",
+    "description": "Select an operational tier structured for high equity yield: from exclusive district distribution to channel consultancy and storefront merchant monetization.",
+    "tier1": {
+      "tag": "DISTRICT MONOPOLY",
+      "title": "Authorized District Distributor",
+      "desc": "Exclusive territory jurisdiction for wholesale hardware distribution and regional EPC fulfillment.",
+      "bullets": [
+        "Guaranteed geographic exclusivity across assigned district",
+        "Calibrated 1,500 kW annual capacity throughput milestone",
+        "Direct CRM automated retail lead pipeline dispatch",
+        "Certified solar technician and safety protocol bootcamps"
+      ],
+      "cta": "EXPLORE DISTRICT MODEL"
+    },
+    "tier2": {
+      "tag": "ZONAL CONSORTIUM",
+      "badge": "FLAGSHIP ALLIANCE",
+      "title": "Zonal Master Distributor",
+      "desc": "Multi-district governance orchestrating regional dealer networks and mega-watt industrial pipelines.",
+      "bullets": [
+        "Multi-territory franchise jurisdiction and dealer onboarding authority",
+        "Volume override margin across all sub-channel transactions",
+        "Direct factory-door container deliveries with preferential priority",
+        "Dedicated DISCOM and state nodal agency liaison desk"
+      ],
+      "cta": "SUBMIT ZONAL CREDENTIALS"
+    },
+    "tier3": {
+      "tag": "CONSULTANCY CORE",
+      "title": "Corporate Channel Consultant",
+      "desc": "Commercial project originators and engineering consultants driving institutional solar transitions.",
+      "bullets": [
+        "End-to-end techno-commercial sales presentation support",
+        "Direct milestone payout upon commercial project commissioning",
+        "Zero physical inventory warehousing or stocking obligations",
+        "Complete 3D shadow analysis and structural CAD validation provided"
+      ],
+      "cta": "ENROLL AS CONSULTANT"
+    },
+    "tier4": {
+      "tag": "STOREFRONT SYNERGY",
+      "title": "Retail Merchant Affiliate",
+      "desc": "Hardware merchants, electrical suppliers, and sanitaryware showrooms expanding into solar commerce.",
+      "bullets": [
+        "Modular interactive retail showroom display and digital kiosk",
+        "Attractive referral margins per qualified site conversion",
+        "100% turnkey EPC execution handled directly by Solvex engineers",
+        "Instant EMI and PM Surya Ghar financing assistance at checkout"
+      ],
+      "cta": "ACTIVATE STOREFRONT"
+    }
+  },
+  "whyChoose": {
+    "badge": "STRATEGIC COMPETITIVE ADVANTAGE",
+    "title": "Why Leading Clean Tech Partners Choose Solvex",
+    "description": "We eliminate regional execution bottlenecks by pairing direct Tier-1 supply lines with precision civil-electrical engineering, statutory subsidy clearance, and dedicated field service infrastructure.",
+    "i1": {
+      "title": "Omnichannel Acquisition Engine",
+      "desc": "Geo-targeted lead generation funnels, branded project brochures, and validated client conversion workflows delivered to your local office."
+    },
+    "i2": {
+      "title": "Direct ALMM & DCR Supply Pipeline",
+      "desc": "Unrestricted allocation of Tier-1 TOPCon bifacial modules, rMPPT hybrid inverters, and high-cycle storage directly from authorized depots."
+    },
+    "i3": {
+      "title": "Solvex Technical Academy",
+      "desc": "Intensive hands-on technician accreditation covering structural CAD simulations, high-voltage safety, and bi-directional DISCOM synchronization."
+    },
+    "i4": {
+      "title": "Turnkey EPC Engineering Oversight",
+      "desc": "Institutional engineering stamps, certified wind-load structural calculations, and seamless balance-of-systems logistics."
+    },
+    "i5": {
+      "title": "Institutional BOQ & Tender Desk",
+      "desc": "Dedicated project estimation division drafting bankable bills of quantities and compliance dockets for large C&I and government bids."
+    },
+    "i6": {
+      "title": "Solvex Care 360 Field Network",
+      "desc": "Rapid-response localized service engineering fleet ensuring strict 48-hour SLA resolutions, proactive telemetry, and warranty fulfilment."
+    }
+  },
+  "projects": {
+    "badge": "COMMISSIONED INFRASTRUCTURE",
+    "title": "Flagship Utility & Commercial Deployments",
+    "description": "Representative showcase of megawatt-scale solar parks, institutional microgrids, and captive industrial rooftop arrays engineered and commissioned across regional corridors.",
+    "cta": "REQUEST PROJECT DOSSIER",
+    "caseStudy": "REVIEW TECHNICAL DOSSIER",
+    "p1": {
+      "title": "Indore Agro-Industrial Corridor",
+      "desc": "1.2 MW high-yield ground-mount solar generation facility powering automated food processing clusters.",
+      "location": "MADHYA PRADESH"
+    },
+    "p2": {
+      "title": "Surat Textile Manufacturing Hub",
+      "desc": "5.4 MW combined rooftop captive array delivering 35% grid power offset with bi-directional net metering.",
+      "location": "GUJARAT"
+    },
+    "p3": {
+      "title": "Thar High-Irradiance Utility Park",
+      "desc": "12.8 MW high-capacity solar park featuring single-axis astronomical tracking and automated robotic dry-cleaning.",
+      "location": "RAJASTHAN"
+    },
+    "p4": {
+      "title": "Patna Heavy Engineering Complex",
+      "desc": "850 kW high-tilt industrial rooftop array built on custom hot-dip galvanized structural steel frames.",
+      "location": "BIHAR"
+    }
+  },
+  "calculator": {
+    "badge": "PHOTOVOLTAIC AUDIT CORE",
+    "title": "Rooftop Generation & Financial Simulator",
+    "description": "Calculate shadow-free kilowatt capacity, anticipated tariff savings, and lifecycle carbon offset tailored to regional irradiance indices.",
+    "label": "UNOBSTRUCTED ROOFTOP AREA (SQ. FT.)",
+    "placeholder": "e.g. 500",
+    "unit": "SQ.FT",
+    "calculateBtn": "SIMULATE YIELD",
+    "capacity": "SUGGESTED ARRAY CAPACITY",
+    "savings": "PROJECTED ANNUAL POWER VALUE",
+    "co2": "LIFECYCLE CO₂ AVOIDED",
+    "info": "Calculations calibrated to 4.8 peak sun hours/day, 22% module efficiency, and prevailing DISCOM industrial/domestic tariff bands.",
+    "defaultSystemSize": "5.0 kW System",
+    "defaultSavings": "₹54,000 / year",
+    "defaultCo2": "6.1 Metric Tons",
+    "kwSystem": "{kw} kW System",
+    "savingsPerYear": "₹{savings} / year",
+    "tonsCo2": "{co2} Metric Tons"
+  },
+  "testimonials": {
+    "badge": "FRANCHISE VERIFICATION",
+    "title": "Field Reports from Regional Partners",
+    "description": "Authentic feedback from authorized distributors, project engineers, and corporate channel directors operating across Western & Northern India.",
+    "r1": {
+      "quote": "Partnering with Solvex Energy Solutions fundamentally restructured our regional distribution. The direct availability of ALMM-listed bifacial inventory and fast-tracked PM Surya Ghar documentation gave our dealer network an immediate commercial edge.",
+      "name": "MOHAN SHARMA",
+      "role": "MASTER DISTRIBUTOR • UP WEST"
+    },
+    "r2": {
+      "quote": "The institutional technical blueprints and precision shadow analysis provided by Solvex allowed our field crews to execute 35+ rooftop commercial installations across Surat and Ahmedabad with zero DISCOM inspection rejections.",
+      "name": "SURAJ PATEL",
+      "role": "CHANNEL PARTNER • GUJARAT"
+    },
+    "r3": {
+      "quote": "In our first 14 months with Solvex, we commissioned over 2.4 MW across industrial flour mills and agricultural pump stations. Their technical hotline and rapid spares dispatch set the standard for Indian EPC infrastructure.",
+      "name": "RAM CHOUDHARY",
+      "role": "REGIONAL EPC DIRECTOR • RAJASTHAN"
+    }
+  },
+  "news": {
+    "badge": "STATUTORY & REGULATORY INTELLIGENCE",
+    "title": "Clean Energy Directives & Policy Bulletins",
+    "description": "Curated briefings on central MNRE notifications, DISCOM net-metering amendments, and macro renewable capital subsidies.",
+    "archiveBtn": "REGULATORY ARCHIVE",
+    "readDispatch": "Review Full Directive",
+    "tagLabel": "TAG:",
+    "n1": {
+      "category": "CENTRAL DIRECTIVE",
+      "tag": "PM SURYA GHAR MANDATE",
+      "readTime": "3 MIN READ",
+      "title": "National Rooftop Solar Capital Subsidy Acceleration",
+      "desc": "Strategic framework delivering up to ₹78,000 direct benefit transfers for residential installations, paired with concessional 7% collateral-free bank financing."
+    },
+    "n2": {
+      "category": "DOMESTIC SUPPLY CHAIN",
+      "tag": "ALMM & PLI INITIATIVE",
+      "readTime": "5 MIN READ",
+      "title": "Mandatory ALMM Domestic Content Enforcement",
+      "desc": "Stringent regulatory provisions enforcing DCR compliance across subsidized residential and state tenders, driving domestic TOPCon solar cell production."
+    },
+    "n3": {
+      "category": "CLEAN TECH INTEGRATION",
+      "tag": "DECARBONIZATION CORRIDOR",
+      "readTime": "4 MIN READ",
+      "title": "Commercial C&I Open Access & Peak Power Shaving",
+      "desc": "State regulatory revisions simplifying green open-access permits for commercial facilities exceeding 100 kW, lowering demand-charge industrial tariffs."
+    }
+  },
+  "faq": {
+    "badge": "OPERATIONAL INTELLIGENCE & FAQ",
+    "title": "Operational Briefings & Partner Inquiries",
+    "description": "Critical answers regarding territory jurisdiction, capital expenditure, DISCOM net-metering approvals, and technical service protocols.",
+    "items": [
+      {
+        "question": "What technical support and technician enablement does Solvex provide to new franchise partners?",
+        "answer": "We provide turnkey engineering enablement: structured hands-on masterclasses covering civil roof load calculations, 3D shadow analysis, high-voltage DC string design, pre-cleared DISCOM documentation packets, and direct access to our central engineering escalation desk."
+      },
+      {
+        "question": "What is the typical operational onboarding timeline for an authorized territory franchise?",
+        "answer": "From formal agreement execution and territorial rights allocation to commercial dispatch typically spans 14 to 21 business days. This window covers initial depot warehousing allocations, ERP terminal onboarding, localized digital lead generation setup, and technician safety certifications."
+      },
+      {
+        "question": "What commercial gross margins and working capital cycles can distribution partners model?",
+        "answer": "Authorized territorial distributors typically structure margins ranging from 18% to 26% across hybrid inverters, industrial PCUs, and turnkey generation kits. Under the PM Surya Ghar scheme, streamlined direct benefit transfers (DBT) ensure 30-day working capital velocity on residential rooftop arrays."
+      },
+      {
+        "question": "Are all Solvex PCU, Inverter, and Photovoltaic packages compliant with ALMM & MNRE mandates?",
+        "answer": "Unconditionally. Every photovoltaic module supplied is ALMM List-I compliant with domestic solar cell content (DCR). Our inverters, PCUs, and balance-of-systems components carry mandatory BIS certifications and are pre-registered on state utility DISCOM portals for direct net-meter sanctioning."
+      },
+      {
+        "question": "How does the Solvex 360 warranty replacement protocol operate in case of hardware anomalies?",
+        "answer": "We operate decentralized regional buffer inventory hubs guaranteeing 48-hour RMA swap-outs. In addition, our smart hybrid inverters and PCUs transmit real-time cloud telemetry, enabling automated predictive diagnostics and remote firmware patches prior to physical field dispatches."
+      }
+    ]
+  },
+  "contact": {
+    "badge": "[ 11 // COMMERCIAL ENROLLMENT ]",
+    "title": "Initiate Franchise Onboarding",
+    "description": "Connect directly with our corporate expansion desk. Review territory allocation, margins, and procurement schedules.",
+    "hqLabel": "Corporate Headquarters",
+    "hqAddress": "204 Capital Square, Parvat Godadara BRTS Road, Surat 395010, Gujarat, India",
+    "deskLabel": "Institutional Desk",
+    "hoursLabel": "Operations & Dispatch",
+    "hoursTime": "Monday — Saturday: 09:30 - 18:30 IST",
+    "hoursSunday": "Sunday: Emergency Dispatch Only",
+    "guarantee": "Direct manufacturing allocations backed by MNRE ALMM standards. Partner applications undergo confidential institutional territory assessment within 24 hours.",
+    "formTitle": "Partnership Evaluation Form",
+    "formYear": "FY 2026 ENROLLMENT",
+    "firstName": "First Name *",
+    "firstNamePlaceholder": "e.g. Vikram",
+    "lastName": "Last Name *",
+    "lastNamePlaceholder": "e.g. Mehta",
+    "email": "Official Email *",
+    "emailPlaceholder": "partner@company.com",
+    "phone": "Mobile Number *",
+    "phonePlaceholder": "+91 98765 43210",
+    "city": "Target Operating District / City *",
+    "cityPlaceholder": "e.g. Ahmedabad, Gujarat",
+    "tier": "Partnership Tier *",
+    "tierPlaceholder": "Select Franchise Model",
+    "tierDistributor": "Distributor Partner (Territory)",
+    "tierMaster": "Master Distributor (State / Zone)",
+    "tierChannel": "Channel EPC Partner",
+    "tierMerchant": "Retail Merchant Store",
+    "capital": "Capital Allocation *",
+    "capitalPlaceholder": "Select Investment Band",
+    "experience": "Existing Business Background / Distribution Portfolio",
+    "experienceOptional": "Optional • Max 1000 chars",
+    "experiencePlaceholder": "Provide details regarding your current business footprint, electrical trade experience, team size, rooftop EPC installation volume, or regional customer network across your target district...",
+    "experienceHelp": "Detailed applications are prioritized for territorial exclusivity review by our commercial committee.",
+    "submitBtn": "SUBMIT ENROLLMENT DOSSIER",
+    "submittedTitle": "Application Verified & Logged.",
+    "submittedDesc": "Our commercial partnership director will contact you within 24 business hours with territory viability specs."
+  },
+  "footer": {
+    "brandName": "Solvex",
+    "brandSubtitle": "Energy Solution",
+    "description": "Leading solar franchise opportunities in India. Join us in building a sustainable future with clean, renewable energy solutions.",
+    "companyName": "SOLVEX ENERGY SOLUTIONS PRIVATE LIMITED",
+    "cin": "CIN: U43219GJ2025PTC168167",
+    "services": "Services",
+    "solarPowerSystems": "Solar Power Systems",
+    "windEnergySolutions": "Wind Energy Solutions",
+    "energyStorage": "Energy Storage",
+    "consultationDesign": "Consultation & Design",
+    "partnership": "Partnership",
+    "distributorPartner": "Distributor Partner",
+    "masterDistributor": "Master Distributor",
+    "channelPartner": "Channel Partner",
+    "merchantPartner": "Merchant Partner",
+    "contact": "Contact",
+    "address": "242 Capital Square, Parvat Godadra BRTS Road, Surat 395010",
+    "email": "support@solvexenergy.com",
+    "copyright": "© 2024 Solvex Energy Solution. All rights reserved.",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfService": "Terms of Service",
+    "sitemap": "Sitemap",
+    "replayIntro": "Replay Intro",
+    "supportActive": "Support Active 24/7"
+  }
+}
