@@ -151,7 +151,7 @@ export default function TopSellingCombosSection() {
     <section className="w-full py-20 lg:py-28 bg-white" id="spgs-combos">
       <div className="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col gap-14">
         {/* Header Section */}
-        <MotionReveal className="flex flex-col md:flex-row md:items-end justify-between gap-8 pb-2">
+        <MotionReveal className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 lg:gap-8 pb-2">
           <div className="flex flex-col gap-4 max-w-2xl">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary text-white text-xs font-normal tracking-[-0.1px] w-fit">
               <Zap className="w-3.5 h-3.5 text-white" />

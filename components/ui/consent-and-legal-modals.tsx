@@ -449,12 +449,12 @@ export function LegalModal() {
         </DialogHeader>
 
         {/* Tab Switcher */}
-        <div className="flex border-b border-black/10 bg-zinc-100/50 px-6 sm:px-8">
+        <div className="flex border-b border-black/10 bg-zinc-100/50 px-6 sm:px-8 overflow-x-auto scrollbar-none">
           <button
             type="button"
             onClick={() => setActiveTab("privacy")}
             className={cn(
-              "py-3 px-4 text-xs font-semibold uppercase tracking-wider border-b-2 transition-all cursor-pointer",
+              "py-3 px-4 text-xs font-semibold uppercase tracking-wider border-b-2 transition-all cursor-pointer whitespace-nowrap shrink-0",
               activeTab === "privacy"
                 ? "border-emerald-600 text-emerald-700 bg-white shadow-xs"
                 : "border-transparent text-zinc-600 hover:text-zinc-900"
@@ -466,7 +466,7 @@ export function LegalModal() {
             type="button"
             onClick={() => setActiveTab("terms")}
             className={cn(
-              "py-3 px-4 text-xs font-semibold uppercase tracking-wider border-b-2 transition-all cursor-pointer",
+              "py-3 px-4 text-xs font-semibold uppercase tracking-wider border-b-2 transition-all cursor-pointer whitespace-nowrap shrink-0",
               activeTab === "terms"
                 ? "border-emerald-600 text-emerald-700 bg-white shadow-xs"
                 : "border-transparent text-zinc-600 hover:text-zinc-900"

@@ -270,7 +270,7 @@ export default function TopSellingPCUSection() {
       <div className="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col gap-12">
         {/* Section Header */}
         <MotionReveal>
-          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 pb-2">
+          <div className="flex flex-col xl:flex-row xl:items-end justify-between gap-6 lg:gap-8 pb-2">
             <div className="flex flex-col gap-4 max-w-2xl">
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary text-white text-xs font-normal tracking-[-0.1px] w-fit">
                 <Cpu className="w-3.5 h-3.5 text-white" />
@@ -285,7 +285,7 @@ export default function TopSellingPCUSection() {
             </div>
 
             {/* Action Row: Filters + Compare Button */}
-            <div className="flex flex-wrap items-center gap-3">
+            <div className="flex flex-wrap items-center gap-3 max-w-full">
               {/* Filter Tabs */}
               <SlidingTabs
                 tabs={[
