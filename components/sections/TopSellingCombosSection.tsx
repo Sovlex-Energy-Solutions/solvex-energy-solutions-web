@@ -195,6 +195,10 @@ export default function TopSellingCombosSection() {
                   <img
                     src={combo.image}
                     alt={combo.name}
+                    loading="lazy"
+                    decoding="async"
+                    width={280}
+                    height={128}
                     className="project-card__image max-h-32 max-w-[85%] object-contain"
                   />
                   {combo.badge && (

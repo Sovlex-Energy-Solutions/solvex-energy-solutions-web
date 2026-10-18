@@ -100,6 +100,8 @@ export default function HeroSection() {
           ref={bgImageRef}
           src="/images/solar_hero_landscape.jpg"
           alt="Clean Energy Solar Farm Landscape"
+          fetchPriority="high"
+          decoding="async"
           style={{ transform: "scale(1.25)" }}
           className="w-full h-full object-cover object-center will-change-transform"
         />

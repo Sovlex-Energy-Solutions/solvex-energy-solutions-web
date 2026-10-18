@@ -79,6 +79,10 @@ export default function ProjectsSection() {
                       alt={proj.alt}
                       className="project-card__image w-full h-full object-cover"
                       src={proj.img}
+                      loading="lazy"
+                      decoding="async"
+                      width={400}
+                      height={208}
                     />
                     <div className="absolute top-3 right-3 px-3 py-1 rounded-full bg-primary text-white font-sans text-[10px] tracking-wider uppercase font-normal shadow-xs">
                       {proj.location}

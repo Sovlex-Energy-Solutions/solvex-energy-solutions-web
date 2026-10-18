@@ -331,6 +331,10 @@ export default function TopSellingPCUSection() {
                     <img
                       src={pcu.image}
                       alt={pcu.name}
+                      loading="lazy"
+                      decoding="async"
+                      width={280}
+                      height={128}
                       className="project-card__image max-h-32 max-w-[85%] object-contain"
                     />
                     {pcu.discount && (
@@ -548,6 +552,10 @@ export default function TopSellingPCUSection() {
                   <img
                     src={activeModalProduct.image}
                     alt={activeModalProduct.name}
+                    loading="lazy"
+                    decoding="async"
+                    width={160}
+                    height={160}
                     className="max-h-full max-w-full object-contain"
                   />
                 </div>

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { MotionReveal } from "@/components/ui/motion-reveal";
 import { useCinematicReveal } from "@/components/ui/cinematic-load-reveal";
 import { useLanguage } from "@/context/LanguageContext";
+import { openLegalModal } from "@/components/ui/consent-and-legal-modals";
 
 export default function Footer() {
   const { replay } = useCinematicReveal();
@@ -31,6 +32,10 @@ export default function Footer() {
         <img
           src="/images/footer/solar_landscape_bg.jpg"
           alt="Solvex Clean Solar Energy Landscape"
+          loading="lazy"
+          decoding="async"
+          width={1920}
+          height={800}
           className="w-full h-[82%] sm:h-[88%] lg:h-[92%] absolute bottom-0 left-0 right-0 object-cover object-bottom"
           style={{
             WebkitMaskImage:
@@ -61,6 +66,10 @@ export default function Footer() {
               <img
                 src="/logo.png"
                 alt="Solvex Energy Solutions"
+                loading="lazy"
+                decoding="async"
+                width={44}
+                height={44}
                 className="h-10 w-10 sm:h-11 sm:w-11 object-contain transition-transform duration-300 group-hover:scale-105"
               />
               <div className="flex flex-col">
@@ -149,16 +158,30 @@ export default function Footer() {
             {t("footer.copyright")}
           </p>
           <div className="flex flex-wrap items-center gap-6 text-xs text-zinc-950 font-semibold [text-shadow:_0_1px_3px_rgba(255,255,255,0.95),_0_0_8px_rgba(255,255,255,0.8)]">
-            <a href="#privacy" className="hover:text-[#059669] transition-colors">
+            <button
+              type="button"
+              onClick={() => openLegalModal("privacy")}
+              className="hover:text-[#059669] transition-colors cursor-pointer"
+            >
               {t("footer.privacyPolicy")}
-            </a>
-            <a href="#terms" className="hover:text-[#059669] transition-colors">
+            </button>
+            <button
+              type="button"
+              onClick={() => openLegalModal("terms")}
+              className="hover:text-[#059669] transition-colors cursor-pointer"
+            >
               {t("footer.termsOfService")}
-            </a>
-            <a href="#sitemap" className="hover:text-[#059669] transition-colors">
+            </button>
+            <a
+              href="/sitemap.xml"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-[#059669] transition-colors"
+            >
               {t("footer.sitemap")}
             </a>
             <button
+              type="button"
               onClick={replay}
               className="text-zinc-950 hover:text-[#059669] transition-colors font-semibold cursor-pointer flex items-center gap-1.5"
               title="Replay intro animation"

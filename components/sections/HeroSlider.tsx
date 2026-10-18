@@ -316,6 +316,9 @@ export default function HeroSlider() {
                     src={slide.src}
                     alt={slide.alt}
                     loading={index === 0 ? "eager" : "lazy"}
+                    decoding="async"
+                    width={1600}
+                    height={680}
                     className="w-full h-full object-cover object-center transform transition-transform duration-1000 ease-out group-hover:scale-[1.01]"
                   />
 

@@ -42,6 +42,10 @@ export default function AboutUsSection() {
                 alt="Solvex Energy Solutions field engineering team"
                 className="project-card__image w-full h-full object-cover"
                 src="/images/solar_team_1.jpeg"
+                loading="lazy"
+                decoding="async"
+                width={420}
+                height={192}
               />
             </div>
             <div className="p-5 flex flex-col gap-1.5 bg-white border-t border-black/10">
@@ -99,7 +103,7 @@ export default function AboutUsSection() {
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-full bg-zinc-100 p-1.5 flex items-center justify-center shrink-0 border border-black/5 shadow-xs">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/logo.png" alt="Solvex" className="w-full h-full object-contain" />
+                <img src="/logo.png" alt="Solvex" loading="lazy" decoding="async" width={28} height={28} className="w-full h-full object-contain" />
               </div>
               <h3 className="text-base sm:text-lg font-normal text-[#18181B] tracking-[-0.2px]">
                 {isHindi ? "कॉर्पोरेट प्रशासन" : "Corporate Governance"}

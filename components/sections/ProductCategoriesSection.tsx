@@ -201,6 +201,10 @@ export default function ProductCategoriesSection() {
                   <img
                     src={item.image}
                     alt={item.name}
+                    loading="lazy"
+                    decoding="async"
+                    width={320}
+                    height={176}
                     className="project-card__image max-h-44 max-w-full object-contain"
                   />
                   <div className="absolute top-3 right-3">

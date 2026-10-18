@@ -139,6 +139,9 @@ export default function Navbar() {
           <img
             src="/logo.png"
             alt="Solvex Energy Solutions"
+            width={40}
+            height={40}
+            decoding="async"
             className="h-9 w-9 sm:h-10 sm:w-10 object-contain transition-transform duration-300 group-hover:scale-105 drop-shadow-sm shrink-0"
           />
           <div
@@ -267,6 +270,9 @@ export default function Navbar() {
               <img
                 src="/logo.png"
                 alt="Solvex"
+                width={28}
+                height={28}
+                decoding="async"
                 className="h-7 w-7 object-contain"
               />
               <div className="flex flex-col">
