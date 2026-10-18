@@ -116,9 +116,6 @@ export function CinematicRevealProvider({
             overlayRef.current.style.display = "none";
           }
           isAnimatingRef.current = false;
-          try {
-            sessionStorage.setItem("solvex_intro_seen", "1");
-          } catch {}
         },
       });
 
@@ -258,23 +255,13 @@ export function CinematicRevealProvider({
     activeCtxRef.current = ctx;
   }, [lockScroll, restoreScroll]);
 
-  // Initial Load Trigger
+  // Initial Load Trigger (Plays on every page load/refresh)
   useEffect(() => {
-    let alreadySeen = false;
-    try {
-      alreadySeen = sessionStorage.getItem("solvex_intro_seen") === "1";
-    } catch {}
-
-    const searchParams =
-      typeof window !== "undefined" ? window.location.search : "";
-    const forceReplay =
-      searchParams.includes("replay") || searchParams.includes("intro");
-
     const prefersReduced =
       typeof window !== "undefined" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    if (prefersReduced || (alreadySeen && !forceReplay)) {
+    if (prefersReduced) {
       const timer = setTimeout(() => {
         setIsRevealed(true);
         setIsComplete(true);
@@ -305,10 +292,6 @@ export function CinematicRevealProvider({
   }, [playSequence, restoreScroll]);
 
   const replay = useCallback(() => {
-    try {
-      sessionStorage.removeItem("solvex_intro_seen");
-    } catch {}
-
     if (typeof window !== "undefined") {
       window.scrollTo({ top: 0, behavior: "instant" });
     }
