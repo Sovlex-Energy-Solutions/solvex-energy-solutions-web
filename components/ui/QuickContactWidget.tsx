@@ -17,7 +17,7 @@ export default function QuickContactWidget() {
   )}`;
 
   return (
-    <div className="fixed left-5 bottom-6 z-40 flex flex-col items-start gap-2.5 select-none print:hidden">
+    <div className="fixed right-5 bottom-6 z-40 flex flex-col items-end gap-2.5 select-none print:hidden">
       {/* Expanded Quick Contact Menu */}
       {isOpen && (
         <div className="flex flex-col gap-2 p-3 rounded-2xl bg-white/95 backdrop-blur-xl border border-black/10 shadow-2xl animate-in slide-in-from-bottom-3 duration-200 min-w-[210px] text-[#18181B]">

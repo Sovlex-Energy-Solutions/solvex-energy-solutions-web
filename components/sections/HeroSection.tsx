@@ -7,8 +7,6 @@ import {
   Award,
   TrendingUp,
   Sun,
-  Phone,
-  MessageSquare,
 } from "lucide-react";
 import gsap from "gsap";
 import { useCinematicReveal } from "@/components/ui/cinematic-load-reveal";
@@ -199,44 +197,6 @@ export default function HeroSection() {
               className="h-[52px] px-6 sm:px-7 bg-black/40 text-white backdrop-blur-md border border-white/35 hover:bg-black/60 rounded-full text-sm sm:text-base font-normal tracking-[-0.2px] inline-flex items-center justify-center gap-2 transition-all duration-200 active:scale-[0.98] cursor-pointer shadow-md"
             >
               <span>{isHindi ? "इन्फ्रास्ट्रक्चर" : "Explore"}</span>
-            </a>
-          </div>
-
-          {/* Working Immediate Phone & WhatsApp Helpline */}
-          <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-xs text-white/90 pt-1 will-change-[transform,opacity]">
-            <span className="text-white/65 font-light">
-              {isHindi ? "त्वरित सहायता:" : "Need Immediate Consultation?"}
-            </span>
-            <a
-              href="tel:+919879012345"
-              onClick={() =>
-                trackEvent("cta_click", {
-                  cta_name: "hero_direct_call",
-                  source: "hero_support_bar",
-                })
-              }
-              className="inline-flex items-center gap-1.5 font-semibold text-white hover:text-emerald-300 transition-colors underline underline-offset-4 decoration-emerald-400/60 cursor-pointer"
-            >
-              <Phone className="w-3.5 h-3.5 text-emerald-400" />
-              <span>+91 98790 12345</span>
-            </a>
-            <span className="text-white/40 hidden sm:inline">•</span>
-            <a
-              href={`https://wa.me/919879012345?text=${encodeURIComponent(
-                "Hello Solvex Energy! I would like immediate consultation regarding rooftop solar installation and subsidy."
-              )}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() =>
-                trackEvent("cta_click", {
-                  cta_name: "hero_direct_whatsapp",
-                  source: "hero_support_bar",
-                })
-              }
-              className="inline-flex items-center gap-1.5 font-semibold text-emerald-300 hover:text-emerald-200 transition-colors underline underline-offset-4 decoration-emerald-400/60 cursor-pointer"
-            >
-              <MessageSquare className="w-3.5 h-3.5 text-[#25D366]" />
-              <span>{isHindi ? "व्हाट्सएप चैट (<15 मिनट)" : "WhatsApp Chat (<15 mins)"}</span>
             </a>
           </div>
 

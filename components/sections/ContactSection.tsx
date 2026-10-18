@@ -6,7 +6,6 @@ import {
   MapPin,
   Mail,
   Clock,
-  ShieldCheck,
   FileCheck2,
   AlertCircle,
   CheckCircle2,
@@ -407,17 +406,6 @@ export default function ContactSection() {
                     </span>
                   </div>
                 </div>
-              </div>
-
-              {/* Compliance Guarantee */}
-              <div className="card-superpower p-5 flex items-center gap-4 bg-white shadow-xs">
-                <ShieldCheck className="w-6 h-6 text-[#059669] shrink-0" />
-                <p className="body-sm text-xs text-[#71717A] leading-relaxed">
-                  {t(
-                    "contact.guarantee",
-                    "Direct manufacturing allocations backed by MNRE ALMM standards. All enquiries are protected under India's DPDP Act 2023 with verified SLA guarantees."
-                  )}
-                </p>
               </div>
             </MotionReveal>
           </div>
