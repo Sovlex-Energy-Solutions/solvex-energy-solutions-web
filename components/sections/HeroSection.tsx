@@ -16,13 +16,20 @@ export default function HeroSection() {
   const { isHindi } = useLanguage();
 
   const heroRef = useRef<HTMLElement>(null);
-  const bgImageRef = useRef<HTMLImageElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const statusChipRef = useRef<HTMLDivElement>(null);
   const headlineRef = useRef<HTMLHeadingElement>(null);
   const subheadRef = useRef<HTMLParagraphElement>(null);
   const actionsRef = useRef<HTMLDivElement>(null);
   const trustRef = useRef<HTMLDivElement>(null);
   const hasAnimatedRef = useRef(false);
+
+  // Ensure video plays continuously across browsers
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.play().catch(() => {});
+    }
+  }, []);
 
   useEffect(() => {
     if (!isRevealed) {
@@ -34,7 +41,7 @@ export default function HeroSection() {
 
     // Check reduced motion
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      if (bgImageRef.current) gsap.set(bgImageRef.current, { scale: 1 });
+      if (videoRef.current) gsap.set(videoRef.current, { scale: 1 });
       const allEls = [
         statusChipRef.current,
         headlineRef.current,
@@ -47,13 +54,14 @@ export default function HeroSection() {
     }
 
     const ctx = gsap.context(() => {
-      // 1. Solar farm background image dramatic cinematic zoom-out deceleration
-      if (bgImageRef.current) {
+      // 1. Solar video background dramatic cinematic deceleration
+      if (videoRef.current) {
         gsap.fromTo(
-          bgImageRef.current,
-          { scale: 1.25 },
+          videoRef.current,
+          { scale: 1.15, opacity: 0.9 },
           {
             scale: 1.0,
+            opacity: 1,
             duration: 2.2,
             ease: "power3.out",
             clearProps: "willChange",
@@ -93,32 +101,43 @@ export default function HeroSection() {
       className="relative w-full overflow-hidden min-h-[720px] lg:min-h-[840px] flex items-center pt-28 pb-20 lg:pt-36 lg:pb-28"
       id="hero"
     >
-      {/* Cinematic Solar Power Landscape Background (Non-black, daylight scenic photo) */}
-      <div className="absolute inset-0 z-0 overflow-hidden">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          ref={bgImageRef}
-          src="/images/solar_hero_landscape.jpg"
-          alt="Clean Energy Solar Farm Landscape"
-          fetchPriority="high"
-          decoding="async"
-          style={{ transform: "scale(1.25)" }}
+      {/* Cinematic Solar Power Video Background */}
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none select-none">
+        <video
+          ref={videoRef}
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="auto"
+          poster="/images/solar_hero_landscape.jpg"
           className="w-full h-full object-cover object-center will-change-transform"
-        />
-        {/* High-Contrast Tint & Subtle Vignette for Exceptional Readability */}
+        >
+          <source src="/hero_bg.mp4" type="video/mp4" />
+          {/* Fallback image if video cannot be played */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/images/solar_hero_landscape.jpg"
+            alt="Clean Energy Solar Farm Landscape"
+            className="w-full h-full object-cover object-center"
+          />
+        </video>
+
+        {/* Balanced Video Overlay Gradient: calibrated for high text legibility on the left while showcasing the solar video on the right */}
         <div
-          className="absolute inset-0 pointer-events-none"
+          className="absolute inset-0"
           style={{
             background:
-              "linear-gradient(90deg, rgba(15, 23, 42, 0.82) 0%, rgba(15, 23, 42, 0.65) 45%, rgba(15, 23, 42, 0.28) 100%)",
+              "linear-gradient(90deg, rgba(8, 12, 22, 0.75) 0%, rgba(8, 12, 22, 0.50) 45%, rgba(8, 12, 22, 0.16) 100%)",
           }}
         />
+
         {/* Soft bottom blend to seamlessly meet page content */}
         <div
-          className="absolute inset-x-0 bottom-0 h-32 pointer-events-none"
+          className="absolute inset-x-0 bottom-0 h-28"
           style={{
             background:
-              "linear-gradient(to top, rgba(255, 255, 255, 0.35) 0%, transparent 100%)",
+              "linear-gradient(to top, rgba(255, 255, 255, 0.20) 0%, transparent 100%)",
           }}
         />
       </div>
@@ -129,8 +148,7 @@ export default function HeroSection() {
           {/* Status Chip */}
           <div
             ref={statusChipRef}
-            style={{ opacity: 0 }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/30 bg-white/15 backdrop-blur-md text-white text-xs font-normal tracking-[-0.1px] shadow-sm will-change-[transform,opacity]"
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/35 bg-black/40 backdrop-blur-md text-white text-xs font-normal tracking-[-0.1px] shadow-sm will-change-[transform,opacity]"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/logo.png" alt="Solvex" className="w-4 h-4 object-contain" />
@@ -141,8 +159,7 @@ export default function HeroSection() {
           {/* Editorial Headline Display */}
           <h1
             ref={headlineRef}
-            style={{ opacity: 0 }}
-            className="headline-display text-4xl sm:text-5xl lg:text-[62px] font-normal tracking-[-1.2px] text-white leading-[1.08] drop-shadow-md will-change-[transform,opacity]"
+            className="headline-display text-4xl sm:text-5xl lg:text-[62px] font-normal tracking-[-1.2px] text-white leading-[1.08] will-change-[transform,opacity]"
           >
             {isHindi ? (
               <>
@@ -157,8 +174,7 @@ export default function HeroSection() {
           {/* Subhead */}
           <p
             ref={subheadRef}
-            style={{ opacity: 0 }}
-            className="body-lg text-base lg:text-lg max-w-2xl font-normal text-white/95 leading-relaxed tracking-[-0.2px] drop-shadow-sm will-change-[transform,opacity]"
+            className="body-lg text-base lg:text-lg max-w-2xl font-normal text-white/95 leading-relaxed tracking-[-0.2px] will-change-[transform,opacity]"
           >
             {isHindi
               ? "टियर-1 बाइफेशियल फोटोवोल्टाइक हार्डवेयर, स्मार्ट एमपीपीटी इन्वर्टर, सुगम डिस्कॉम नेट-मीटरिंग और ₹78,000 त्वरित डीबीटी सब्सिडी के साथ अपने उच्च-मार्जिन सोलर व्यवसाय का विस्तार करें।"
@@ -168,19 +184,18 @@ export default function HeroSection() {
           {/* Pill Action Buttons */}
           <div
             ref={actionsRef}
-            style={{ opacity: 0 }}
             className="flex flex-wrap items-center gap-4 pt-2 will-change-[transform,opacity]"
           >
             <a
               href="#partner-form"
-              className="group h-[52px] px-8 bg-primary text-white hover:bg-primary-hover rounded-full text-base font-normal tracking-[-0.2px] inline-flex items-center justify-center gap-2 transition-all duration-200 shadow-lg active:scale-[0.98] cursor-pointer"
+              className="group h-[52px] px-8 bg-primary text-white hover:bg-primary-hover rounded-full text-base font-normal tracking-[-0.2px] inline-flex items-center justify-center gap-2 transition-all duration-200 shadow-xl active:scale-[0.98] cursor-pointer"
             >
               <span>{isHindi ? "फ्रैंचाइज़ी प्रोग्राम से जुड़ें" : "Launch Your Franchise"}</span>
               <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
             </a>
             <a
               href="#about-us"
-              className="h-[52px] px-8 bg-black/25 text-white backdrop-blur-md border border-white/30 hover:bg-black/40 rounded-full text-base font-normal tracking-[-0.2px] inline-flex items-center justify-center gap-2 transition-all duration-200 active:scale-[0.98] cursor-pointer"
+              className="h-[52px] px-8 bg-black/40 text-white backdrop-blur-md border border-white/35 hover:bg-black/60 rounded-full text-base font-normal tracking-[-0.2px] inline-flex items-center justify-center gap-2 transition-all duration-200 active:scale-[0.98] cursor-pointer shadow-md"
             >
               <span>{isHindi ? "इन्फ्रास्ट्रक्चर देखें" : "Explore Infrastructure"}</span>
             </a>
@@ -189,8 +204,7 @@ export default function HeroSection() {
           {/* Trust Highlights Deck */}
           <div
             ref={trustRef}
-            style={{ opacity: 0 }}
-            className="pt-8 border-t border-white/20 flex flex-wrap items-center gap-6 sm:gap-8 text-white/90 text-xs font-normal tracking-[-0.1px] will-change-[transform,opacity]"
+            className="pt-8 border-t border-white/25 flex flex-wrap items-center gap-6 sm:gap-8 text-white text-xs font-normal tracking-[-0.1px] will-change-[transform,opacity]"
           >
             <div className="flex items-center gap-2">
               <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
