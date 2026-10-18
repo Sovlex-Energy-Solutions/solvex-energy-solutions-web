@@ -118,7 +118,11 @@ export const HERO_MEDIA_SLIDES: MediaSlide[] = [
   },
 ];
 
-export default function HeroMediaSlider() {
+export interface HeroMediaSliderProps {
+  mediaContainerRef?: React.RefObject<HTMLDivElement | null>;
+}
+
+export default function HeroMediaSlider({ mediaContainerRef }: HeroMediaSliderProps = {}) {
   const { isHindi } = useLanguage();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
@@ -224,7 +228,7 @@ export default function HeroMediaSlider() {
   return (
     <div className="absolute inset-0 z-0 overflow-hidden select-none" aria-label="Hero background slider">
       {/* 1. Media Layers Stack (Cross-Fading) */}
-      <div className="absolute inset-0 z-0">
+      <div ref={mediaContainerRef} className="absolute inset-0 z-0 will-change-transform origin-center">
         {HERO_MEDIA_SLIDES.map((slide, idx) => {
           const isActive = idx === currentIndex;
           const isNext = idx === (currentIndex + 1) % totalSlides;

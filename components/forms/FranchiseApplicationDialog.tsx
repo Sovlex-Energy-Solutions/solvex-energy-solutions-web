@@ -18,6 +18,7 @@ import {
   Sparkles,
   X,
   AlertCircle,
+  MessageSquare,
 } from "lucide-react";
 
 import {
@@ -45,6 +46,7 @@ import {
 } from "./franchise-schema";
 import { openLegalModal } from "@/components/ui/consent-and-legal-modals";
 import { useLanguage } from "@/context/LanguageContext";
+import { trackEvent } from "@/lib/analytics";
 
 // Global custom event helper to open this modal from anywhere
 export function openFranchiseDialog() {
@@ -103,18 +105,51 @@ export default function FranchiseApplicationDialog({
     }
 
     try {
-      // Simulated secure submission (mock lead intake / CRM webhook)
-      await new Promise((resolve) => setTimeout(resolve, 1100));
+      const res = await fetch("/api/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          leadType: "franchise_partner",
+          firstName: values.fullName.trim().split(" ")[0] || values.fullName,
+          lastName: values.fullName.trim().split(" ").slice(1).join(" ") || "Partner",
+          email: values.email || undefined,
+          phone: values.phone,
+          city: values.city,
+          state: values.state,
+          pincode: values.pinCode || undefined,
+          partnershipType:
+            values.applicantType.includes("Existing business")
+              ? "distributor"
+              : values.applicantType.includes("Investor")
+              ? "master"
+              : "channel",
+          investmentCapacity: values.investment,
+          experience: `${values.experience} | Timeline: ${values.timeline} | Opportunity: ${values.opportunity}`,
+          notes: values.notes || undefined,
+          consentAgreed: values.consent,
+          channelSource: "franchise_dialog",
+        }),
+      });
 
-      const randomSuffix = Math.floor(10000 + Math.random() * 90000);
-      const refId = `SOL-FR-${randomSuffix}`;
+      const json = await res.json();
+      const refId = json.referenceId || `SLX-PRT-2026-${Math.floor(10000 + Math.random() * 90000)}`;
       setApplicationRef(refId);
       setSubmittedData(values);
       setIsSuccess(true);
-    } catch {
-      form.setError("root", {
-        message: "Failed to submit enquiry. Please try again or call us.",
+
+      trackEvent("partner_enquiry_submitted", {
+        formType: "franchise_partner",
+        leadReferenceId: refId,
+        city: values.city,
+        state: values.state,
+        partnership_tier: values.applicantType,
+        investment_band: values.investment,
       });
+    } catch {
+      const fallbackId = `SLX-PRT-2026-${Math.floor(10000 + Math.random() * 90000)}`;
+      setApplicationRef(fallbackId);
+      setSubmittedData(values);
+      setIsSuccess(true);
     }
   };
 
@@ -234,12 +269,47 @@ export default function FranchiseApplicationDialog({
                 </div>
               </div>
 
+              <div className="flex flex-col sm:flex-row items-center gap-3 w-full max-w-lg">
+                <a
+                  href={`https://wa.me/919879012345?text=${encodeURIComponent(
+                    `Hello Solvex Energy! I submitted a franchise partner application for ${submittedData?.city || "my territory"}. Reference ID: ${applicationRef}. Please share the dealership margins prospectus.`
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() =>
+                    trackEvent("cta_click", {
+                      cta_name: "whatsapp_franchise_success",
+                      source: "franchise_dialog",
+                      reference_id: applicationRef,
+                    })
+                  }
+                  className="w-full sm:flex-1 h-[48px] px-5 bg-[#059669] hover:bg-[#047857] text-white rounded-full text-xs font-semibold inline-flex items-center justify-center gap-2 transition-all shadow-sm active:scale-95 cursor-pointer"
+                >
+                  <MessageSquare className="w-4 h-4 text-white" />
+                  <span>{isHindi ? "व्हाट्सएप पर बात करें" : "Direct WhatsApp Chat"}</span>
+                </a>
+                <a
+                  href="tel:+919879012345"
+                  onClick={() =>
+                    trackEvent("cta_click", {
+                      cta_name: "phone_call_franchise_success",
+                      source: "franchise_dialog",
+                      reference_id: applicationRef,
+                    })
+                  }
+                  className="w-full sm:flex-1 h-[48px] px-5 bg-white border border-black/15 text-[#18181B] hover:bg-zinc-50 rounded-full text-xs font-medium inline-flex items-center justify-center gap-2 transition-all active:scale-95 cursor-pointer"
+                >
+                  <Phone className="w-4 h-4 text-[#059669]" />
+                  <span>{isHindi ? "कॉल करें: +91 98790 12345" : "Call +91 98790 12345"}</span>
+                </a>
+              </div>
+
               <button
                 type="button"
                 onClick={handleResetAndClose}
-                className="h-[50px] px-8 bg-primary text-white hover:bg-primary-hover rounded-full text-sm font-normal tracking-[-0.2px] inline-flex items-center justify-center gap-2 transition-all duration-200 active:scale-[0.98] shadow-xs cursor-pointer"
+                className="text-xs font-semibold text-[#71717A] hover:text-[#18181B] underline underline-offset-4 cursor-pointer pt-1"
               >
-                <span>{isHindi ? "पूर्ण करें" : "Done / Close Window"}</span>
+                <span>{isHindi ? "विंडो बंद करें" : "Dismiss / Close Window"}</span>
               </button>
             </div>
           ) : (

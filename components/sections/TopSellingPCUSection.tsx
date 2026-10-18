@@ -11,10 +11,13 @@ import {
   X,
   TableProperties,
   Building2,
+  MessageSquare,
 } from "lucide-react";
 import { MotionReveal, MotionStagger, MotionItem } from "@/components/ui/motion-reveal";
 import { SlidingTabs } from "@/components/ui/sliding-tabs";
 import { useLanguage } from "@/context/LanguageContext";
+import { trackEvent } from "@/lib/analytics";
+import { openProductEnquiryDialog } from "@/components/forms/ProductEnquiryDialog";
 
 export interface PCUProduct {
   id: string;
@@ -679,21 +682,52 @@ export default function TopSellingPCUSection() {
                 </span>
                 <p className="font-sans text-lg font-normal text-[#18181B]">{activeModalProduct.salePrice}</p>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <button
                   onClick={() => setActiveModalProduct(null)}
-                  className="btn-secondary h-[46px] px-5 text-xs rounded-full"
+                  className="btn-secondary h-[46px] px-4 text-xs rounded-full"
                 >
                   {isHindi ? "बंद करें" : "DISMISS"}
                 </button>
                 <a
-                  href="#partner-form"
-                  onClick={() => setActiveModalProduct(null)}
-                  className="btn-primary h-[46px] px-6 text-xs rounded-full flex items-center gap-2"
+                  href={`https://wa.me/919879012345?text=${encodeURIComponent(
+                    `Hello Solvex team, I need technical documentation and trade pricing for ${activeModalProduct.name} (${activeModalProduct.capacity}, ${activeModalProduct.voltage}). Please connect.`
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => {
+                    trackEvent("cta_click", {
+                      cta_name: "whatsapp_pcu_modal",
+                      source: "pcu_modal",
+                      product: activeModalProduct.name,
+                    });
+                  }}
+                  className="h-[46px] px-4 rounded-full border border-[#25D366]/40 bg-[#25D366]/10 text-emerald-800 hover:bg-[#25D366]/20 flex items-center gap-2 text-xs font-medium transition-all"
+                  title="Inquire directly on WhatsApp"
                 >
-                  <span>{isHindi ? "कमर्शियल आवंटन का अनुरोध करें" : "REQUEST COMMERCIAL ALLOCATION"}</span>
-                  <ArrowRight className="w-3.5 h-3.5 ml-1" />
+                  <MessageSquare className="w-3.5 h-3.5 text-[#25D366]" />
+                  <span>{isHindi ? "व्हाट्सएप पूछताछ" : "WhatsApp Inquire"}</span>
                 </a>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const product = activeModalProduct;
+                    setActiveModalProduct(null);
+                    trackEvent("cta_click", {
+                      cta_name: "request_pcu_allocation",
+                      source: "pcu_modal",
+                      product: product?.name,
+                    });
+                    openProductEnquiryDialog({
+                      product: product?.name,
+                      capacity: product?.capacity,
+                    });
+                  }}
+                  className="btn-primary h-[46px] px-5 text-xs rounded-full flex items-center gap-2 cursor-pointer shadow-sm hover:shadow-md transition-all active:scale-95"
+                >
+                  <span>{isHindi ? "आवंटन अनुरोध" : "REQUEST ALLOCATION"}</span>
+                  <ArrowRight className="w-3.5 h-3.5 ml-1" />
+                </button>
               </div>
             </div>
           </div>

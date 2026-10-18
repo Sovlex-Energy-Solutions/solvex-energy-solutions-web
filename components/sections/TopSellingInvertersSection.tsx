@@ -15,11 +15,14 @@ import {
   SlidersHorizontal,
   X,
   Zap,
+  MessageSquare,
 } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { MotionReveal, MotionStagger, MotionItem } from "@/components/ui/motion-reveal";
 import { SlidingTabs } from "@/components/ui/sliding-tabs";
 import { useLanguage } from "@/context/LanguageContext";
+import { trackEvent } from "@/lib/analytics";
+import { openProductEnquiryDialog } from "@/components/forms/ProductEnquiryDialog";
 
 export interface InverterProduct {
   id: string;
@@ -628,21 +631,52 @@ export default function TopSellingInvertersSection() {
                 </span>
                 <p className="font-sans text-lg font-normal text-[#18181B]">{activeModalProduct.salePrice}</p>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <button
                   onClick={() => setActiveModalProduct(null)}
-                  className="btn-secondary h-[46px] px-5 text-xs rounded-full cursor-pointer"
+                  className="btn-secondary h-[46px] px-4 text-xs rounded-full cursor-pointer"
                 >
                   {isHindi ? "बंद करें" : "DISMISS"}
                 </button>
                 <a
-                  href="#partner-form"
-                  onClick={() => setActiveModalProduct(null)}
-                  className="btn-primary h-[46px] px-6 text-xs rounded-full flex items-center gap-2 cursor-pointer"
+                  href={`https://wa.me/919879012345?text=${encodeURIComponent(
+                    `Hello Solvex team, I am interested in technical specs and dealership pricing for ${activeModalProduct.name} (${activeModalProduct.capacity}). Please share details.`
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => {
+                    trackEvent("cta_click", {
+                      cta_name: "whatsapp_inverter_modal",
+                      source: "inverters_modal",
+                      product: activeModalProduct.name,
+                    });
+                  }}
+                  className="h-[46px] px-4 rounded-full border border-[#25D366]/40 bg-[#25D366]/10 text-emerald-800 hover:bg-[#25D366]/20 flex items-center gap-2 text-xs font-medium transition-all"
+                  title="Chat directly on WhatsApp"
                 >
-                  <span>{isHindi ? "विशिष्टता पत्रक व आवंटन प्राप्त करें" : "REQUEST SPEC SHEET & ALLOCATION"}</span>
-                  <ArrowRight className="w-3.5 h-3.5 ml-1" />
+                  <MessageSquare className="w-3.5 h-3.5 text-[#25D366]" />
+                  <span>{isHindi ? "व्हाट्सएप कोट" : "WhatsApp Quote"}</span>
                 </a>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const product = activeModalProduct;
+                    setActiveModalProduct(null);
+                    trackEvent("cta_click", {
+                      cta_name: "request_inverter_spec_sheet",
+                      source: "inverters_modal",
+                      product: product?.name,
+                    });
+                    openProductEnquiryDialog({
+                      product: product?.name,
+                      capacity: product?.capacity,
+                    });
+                  }}
+                  className="btn-primary h-[46px] px-5 text-xs rounded-full flex items-center gap-2 cursor-pointer shadow-sm hover:shadow-md transition-all active:scale-95"
+                >
+                  <span>{isHindi ? "आवंटन अनुरोध" : "REQUEST ALLOCATION"}</span>
+                  <ArrowRight className="w-3.5 h-3.5 ml-1" />
+                </button>
               </div>
             </div>
           </div>

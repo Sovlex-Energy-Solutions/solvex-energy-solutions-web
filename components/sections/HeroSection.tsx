@@ -6,11 +6,16 @@ import {
   ShieldCheck,
   Award,
   TrendingUp,
+  Sun,
+  Phone,
+  MessageSquare,
 } from "lucide-react";
 import gsap from "gsap";
 import { useCinematicReveal } from "@/components/ui/cinematic-load-reveal";
 import { useLanguage } from "@/context/LanguageContext";
 import FranchiseApplicationDialog from "@/components/forms/FranchiseApplicationDialog";
+import { openProductEnquiryDialog } from "@/components/forms/ProductEnquiryDialog";
+import { trackEvent } from "@/lib/analytics";
 
 import HeroMediaSlider from "@/components/ui/HeroMediaSlider";
 
@@ -20,6 +25,7 @@ export default function HeroSection() {
   const [isFranchiseOpen, setIsFranchiseOpen] = useState(false);
 
   const heroRef = useRef<HTMLElement>(null);
+  const sliderMediaRef = useRef<HTMLDivElement>(null);
   const statusChipRef = useRef<HTMLDivElement>(null);
   const headlineRef = useRef<HTMLHeadingElement>(null);
   const subheadRef = useRef<HTMLParagraphElement>(null);
@@ -30,6 +36,9 @@ export default function HeroSection() {
   useEffect(() => {
     if (!isRevealed) {
       hasAnimatedRef.current = false;
+      if (sliderMediaRef.current) {
+        gsap.set(sliderMediaRef.current, { scale: 1.15, opacity: 0.9 });
+      }
       return;
     }
     if (hasAnimatedRef.current) return;
@@ -37,6 +46,9 @@ export default function HeroSection() {
 
     // Check reduced motion
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      if (sliderMediaRef.current) {
+        gsap.set(sliderMediaRef.current, { scale: 1, opacity: 1 });
+      }
       const allEls = [
         statusChipRef.current,
         headlineRef.current,
@@ -49,7 +61,22 @@ export default function HeroSection() {
     }
 
     const ctx = gsap.context(() => {
-      // Typography & action buttons with coordinated stagger
+      // 1. Solar video & media background dramatic cinematic deceleration (scale down)
+      if (sliderMediaRef.current) {
+        gsap.fromTo(
+          sliderMediaRef.current,
+          { scale: 1.15, opacity: 0.9 },
+          {
+            scale: 1.0,
+            opacity: 1,
+            duration: 2.2,
+            ease: "power3.out",
+            clearProps: "willChange",
+          }
+        );
+      }
+
+      // 2. Typography & action buttons with coordinated stagger
       const leftElements = [
         statusChipRef.current,
         headlineRef.current,
@@ -82,7 +109,7 @@ export default function HeroSection() {
       id="hero"
     >
       {/* Dynamic Background Media Slider with Cross-Fade & Calibrated Scrim */}
-      <HeroMediaSlider />
+      <HeroMediaSlider mediaContainerRef={sliderMediaRef} />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10 w-full">
         {/* Editorial Typography & Action */}
@@ -126,21 +153,90 @@ export default function HeroSection() {
           {/* Pill Action Buttons */}
           <div
             ref={actionsRef}
-            className="flex flex-wrap items-center gap-4 pt-2 will-change-[transform,opacity]"
+            className="flex flex-wrap items-center gap-3 sm:gap-4 pt-2 will-change-[transform,opacity]"
           >
             <button
               type="button"
-              onClick={() => setIsFranchiseOpen(true)}
-              className="group h-[52px] px-8 bg-primary text-white hover:bg-primary-hover rounded-full text-base font-normal tracking-[-0.2px] inline-flex items-center justify-center gap-2 transition-all duration-200 shadow-md hover:shadow-lg active:scale-[0.98] cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#059669] focus:ring-offset-2"
+              onClick={() => {
+                trackEvent("cta_click", {
+                  cta_name: "apply_franchise_hero",
+                  source: "hero",
+                });
+                setIsFranchiseOpen(true);
+              }}
+              className="group h-[52px] px-7 sm:px-8 bg-primary text-white hover:bg-primary-hover rounded-full text-sm sm:text-base font-normal tracking-[-0.2px] inline-flex items-center justify-center gap-2 transition-all duration-200 shadow-md hover:shadow-lg active:scale-[0.98] cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#059669] focus:ring-offset-2"
             >
-              <span>{isHindi ? "आवेदन करें" : "Apply"}</span>
+              <span>{isHindi ? "पार्टनर आवेदन करें" : "Apply for Franchise"}</span>
               <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
             </button>
+
+            <button
+              type="button"
+              onClick={() => {
+                trackEvent("cta_click", {
+                  cta_name: "get_solar_quote_hero",
+                  source: "hero",
+                });
+                openProductEnquiryDialog({
+                  product: "PM Surya Ghar Rooftop EPC System",
+                  capacity: "3",
+                });
+              }}
+              className="h-[52px] px-6 sm:px-7 bg-white text-[#18181B] hover:bg-zinc-100 rounded-full text-sm sm:text-base font-normal tracking-[-0.2px] inline-flex items-center justify-center gap-2 transition-all duration-200 shadow-md hover:shadow-lg active:scale-[0.98] cursor-pointer"
+            >
+              <Sun className="w-4 h-4 text-amber-500 shrink-0" />
+              <span>{isHindi ? "सोलर कोटेशन व सब्सिडी" : "Get Solar Quote"}</span>
+            </button>
+
             <a
               href="#about-us"
-              className="h-[52px] px-8 bg-black/40 text-white backdrop-blur-md border border-white/35 hover:bg-black/60 rounded-full text-base font-normal tracking-[-0.2px] inline-flex items-center justify-center gap-2 transition-all duration-200 active:scale-[0.98] cursor-pointer shadow-md"
+              onClick={() =>
+                trackEvent("cta_click", {
+                  cta_name: "explore_infra",
+                  source: "hero",
+                })
+              }
+              className="h-[52px] px-6 sm:px-7 bg-black/40 text-white backdrop-blur-md border border-white/35 hover:bg-black/60 rounded-full text-sm sm:text-base font-normal tracking-[-0.2px] inline-flex items-center justify-center gap-2 transition-all duration-200 active:scale-[0.98] cursor-pointer shadow-md"
             >
-              <span>{isHindi ? "इन्फ्रास्ट्रक्चर देखें" : "Explore Infrastructure"}</span>
+              <span>{isHindi ? "इन्फ्रास्ट्रक्चर" : "Explore"}</span>
+            </a>
+          </div>
+
+          {/* Working Immediate Phone & WhatsApp Helpline */}
+          <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-xs text-white/90 pt-1 will-change-[transform,opacity]">
+            <span className="text-white/65 font-light">
+              {isHindi ? "त्वरित सहायता:" : "Need Immediate Consultation?"}
+            </span>
+            <a
+              href="tel:+919879012345"
+              onClick={() =>
+                trackEvent("cta_click", {
+                  cta_name: "hero_direct_call",
+                  source: "hero_support_bar",
+                })
+              }
+              className="inline-flex items-center gap-1.5 font-semibold text-white hover:text-emerald-300 transition-colors underline underline-offset-4 decoration-emerald-400/60 cursor-pointer"
+            >
+              <Phone className="w-3.5 h-3.5 text-emerald-400" />
+              <span>+91 98790 12345</span>
+            </a>
+            <span className="text-white/40 hidden sm:inline">•</span>
+            <a
+              href={`https://wa.me/919879012345?text=${encodeURIComponent(
+                "Hello Solvex Energy! I would like immediate consultation regarding rooftop solar installation and subsidy."
+              )}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() =>
+                trackEvent("cta_click", {
+                  cta_name: "hero_direct_whatsapp",
+                  source: "hero_support_bar",
+                })
+              }
+              className="inline-flex items-center gap-1.5 font-semibold text-emerald-300 hover:text-emerald-200 transition-colors underline underline-offset-4 decoration-emerald-400/60 cursor-pointer"
+            >
+              <MessageSquare className="w-3.5 h-3.5 text-[#25D366]" />
+              <span>{isHindi ? "व्हाट्सएप चैट (<15 मिनट)" : "WhatsApp Chat (<15 mins)"}</span>
             </a>
           </div>
 

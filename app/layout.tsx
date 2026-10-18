@@ -1,7 +1,9 @@
+import { LanguageProvider } from "@/context/LanguageContext";
 import type { Metadata, Viewport } from "next";
 import { Geist, Noto_Sans_Devanagari } from "next/font/google";
 import "./globals.css";
-import { LanguageProvider } from "@/context/LanguageContext";
+import QuickContactWidget from "@/components/ui/QuickContactWidget";
+import ProductEnquiryDialog from "@/components/forms/ProductEnquiryDialog";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -118,7 +120,7 @@ const jsonLd = {
       },
       description:
         "Leading clean tech manufacturer and national franchise network delivering Tier-1 ALMM bifacial solar arrays, smart rMPPT hybrid inverters, and industrial PCUs under PM Surya Ghar Muft Bijli Yojana.",
-      telephone: "+91-98765-43210",
+      telephone: "+91-98790-12345",
       email: "corporate@solvexenergy.com",
       address: {
         "@type": "PostalAddress",
@@ -207,6 +209,10 @@ export default function RootLayout({
       <body className="bg-[#FFFFFF] text-[#18181B] font-sans antialiased min-h-screen flex flex-col selection:bg-primary selection:text-white">
         <LanguageProvider>
           {children}
+          {/* Global Quick Contact Speed Dial (Working Call & WhatsApp) */}
+          <QuickContactWidget />
+          {/* Global Product & Subsidy Enquiry Dialog */}
+          <ProductEnquiryDialog />
         </LanguageProvider>
       </body>
     </html>

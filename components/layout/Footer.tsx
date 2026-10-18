@@ -1,9 +1,11 @@
 "use client";
 
 import Link from "next/link";
+import { Phone, MessageSquare } from "lucide-react";
 import { MotionReveal } from "@/components/ui/motion-reveal";
 import { useLanguage } from "@/context/LanguageContext";
 import { openLegalModal } from "@/components/ui/consent-and-legal-modals";
+import { trackEvent } from "@/lib/analytics";
 
 export default function Footer() {
   const { t } = useLanguage();
@@ -71,7 +73,7 @@ export default function Footer() {
                 className="h-10 w-10 sm:h-11 sm:w-11 object-contain transition-transform duration-300 group-hover:scale-105"
               />
               <div className="flex flex-col">
-                <span className="text-xl font-bold tracking-[-0.03em] uppercase leading-none font-sans text-zinc-950 [text-shadow:_0_1px_3px_rgba(255,255,255,0.95)]">
+                <span className="text-xl font-bold tracking-[-0.03em] uppercase leading-none font-sans text-zinc-950">
                   {t("footer.brandName")}
                 </span>
                 <span className="text-[10px] font-bold tracking-[0.24em] uppercase leading-tight font-sans text-[#059669] mt-0.5">
@@ -80,12 +82,12 @@ export default function Footer() {
               </div>
             </Link>
 
-            <p className="body-sm text-sm text-zinc-900 max-w-sm leading-relaxed font-medium [text-shadow:_0_1px_3px_rgba(255,255,255,0.95),_0_0_8px_rgba(255,255,255,0.8)]">
+            <p className="body-sm text-sm text-zinc-900 max-w-sm leading-relaxed font-medium">
               {t("footer.description")}
             </p>
 
             {/* Corporate Identification */}
-            <div className="flex flex-col gap-1 pt-1 text-[11px] font-medium tracking-wide [text-shadow:_0_1px_3px_rgba(255,255,255,0.95)]">
+            <div className="flex flex-col gap-1 pt-1 text-[11px] font-medium tracking-wide">
               <span className="uppercase font-bold text-zinc-950 tracking-wider">
                 {t("footer.companyName")}
               </span>
@@ -97,7 +99,7 @@ export default function Footer() {
 
           {/* Services Column (Col Span 1 on mobile, 2 on lg) */}
           <div className="col-span-1 md:col-span-1 lg:col-span-2 lg:col-start-6 flex flex-col gap-3">
-            <span className="font-sans text-[15px] font-bold tracking-tight text-zinc-950 [text-shadow:_0_1px_3px_rgba(255,255,255,0.95)]">
+            <span className="font-sans text-[15px] font-bold tracking-tight text-zinc-950">
               {t("footer.services")}
             </span>
             <div className="flex flex-col gap-2">
@@ -105,7 +107,7 @@ export default function Footer() {
                 <a
                   key={item.label}
                   href={item.href}
-                  className="body-sm text-sm text-zinc-900 hover:text-[#059669] transition-colors font-medium [text-shadow:_0_1px_3px_rgba(255,255,255,0.95),_0_0_8px_rgba(255,255,255,0.8)]"
+                  className="body-sm text-sm text-zinc-900 hover:text-[#059669] transition-colors font-medium"
                 >
                   {item.label}
                 </a>
@@ -115,7 +117,7 @@ export default function Footer() {
 
           {/* Partnership Column (Col Span 1 on mobile, 2 on lg) */}
           <div className="col-span-1 md:col-span-1 lg:col-span-2 flex flex-col gap-3">
-            <span className="font-sans text-[15px] font-bold tracking-tight text-zinc-950 [text-shadow:_0_1px_3px_rgba(255,255,255,0.95)]">
+            <span className="font-sans text-[15px] font-bold tracking-tight text-zinc-950">
               {t("footer.partnership")}
             </span>
             <div className="flex flex-col gap-2">
@@ -123,7 +125,7 @@ export default function Footer() {
                 <a
                   key={item.label}
                   href={item.href}
-                  className="body-sm text-sm text-zinc-900 hover:text-[#059669] transition-colors font-medium [text-shadow:_0_1px_3px_rgba(255,255,255,0.95),_0_0_8px_rgba(255,255,255,0.8)]"
+                  className="body-sm text-sm text-zinc-900 hover:text-[#059669] transition-colors font-medium"
                 >
                   {item.label}
                 </a>
@@ -133,29 +135,63 @@ export default function Footer() {
 
           {/* Contact Column (Col Span 2 on mobile, 3 on lg) */}
           <div className="col-span-2 md:col-span-2 lg:col-span-3 flex flex-col gap-3">
-            <span className="font-sans text-[15px] font-bold tracking-tight text-zinc-950 [text-shadow:_0_1px_3px_rgba(255,255,255,0.95)]">
+            <span className="font-sans text-[15px] font-bold tracking-tight text-zinc-950">
               {t("footer.contact")}
             </span>
             <div className="flex flex-col gap-2">
-              <p className="body-sm text-sm text-zinc-900 leading-relaxed font-medium [text-shadow:_0_1px_3px_rgba(255,255,255,0.95),_0_0_8px_rgba(255,255,255,0.8)]">
+              <p className="body-sm text-sm text-zinc-900 leading-relaxed font-medium">
                 {t("footer.address")}
               </p>
-              <a
-                href={`mailto:${t("footer.email")}`}
-                className="body-sm text-sm text-zinc-900 hover:text-[#059669] transition-colors font-medium truncate [text-shadow:_0_1px_3px_rgba(255,255,255,0.95),_0_0_8px_rgba(255,255,255,0.8)]"
-              >
-                {t("footer.email")}
-              </a>
+              <div className="flex flex-col gap-2.5 pt-1">
+                <a
+                  href="tel:+919879012345"
+                  onClick={() =>
+                    trackEvent("cta_click", {
+                      cta_name: "phone_call",
+                      source: "footer",
+                    })
+                  }
+                  className="inline-flex items-center gap-2 text-sm text-zinc-950 font-bold hover:text-[#059669] transition-colors cursor-pointer"
+                >
+                  <Phone className="w-4 h-4 text-[#059669] shrink-0" />
+                  <span>+91 98790 12345</span>
+                </a>
+
+                <a
+                  href={`https://wa.me/919879012345?text=${encodeURIComponent(
+                    "Hello Solvex Energy! I would like to inquire about your solar inverters, PCUs, and rooftop EPC solutions."
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() =>
+                    trackEvent("cta_click", {
+                      cta_name: "whatsapp_chat",
+                      source: "footer",
+                    })
+                  }
+                  className="inline-flex items-center gap-2 text-sm text-emerald-800 font-semibold hover:text-emerald-950 transition-colors cursor-pointer"
+                >
+                  <MessageSquare className="w-4 h-4 text-[#25D366] shrink-0" />
+                  <span>WhatsApp Corporate Desk</span>
+                </a>
+
+                <a
+                  href={`mailto:${t("footer.email")}`}
+                  className="body-sm text-sm text-zinc-900 hover:text-[#059669] transition-colors font-medium truncate"
+                >
+                  {t("footer.email")}
+                </a>
+              </div>
             </div>
           </div>
         </MotionReveal>
 
         {/* Divider & Bottom Bar matching the reference layout */}
         <div className="border-t border-black/15 mt-8 sm:mt-10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-zinc-950 font-semibold [text-shadow:_0_1px_3px_rgba(255,255,255,0.95),_0_0_8px_rgba(255,255,255,0.8)]">
+          <p className="text-xs text-zinc-950 font-semibold">
             {t("footer.copyright")}
           </p>
-          <div className="flex flex-wrap items-center gap-6 text-xs text-zinc-950 font-semibold [text-shadow:_0_1px_3px_rgba(255,255,255,0.95),_0_0_8px_rgba(255,255,255,0.8)]">
+          <div className="flex flex-wrap items-center gap-6 text-xs text-zinc-950 font-semibold">
             <button
               type="button"
               onClick={() => openLegalModal("privacy")}

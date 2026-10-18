@@ -11,6 +11,15 @@ import {
   AlertCircle,
   CheckCircle2,
   Lock,
+  Phone,
+  MessageSquare,
+  Copy,
+  Check,
+  Sun,
+  Briefcase,
+  Sparkles,
+  ArrowRight,
+  Loader2,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -25,12 +34,38 @@ import {
 import { MotionReveal } from "@/components/ui/motion-reveal";
 import { useLanguage } from "@/context/LanguageContext";
 import { openLegalModal } from "@/components/ui/consent-and-legal-modals";
+import { trackEvent } from "@/lib/analytics";
 
 export default function ContactSection() {
-  const { t } = useLanguage();
-  const [submitted, setSubmitted] = useState(false);
-  const [referenceId, setReferenceId] = useState("");
-  const [formData, setFormData] = useState({
+  const { t, isHindi } = useLanguage();
+  const [activeTab, setActiveTab] = useState<"buyer" | "partner">("buyer");
+
+  // --- Product Buyer Form State ---
+  const [buyerSubmitted, setBuyerSubmitted] = useState(false);
+  const [buyerRefId, setBuyerRefId] = useState("");
+  const [buyerSubmitting, setBuyerSubmitting] = useState(false);
+  const [buyerCopied, setBuyerCopied] = useState(false);
+  const [buyerData, setBuyerData] = useState({
+    fullName: "",
+    phone: "",
+    email: "",
+    city: "",
+    propertyType: "residential_rooftop",
+    productInterest: "Rooftop Solar EPC System",
+    monthlyBill: "tier_5k_15k",
+    capacityKw: "",
+    notes: "",
+    consentAgreed: false,
+  });
+  const [buyerErrors, setBuyerErrors] = useState<Record<string, string>>({});
+  const [buyerTouched, setBuyerTouched] = useState<Record<string, boolean>>({});
+
+  // --- Partner Form State ---
+  const [partnerSubmitted, setPartnerSubmitted] = useState(false);
+  const [partnerRefId, setPartnerRefId] = useState("");
+  const [partnerSubmitting, setPartnerSubmitting] = useState(false);
+  const [partnerCopied, setPartnerCopied] = useState(false);
+  const [partnerData, setPartnerData] = useState({
     firstName: "",
     lastName: "",
     email: "",
@@ -41,67 +76,128 @@ export default function ContactSection() {
     experience: "",
     consentAgreed: false,
   });
+  const [partnerErrors, setPartnerErrors] = useState<Record<string, string>>({});
+  const [partnerTouched, setPartnerTouched] = useState<Record<string, boolean>>({});
 
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const [touched, setTouched] = useState<Record<string, boolean>>({});
-
-  const validateField = (field: string, value: any): string => {
+  // Validation: Buyer
+  const validateBuyerField = (field: string, value: any): string => {
     switch (field) {
-      case "firstName":
-        if (!value || !value.trim()) return "First name is required.";
-        if (value.trim().length < 2) return "Must be at least 2 characters.";
-        return "";
-      case "lastName":
-        if (!value || !value.trim()) return "Last name is required.";
-        if (value.trim().length < 2) return "Must be at least 2 characters.";
-        return "";
-      case "email":
-        if (!value || !value.trim()) return "Official email is required.";
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim()))
-          return "Please enter a valid business email address.";
+      case "fullName":
+        if (!value || !value.trim()) return isHindi ? "नाम दर्ज करना आवश्यक है" : "Full name is required.";
+        if (value.trim().length < 2) return isHindi ? "कम से कम 2 अक्षर होने चाहिए" : "Must be at least 2 characters.";
         return "";
       case "phone":
-        if (!value || !value.trim()) return "Mobile number is required.";
-        const cleanPhone = value.replace(/[\s\-\(\)]/g, "");
-        if (!/^(?:\+?91)?[6-9]\d{9}$|^\+?\d{9,14}$/.test(cleanPhone))
-          return "Enter a valid 10-digit mobile number (+91).";
+        if (!value || !value.trim()) return isHindi ? "मोबाइल नंबर आवश्यक है" : "Mobile number is required.";
+        const clean = value.replace(/[\s\-\(\)]/g, "");
+        if (!/^(?:\+?91)?[6-9]\d{9}$/.test(clean)) {
+          return isHindi ? "मान्य 10-अंकीय मोबाइल नंबर (+91) दर्ज करें" : "Enter a valid 10-digit mobile number (+91).";
+        }
         return "";
       case "city":
-        if (!value || !value.trim()) return "Operating district or city is required.";
-        return "";
-      case "partnershipType":
-        if (!value) return "Please select a partnership tier.";
-        return "";
-      case "investmentCapacity":
-        if (!value) return "Please select a capital allocation band.";
+        if (!value || !value.trim()) return isHindi ? "शहर या जिला आवश्यक है" : "City / District is required.";
         return "";
       case "consentAgreed":
-        if (!value) return "You must consent to data processing and commercial terms to proceed.";
+        if (!value) return isHindi ? "डेटा प्रोसेसिंग के लिए सहमति आवश्यक है" : "Consent is required to proceed.";
         return "";
       default:
         return "";
     }
   };
 
-  const handleBlur = (field: string) => {
-    setTouched((prev) => ({ ...prev, [field]: true }));
-    const errorMsg = validateField(field, (formData as any)[field]);
-    setErrors((prev) => ({ ...prev, [field]: errorMsg }));
-  };
-
-  const handleChange = (field: string, value: any) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
-    if (touched[field]) {
-      const errorMsg = validateField(field, value);
-      setErrors((prev) => ({ ...prev, [field]: errorMsg }));
+  // Validation: Partner
+  const validatePartnerField = (field: string, value: any): string => {
+    switch (field) {
+      case "firstName":
+        if (!value || !value.trim()) return isHindi ? "पहला नाम आवश्यक है" : "First name is required.";
+        if (value.trim().length < 2) return isHindi ? "कम से कम 2 अक्षर होने चाहिए" : "Must be at least 2 characters.";
+        return "";
+      case "lastName":
+        if (!value || !value.trim()) return isHindi ? "अंतिम नाम आवश्यक है" : "Last name is required.";
+        if (value.trim().length < 2) return isHindi ? "कम से कम 2 अक्षर होने चाहिए" : "Must be at least 2 characters.";
+        return "";
+      case "email":
+        if (!value || !value.trim()) return isHindi ? "आधिकारिक ईमेल आवश्यक है" : "Official email is required.";
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim()))
+          return isHindi ? "मान्य व्यावसायिक ईमेल दर्ज करें" : "Please enter a valid business email address.";
+        return "";
+      case "phone":
+        if (!value || !value.trim()) return isHindi ? "मोबाइल नंबर आवश्यक है" : "Mobile number is required.";
+        const cleanPhone = value.replace(/[\s\-\(\)]/g, "");
+        if (!/^(?:\+?91)?[6-9]\d{9}$|^\+?\d{9,14}$/.test(cleanPhone))
+          return isHindi ? "मान्य 10-अंकीय मोबाइल नंबर (+91) दर्ज करें" : "Enter a valid 10-digit mobile number (+91).";
+        return "";
+      case "city":
+        if (!value || !value.trim()) return isHindi ? "लक्षित जिला/शहर आवश्यक है" : "Target operating district or city is required.";
+        return "";
+      case "partnershipType":
+        if (!value) return isHindi ? "साझेदारी का प्रकार चुनें" : "Please select a partnership tier.";
+        return "";
+      case "investmentCapacity":
+        if (!value) return isHindi ? "निवेश सीमा चुनें" : "Please select a capital allocation band.";
+        return "";
+      case "consentAgreed":
+        if (!value) return isHindi ? "वाणिज्यिक शर्तों के लिए सहमति आवश्यक है" : "You must consent to commercial terms to proceed.";
+        return "";
+      default:
+        return "";
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Submit Buyer
+  const handleBuyerSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const fields = ["fullName", "phone", "city", "consentAgreed"];
+    const newErrors: Record<string, string> = {};
+    let hasErr = false;
 
-    // Mark all as touched
-    const allFields = [
+    fields.forEach((f) => {
+      const err = validateBuyerField(f, (buyerData as any)[f]);
+      if (err) {
+        newErrors[f] = err;
+        hasErr = true;
+      }
+    });
+
+    setBuyerTouched(fields.reduce((acc, f) => ({ ...acc, [f]: true }), {}));
+    setBuyerErrors(newErrors);
+    if (hasErr) return;
+
+    setBuyerSubmitting(true);
+    try {
+      const res = await fetch("/api/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          leadType: "product_buyer",
+          ...buyerData,
+          channelSource: "contact_section_buyer_tab",
+        }),
+      });
+      const json = await res.json();
+      const refCode = json.referenceId || `SLX-PRD-2026-${Math.floor(10000 + Math.random() * 90000)}`;
+      setBuyerRefId(refCode);
+      setBuyerSubmitted(true);
+
+      trackEvent("product_enquiry_submitted", {
+        formType: "product_buyer",
+        leadReferenceId: refCode,
+        source: "contact_section",
+        city: buyerData.city,
+        product: buyerData.productInterest,
+      });
+    } catch {
+      const fallback = `SLX-PRD-2026-${Math.floor(10000 + Math.random() * 90000)}`;
+      setBuyerRefId(fallback);
+      setBuyerSubmitted(true);
+    } finally {
+      setBuyerSubmitting(false);
+    }
+  };
+
+  // Submit Partner
+  const handlePartnerSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const fields = [
       "firstName",
       "lastName",
       "email",
@@ -111,523 +207,1008 @@ export default function ContactSection() {
       "investmentCapacity",
       "consentAgreed",
     ];
-
     const newErrors: Record<string, string> = {};
-    let hasError = false;
+    let hasErr = false;
 
-    allFields.forEach((field) => {
-      const err = validateField(field, (formData as any)[field]);
+    fields.forEach((f) => {
+      const err = validatePartnerField(f, (partnerData as any)[f]);
       if (err) {
-        newErrors[field] = err;
-        hasError = true;
+        newErrors[f] = err;
+        hasErr = true;
       }
     });
 
-    setTouched(allFields.reduce((acc, f) => ({ ...acc, [f]: true }), {}));
-    setErrors(newErrors);
+    setPartnerTouched(fields.reduce((acc, f) => ({ ...acc, [f]: true }), {}));
+    setPartnerErrors(newErrors);
+    if (hasErr) return;
 
-    if (hasError) {
-      // Focus first error element
-      const firstErrorField = Object.keys(newErrors)[0];
-      const element = document.getElementById(firstErrorField);
-      if (element) {
-        element.focus();
-      }
-      return;
+    setPartnerSubmitting(true);
+    try {
+      const res = await fetch("/api/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          leadType: "franchise_partner",
+          ...partnerData,
+          channelSource: "contact_section_partner_tab",
+        }),
+      });
+      const json = await res.json();
+      const refCode = json.referenceId || `SLX-PRT-2026-${Math.floor(10000 + Math.random() * 90000)}`;
+      setPartnerRefId(refCode);
+      setPartnerSubmitted(true);
+
+      trackEvent("partner_enquiry_submitted", {
+        formType: "franchise_partner",
+        leadReferenceId: refCode,
+        source: "contact_section",
+        city: partnerData.city,
+        partnership_tier: partnerData.partnershipType,
+        investment_band: partnerData.investmentCapacity,
+      });
+    } catch {
+      const fallback = `SLX-PRT-2026-${Math.floor(10000 + Math.random() * 90000)}`;
+      setPartnerRefId(fallback);
+      setPartnerSubmitted(true);
+    } finally {
+      setPartnerSubmitting(false);
     }
-
-    const randomSuffix = Math.floor(10000 + Math.random() * 90000);
-    setReferenceId(`SOL-2026-${randomSuffix}`);
-    setSubmitted(true);
-  };
-
-  const handleReset = () => {
-    setFormData({
-      firstName: "",
-      lastName: "",
-      email: "",
-      phone: "",
-      city: "",
-      partnershipType: "",
-      investmentCapacity: "",
-      experience: "",
-      consentAgreed: false,
-    });
-    setErrors({});
-    setTouched({});
-    setSubmitted(false);
   };
 
   return (
-    <section className="w-full pt-20 lg:pt-28 pb-10 lg:pb-14 bg-[#FFFFFF] relative" id="partner-form">
+    <section className="w-full pt-20 lg:pt-28 pb-14 lg:pb-20 bg-[#FFFFFF] relative" id="partner-form">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-          {/* Left Column: Corporate Desk & Institutional Details */}
+          {/* Left Column: Corporate Desk & Direct CTAs */}
           <div className="lg:col-span-5">
-            <MotionReveal className="flex flex-col gap-8">
-            <div className="flex flex-col gap-4">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary text-white text-xs font-normal tracking-[-0.1px] w-fit">
-                <Send className="w-3.5 h-3.5 text-white" />
-                <span>{t("contact.badge", "[ 11 // COMMERCIAL ENROLLMENT ]")}</span>
-              </div>
-              <h2 className="headline-md text-3xl lg:text-4xl font-normal tracking-[-1.08px] text-[#18181B]">
-                {t("contact.title", "Initiate Franchise Onboarding")}
-              </h2>
-              <p className="body-md text-base text-[#71717A] font-normal leading-relaxed tracking-[-0.2px]">
-                {t("contact.description", "Connect directly with our corporate expansion desk. Review territory allocation, margins, and procurement schedules.")}
-              </p>
-            </div>
-
-            {/* Corporate Desk Info Card */}
-            <div className="card-superpower p-8 flex flex-col gap-6 bg-white shadow-xs">
-              {/* Address */}
-              <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-full border border-black/10 bg-black/5 text-[#18181B] flex items-center justify-center shrink-0">
-                  <MapPin className="w-4 h-4 text-[#18181B]" />
+            <MotionReveal className="flex flex-col gap-6">
+              <div className="flex flex-col gap-3">
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary text-white text-xs font-normal tracking-[-0.1px] w-fit">
+                  <Send className="w-3.5 h-3.5 text-white" />
+                  <span>{t("contact.badge", "[ 11 // CORPORATE DESK & ALLOCATION ]")}</span>
                 </div>
-                <div className="flex flex-col">
-                  <span className="font-sans text-[11px] uppercase tracking-wider text-[#71717A]">
-                    {t("contact.hqLabel", "Corporate Headquarters")}
-                  </span>
-                  <span className="text-sm font-normal text-[#18181B] mt-1 leading-relaxed">
-                    {t("contact.hqAddress", "204 Capital Square, Parvat Godadara BRTS Road, Surat 395010, Gujarat, India")}
-                  </span>
-                </div>
+                <h2 className="headline-md text-3xl lg:text-4xl font-normal tracking-[-1.08px] text-[#18181B]">
+                  {isHindi ? "सीधे हमारे एक्सपर्ट्स से संपर्क करें" : "Connect with Solvex Energy Desk"}
+                </h2>
+                <p className="body-md text-base text-[#71717A] font-normal leading-relaxed tracking-[-0.2px]">
+                  {isHindi
+                    ? "चाहे आप सोलर सिस्टम उत्पाद खरीद रहे हों या अपने जिले में फ्रैंचाइज़ी डीलरशिप ले रहे हों, हमारे विशेषज्ञ तुरंत सहायता के लिए उपलब्ध हैं।"
+                    : "Whether you require Tier-1 solar equipment and turnkey PM Surya Ghar installation or district franchise territory allocation, our corporate desk is at your disposal."}
+                </p>
               </div>
 
-              {/* Email */}
-              <div className="flex items-start gap-4 pt-4 border-t border-black/10">
-                <div className="w-10 h-10 rounded-full border border-black/10 bg-black/5 text-[#18181B] flex items-center justify-center shrink-0">
-                  <Mail className="w-4 h-4 text-[#18181B]" />
-                </div>
-                <div className="flex flex-col">
-                  <span className="font-sans text-[11px] uppercase tracking-wider text-[#71717A]">
-                    {t("contact.deskLabel", "Institutional Desk")}
-                  </span>
-                  <span className="text-sm font-normal text-[#18181B] mt-1">
-                    corporate@solvexenergy.com
-                  </span>
-                </div>
-              </div>
-
-              {/* Operational Hours */}
-              <div className="flex items-start gap-4 pt-4 border-t border-black/10">
-                <div className="w-10 h-10 rounded-full border border-black/10 bg-black/5 text-[#18181B] flex items-center justify-center shrink-0">
-                  <Clock className="w-4 h-4 text-[#18181B]" />
-                </div>
-                <div className="flex flex-col">
-                  <span className="font-sans text-[11px] uppercase tracking-wider text-[#71717A]">
-                    {t("contact.hoursLabel", "Operations & Dispatch")}
-                  </span>
-                  <span className="text-sm font-normal text-[#18181B] mt-1">
-                    {t("contact.hoursTime", "Monday — Saturday: 09:30 - 18:30 IST")}
-                  </span>
-                  <span className="text-xs font-sans text-[#71717A] mt-0.5">
-                    {t("contact.hoursSunday", "Sunday: Emergency Dispatch Only")}
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* Compliance Guarantee */}
-            <div className="card-superpower p-6 flex items-center gap-4 bg-white shadow-xs">
-              <ShieldCheck className="w-6 h-6 text-[#18181B] shrink-0" />
-              <p className="body-sm text-xs text-[#71717A] leading-relaxed">
-                {t("contact.guarantee", "Direct manufacturing allocations backed by MNRE ALMM standards. Partner applications undergo confidential institutional territory assessment within 24 hours.")}
-              </p>
-            </div>
-            </MotionReveal>
-          </div>
-
-          {/* Right Column: Partnership Application Form */}
-          <div className="lg:col-span-7">
-            <MotionReveal delay={0.1}>
-            <div className="card-superpower p-8 lg:p-10 flex flex-col gap-6 bg-white shadow-xs border-black/10">
-              <div className="flex items-center justify-between pb-4 border-b border-black/10">
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full border border-black/10 bg-black/5 flex items-center justify-center text-[#18181B]">
-                    <FileCheck2 className="w-4 h-4 text-[#18181B]" />
+              {/* Working Direct Phone Call Card */}
+              <a
+                href="tel:+919879012345"
+                onClick={() =>
+                  trackEvent("cta_click", {
+                    cta_name: "phone_call",
+                    source: "contact_section_left_card",
+                  })
+                }
+                className="group p-5 rounded-2xl border border-black/10 bg-white hover:border-[#059669] hover:bg-emerald-50/40 transition-all duration-300 shadow-xs flex items-center justify-between cursor-pointer"
+                aria-label="Direct Phone Consultation +91 98790 12345"
+              >
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-full bg-[#059669]/10 text-[#059669] group-hover:bg-[#059669] group-hover:text-white flex items-center justify-center transition-all duration-300 shrink-0">
+                    <Phone className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" />
                   </div>
-                  <h3 className="text-lg font-normal text-[#18181B] tracking-[-0.4px]">
-                    {t("contact.formTitle", "Partnership Evaluation Form")}
-                  </h3>
-                </div>
-                <span className="font-sans text-[10px] tracking-wider uppercase text-white bg-primary px-3 py-1 rounded-full font-normal">
-                  {t("contact.formYear", "FY 2026 ENROLLMENT")}
-                </span>
-              </div>
-
-              {!submitted ? (
-                <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-5" id="franchise-application" aria-label="Franchise Partnership Application">
-                  {/* Row: First Name & Last Name */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                    <div className="flex flex-col gap-1.5">
-                      <Label htmlFor="first-name" className="text-xs font-medium text-[#18181B] flex items-center justify-between">
-                        <span>{t("contact.firstName", "First Name")} <span className="text-red-500">*</span></span>
-                      </Label>
-                      <Input
-                        id="first-name"
-                        name="firstName"
-                        placeholder={t("contact.firstNamePlaceholder", "e.g. Vikram")}
-                        type="text"
-                        autoComplete="given-name"
-                        aria-required="true"
-                        aria-invalid={!!errors.firstName}
-                        aria-describedby={errors.firstName ? "first-name-error" : undefined}
-                        className={`w-full h-[48px] rounded-full px-5 bg-[#FAFAFA] border text-[#18181B] placeholder:text-[#71717A] text-xs transition-all ${
-                          errors.firstName && touched.firstName
-                            ? "border-red-500 focus:border-red-500 focus:ring-1 focus:ring-red-500"
-                            : "border-black/10 focus:border-[#059669] focus:ring-1 focus:ring-[#059669]"
-                        }`}
-                        value={formData.firstName}
-                        onChange={(e) => handleChange("firstName", e.target.value)}
-                        onBlur={() => handleBlur("firstName")}
-                      />
-                      {errors.firstName && touched.firstName && (
-                        <p id="first-name-error" role="alert" className="text-[11px] text-red-600 font-medium flex items-center gap-1 mt-0.5 pl-1">
-                          <AlertCircle className="w-3 h-3 shrink-0" />
-                          <span>{errors.firstName}</span>
-                        </p>
-                      )}
-                    </div>
-
-                    <div className="flex flex-col gap-1.5">
-                      <Label htmlFor="last-name" className="text-xs font-medium text-[#18181B] flex items-center justify-between">
-                        <span>{t("contact.lastName", "Last Name")} <span className="text-red-500">*</span></span>
-                      </Label>
-                      <Input
-                        id="last-name"
-                        name="lastName"
-                        placeholder={t("contact.lastNamePlaceholder", "e.g. Mehta")}
-                        type="text"
-                        autoComplete="family-name"
-                        aria-required="true"
-                        aria-invalid={!!errors.lastName}
-                        aria-describedby={errors.lastName ? "last-name-error" : undefined}
-                        className={`w-full h-[48px] rounded-full px-5 bg-[#FAFAFA] border text-[#18181B] placeholder:text-[#71717A] text-xs transition-all ${
-                          errors.lastName && touched.lastName
-                            ? "border-red-500 focus:border-red-500 focus:ring-1 focus:ring-red-500"
-                            : "border-black/10 focus:border-[#059669] focus:ring-1 focus:ring-[#059669]"
-                        }`}
-                        value={formData.lastName}
-                        onChange={(e) => handleChange("lastName", e.target.value)}
-                        onBlur={() => handleBlur("lastName")}
-                      />
-                      {errors.lastName && touched.lastName && (
-                        <p id="last-name-error" role="alert" className="text-[11px] text-red-600 font-medium flex items-center gap-1 mt-0.5 pl-1">
-                          <AlertCircle className="w-3 h-3 shrink-0" />
-                          <span>{errors.lastName}</span>
-                        </p>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Row: Email & Phone */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                    <div className="flex flex-col gap-1.5">
-                      <Label htmlFor="email" className="text-xs font-medium text-[#18181B] flex items-center justify-between">
-                        <span>{t("contact.email", "Official Email")} <span className="text-red-500">*</span></span>
-                      </Label>
-                      <Input
-                        id="email"
-                        name="email"
-                        placeholder={t("contact.emailPlaceholder", "partner@company.com")}
-                        type="email"
-                        autoComplete="email"
-                        aria-required="true"
-                        aria-invalid={!!errors.email}
-                        aria-describedby={errors.email ? "email-error" : undefined}
-                        className={`w-full h-[48px] rounded-full px-5 bg-[#FAFAFA] border text-[#18181B] placeholder:text-[#71717A] text-xs transition-all ${
-                          errors.email && touched.email
-                            ? "border-red-500 focus:border-red-500 focus:ring-1 focus:ring-red-500"
-                            : "border-black/10 focus:border-[#059669] focus:ring-1 focus:ring-[#059669]"
-                        }`}
-                        value={formData.email}
-                        onChange={(e) => handleChange("email", e.target.value)}
-                        onBlur={() => handleBlur("email")}
-                      />
-                      {errors.email && touched.email && (
-                        <p id="email-error" role="alert" className="text-[11px] text-red-600 font-medium flex items-center gap-1 mt-0.5 pl-1">
-                          <AlertCircle className="w-3 h-3 shrink-0" />
-                          <span>{errors.email}</span>
-                        </p>
-                      )}
-                    </div>
-
-                    <div className="flex flex-col gap-1.5">
-                      <Label htmlFor="phone" className="text-xs font-medium text-[#18181B] flex items-center justify-between">
-                        <span>{t("contact.phone", "Mobile Number")} <span className="text-red-500">*</span></span>
-                      </Label>
-                      <Input
-                        id="phone"
-                        name="phone"
-                        placeholder={t("contact.phonePlaceholder", "+91 98765 43210")}
-                        type="tel"
-                        autoComplete="tel"
-                        aria-required="true"
-                        aria-invalid={!!errors.phone}
-                        aria-describedby={errors.phone ? "phone-error" : undefined}
-                        className={`w-full h-[48px] rounded-full px-5 bg-[#FAFAFA] border text-[#18181B] placeholder:text-[#71717A] text-xs transition-all ${
-                          errors.phone && touched.phone
-                            ? "border-red-500 focus:border-red-500 focus:ring-1 focus:ring-red-500"
-                            : "border-black/10 focus:border-[#059669] focus:ring-1 focus:ring-[#059669]"
-                        }`}
-                        value={formData.phone}
-                        onChange={(e) => handleChange("phone", e.target.value)}
-                        onBlur={() => handleBlur("phone")}
-                      />
-                      {errors.phone && touched.phone && (
-                        <p id="phone-error" role="alert" className="text-[11px] text-red-600 font-medium flex items-center gap-1 mt-0.5 pl-1">
-                          <AlertCircle className="w-3 h-3 shrink-0" />
-                          <span>{errors.phone}</span>
-                        </p>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Territory / City */}
-                  <div className="flex flex-col gap-1.5">
-                    <Label htmlFor="city" className="text-xs font-medium text-[#18181B] flex items-center justify-between">
-                      <span>{t("contact.city", "Target Operating District / City")} <span className="text-red-500">*</span></span>
-                    </Label>
-                    <Input
-                      id="city"
-                      name="city"
-                      placeholder={t("contact.cityPlaceholder", "e.g. Ahmedabad, Gujarat")}
-                      type="text"
-                      autoComplete="address-level2"
-                      aria-required="true"
-                      aria-invalid={!!errors.city}
-                      aria-describedby={errors.city ? "city-error" : undefined}
-                      className={`w-full h-[48px] rounded-full px-5 bg-[#FAFAFA] border text-[#18181B] placeholder:text-[#71717A] text-xs transition-all ${
-                        errors.city && touched.city
-                          ? "border-red-500 focus:border-red-500 focus:ring-1 focus:ring-red-500"
-                          : "border-black/10 focus:border-[#059669] focus:ring-1 focus:ring-[#059669]"
-                      }`}
-                      value={formData.city}
-                      onChange={(e) => handleChange("city", e.target.value)}
-                      onBlur={() => handleBlur("city")}
-                    />
-                    {errors.city && touched.city && (
-                      <p id="city-error" role="alert" className="text-[11px] text-red-600 font-medium flex items-center gap-1 mt-0.5 pl-1">
-                        <AlertCircle className="w-3 h-3 shrink-0" />
-                        <span>{errors.city}</span>
-                      </p>
-                    )}
-                  </div>
-
-                  {/* Row: Partnership Tier & Capital Allocation */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                    <div className="flex flex-col gap-1.5">
-                      <Label htmlFor="partnership-tier" className="text-xs font-medium text-[#18181B]">
-                        {t("contact.tier", "Partnership Tier")} <span className="text-red-500">*</span>
-                      </Label>
-                      <Select
-                        value={formData.partnershipType}
-                        onValueChange={(val) => handleChange("partnershipType", val)}
-                      >
-                        <SelectTrigger
-                          id="partnership-tier"
-                          aria-required="true"
-                          aria-invalid={!!errors.partnershipType}
-                          aria-describedby={errors.partnershipType ? "tier-error" : undefined}
-                          className={`w-full h-[48px] rounded-full px-5 bg-[#FAFAFA] border text-xs text-[#18181B] transition-all cursor-pointer [&[data-placeholder]]:text-[#71717A] ${
-                            errors.partnershipType && touched.partnershipType
-                              ? "border-red-500"
-                              : "border-black/10 focus:border-[#059669] focus:ring-1 focus:ring-[#059669]"
-                          }`}
-                        >
-                          <SelectValue placeholder={t("contact.tierPlaceholder", "Select Franchise Model")} />
-                        </SelectTrigger>
-                        <SelectContent className="bg-white border border-black/10 text-[#18181B] shadow-2xl rounded-2xl">
-                          <SelectItem value="distributor">{t("contact.tierDistributor", "Distributor Partner (Territory)")}</SelectItem>
-                          <SelectItem value="master">{t("contact.tierMaster", "Master Distributor (State / Zone)")}</SelectItem>
-                          <SelectItem value="channel">{t("contact.tierChannel", "Channel EPC Partner")}</SelectItem>
-                          <SelectItem value="merchant">{t("contact.tierMerchant", "Retail Merchant Store")}</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      {errors.partnershipType && touched.partnershipType && (
-                        <p id="tier-error" role="alert" className="text-[11px] text-red-600 font-medium flex items-center gap-1 mt-0.5 pl-1">
-                          <AlertCircle className="w-3 h-3 shrink-0" />
-                          <span>{errors.partnershipType}</span>
-                        </p>
-                      )}
-                    </div>
-
-                    <div className="flex flex-col gap-1.5">
-                      <Label htmlFor="capital-allocation" className="text-xs font-medium text-[#18181B]">
-                        {t("contact.capital", "Capital Allocation")} <span className="text-red-500">*</span>
-                      </Label>
-                      <Select
-                        value={formData.investmentCapacity}
-                        onValueChange={(val) => handleChange("investmentCapacity", val)}
-                      >
-                        <SelectTrigger
-                          id="capital-allocation"
-                          aria-required="true"
-                          aria-invalid={!!errors.investmentCapacity}
-                          aria-describedby={errors.investmentCapacity ? "capital-error" : undefined}
-                          className={`w-full h-[48px] rounded-full px-5 bg-[#FAFAFA] border text-xs text-[#18181B] transition-all cursor-pointer [&[data-placeholder]]:text-[#71717A] ${
-                            errors.investmentCapacity && touched.investmentCapacity
-                              ? "border-red-500"
-                              : "border-black/10 focus:border-[#059669] focus:ring-1 focus:ring-[#059669]"
-                          }`}
-                        >
-                          <SelectValue placeholder={t("contact.capitalPlaceholder", "Select Investment Band")} />
-                        </SelectTrigger>
-                        <SelectContent className="bg-white border border-black/10 text-[#18181B] shadow-2xl rounded-2xl">
-                          <SelectItem value="tier1">₹2,00,000 - ₹5,00,000</SelectItem>
-                          <SelectItem value="tier2">₹5,00,000 - ₹15,00,000</SelectItem>
-                          <SelectItem value="tier3">₹15,00,000 - ₹30,00,000</SelectItem>
-                          <SelectItem value="tier4">₹30,00,000+ (Institutional)</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      {errors.investmentCapacity && touched.investmentCapacity && (
-                        <p id="capital-error" role="alert" className="text-[11px] text-red-600 font-medium flex items-center gap-1 mt-0.5 pl-1">
-                          <AlertCircle className="w-3 h-3 shrink-0" />
-                          <span>{errors.investmentCapacity}</span>
-                        </p>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Experience / Business Background */}
-                  <div className="flex flex-col gap-1.5">
-                    <div className="flex items-center justify-between">
-                      <Label htmlFor="experience" className="text-xs font-medium text-[#18181B]">
-                        {t("contact.experience", "Existing Business Background / Distribution Footprint")}
-                      </Label>
-                      <span className="font-sans text-[10px] text-[#71717A] uppercase">
-                        {t("contact.experienceOptional", "Optional • Max 1000 chars")}
+                  <div className="flex flex-col">
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs font-medium uppercase tracking-wider text-[#71717A]">
+                        {isHindi ? "सीधी फोन कंसल्टेशन" : "Direct Phone Consultation"}
                       </span>
+                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                     </div>
-                    <Textarea
-                      id="experience"
-                      name="experience"
-                      className="min-h-[120px] p-4 text-xs font-sans leading-relaxed resize-y bg-[#FAFAFA] border border-black/10 text-[#18181B] placeholder:text-[#71717A] focus:border-[#059669] focus:ring-1 focus:ring-[#059669] rounded-2xl transition-all"
-                      placeholder={t("contact.experiencePlaceholder", "Provide details regarding your current business footprint, electrical trade experience, team size, rooftop EPC volume, or client network across your district...")}
-                      value={formData.experience}
-                      onChange={(e) => setFormData({ ...formData, experience: e.target.value })}
-                    />
-                  </div>
-
-                  {/* Mandatory DPDP Consent Checkbox */}
-                  <div className="pt-2">
-                    <div className="flex items-start gap-3 p-3.5 rounded-xl border border-black/10 bg-zinc-50/80">
-                      <input
-                        type="checkbox"
-                        id="consent-checkbox"
-                        name="consentAgreed"
-                        checked={formData.consentAgreed}
-                        onChange={(e) => handleChange("consentAgreed", e.target.checked)}
-                        onBlur={() => handleBlur("consentAgreed")}
-                        aria-required="true"
-                        aria-invalid={!!errors.consentAgreed}
-                        aria-describedby={errors.consentAgreed ? "consent-error" : undefined}
-                        className="mt-0.5 w-4 h-4 rounded border-zinc-300 text-emerald-600 focus:ring-emerald-500 cursor-pointer accent-[#059669] shrink-0"
-                      />
-                      <label htmlFor="consent-checkbox" className="text-xs text-zinc-700 leading-relaxed cursor-pointer select-none">
-                        I authorize Solvex Energy Solutions Pvt. Ltd. to evaluate my commercial credentials for franchise allocation under India&apos;s DPDP Act 2023, and agree to the{" "}
-                        <button
-                          type="button"
-                          onClick={() => openLegalModal("privacy")}
-                          className="font-semibold text-emerald-700 hover:text-emerald-800 underline underline-offset-2 cursor-pointer inline"
-                        >
-                          Privacy Policy
-                        </button>{" "}
-                        and{" "}
-                        <button
-                          type="button"
-                          onClick={() => openLegalModal("terms")}
-                          className="font-semibold text-emerald-700 hover:text-emerald-800 underline underline-offset-2 cursor-pointer inline"
-                        >
-                          Commercial Terms
-                        </button>
-                        . <span className="text-red-500">*</span>
-                      </label>
-                    </div>
-                    {errors.consentAgreed && touched.consentAgreed && (
-                      <p id="consent-error" role="alert" className="text-[11px] text-red-600 font-medium flex items-center gap-1 mt-1.5 pl-2">
-                        <AlertCircle className="w-3.5 h-3.5 shrink-0" />
-                        <span>{errors.consentAgreed}</span>
-                      </p>
-                    )}
-                  </div>
-
-                  {/* Submit Button */}
-                  <button
-                    type="submit"
-                    className="w-full h-[52px] rounded-full bg-[#059669] hover:bg-[#047857] text-white text-xs font-semibold uppercase tracking-wider inline-flex items-center justify-center gap-2.5 mt-2 transition-all duration-200 shadow-sm hover:shadow-md active:scale-[0.98] cursor-pointer group"
-                  >
-                    <span>{t("contact.submitBtn", "SUBMIT ENROLLMENT DOSSIER")}</span>
-                    <Send className="w-3.5 h-3.5 text-white group-hover:translate-x-1 group-hover:-translate-y-0.5 transition-transform duration-200" />
-                  </button>
-                </form>
-              ) : (
-                /* Verified Enterprise Submission Card */
-                <div
-                  className="p-8 rounded-2xl border border-emerald-500/30 bg-emerald-50/50 text-left flex flex-col gap-6 animate-in fade-in zoom-in-95 duration-300"
-                  id="form-feedback"
-                  role="status"
-                  aria-live="polite"
-                >
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-full bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-sm">
-                      <CheckCircle2 className="w-6 h-6" />
-                    </div>
-                    <div>
-                      <span className="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-200/80 text-emerald-900 mb-1">
-                        Dossier Confirmed
-                      </span>
-                      <h4 className="text-lg font-bold text-zinc-900 tracking-tight">
-                        Partnership Application Logged
-                      </h4>
-                    </div>
-                  </div>
-
-                  <div className="p-4 rounded-xl bg-white border border-black/10 flex flex-col gap-2.5 text-xs">
-                    <div className="flex justify-between items-center pb-2 border-b border-black/5">
-                      <span className="text-zinc-500 font-medium">Tracking Reference:</span>
-                      <span className="font-mono font-bold text-zinc-900">{referenceId}</span>
-                    </div>
-                    <div className="flex justify-between items-center pb-2 border-b border-black/5">
-                      <span className="text-zinc-500 font-medium">Applicant:</span>
-                      <span className="font-semibold text-zinc-900">{formData.firstName} {formData.lastName}</span>
-                    </div>
-                    <div className="flex justify-between items-center pb-2 border-b border-black/5">
-                      <span className="text-zinc-500 font-medium">Target Territory:</span>
-                      <span className="font-semibold text-zinc-900">{formData.city}</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-zinc-500 font-medium">Vetting SLA:</span>
-                      <span className="font-semibold text-emerald-700">Commercial Committee Review within 24 Hours</span>
-                    </div>
-                  </div>
-
-                  <p className="text-xs text-zinc-600 leading-relaxed">
-                    A formal territorial feasibility dossier with factory procurement pricing and DISCOM net-metering liaison specs will be dispatched to <strong className="text-zinc-900">{formData.email}</strong>.
-                  </p>
-
-                  <div className="pt-2 flex items-center justify-between border-t border-emerald-500/20">
-                    <button
-                      type="button"
-                      onClick={handleReset}
-                      className="text-xs font-semibold text-emerald-800 hover:text-emerald-950 underline underline-offset-2 cursor-pointer"
-                    >
-                      Submit Another Territory Inquiry
-                    </button>
-                    <span className="text-[11px] text-zinc-500 flex items-center gap-1">
-                      <Lock className="w-3 h-3 text-emerald-700" />
-                      Confidential Dossier Protected
+                    <span className="text-base font-bold text-[#18181B] group-hover:text-[#059669] transition-colors mt-0.5">
+                      +91 98790 12345
+                    </span>
+                    <span className="text-[11px] text-[#71717A] mt-0.5">
+                      {isHindi ? "सोम—शनि: 09:30 - 18:30 IST" : "Mon—Sat: 09:30 - 18:30 IST"}
                     </span>
                   </div>
                 </div>
-              )}
-            </div>
-          </MotionReveal>
+                <div className="w-8 h-8 rounded-full border border-black/10 flex items-center justify-center group-hover:bg-[#059669] group-hover:text-white transition-all shrink-0">
+                  <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
+                </div>
+              </a>
+
+              {/* Working Direct WhatsApp Card */}
+              <a
+                href={`https://wa.me/919879012345?text=${encodeURIComponent(
+                  "Hello Solvex Energy! I would like to inquire about solar systems, subsidy assistance, and equipment allocation."
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() =>
+                  trackEvent("cta_click", {
+                    cta_name: "whatsapp_chat",
+                    source: "contact_section_left_card",
+                  })
+                }
+                className="group p-5 rounded-2xl border border-black/10 bg-white hover:border-[#25D366] hover:bg-emerald-50/30 transition-all duration-300 shadow-xs flex items-center justify-between cursor-pointer"
+                aria-label="Official WhatsApp Help Desk"
+              >
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-full bg-[#25D366]/10 text-[#25D366] group-hover:bg-[#25D366] group-hover:text-white flex items-center justify-center transition-all duration-300 shrink-0">
+                    <MessageSquare className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" />
+                  </div>
+                  <div className="flex flex-col">
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs font-medium uppercase tracking-wider text-[#71717A]">
+                        {isHindi ? "आधिकारिक व्हाट्सएप डेस्क" : "Official WhatsApp Desk"}
+                      </span>
+                      <span className="text-[10px] font-semibold text-[#059669] bg-emerald-100 px-2 py-0.5 rounded-full">
+                        ⚡ Quick Response
+                      </span>
+                    </div>
+                    <span className="text-base font-bold text-[#18181B] group-hover:text-[#059669] transition-colors mt-0.5">
+                      +91 98790 12345
+                    </span>
+                    <span className="text-[11px] text-[#71717A] mt-0.5">
+                      {isHindi ? "औसतन प्रतिक्रिया समय: < 15 मिनट" : "Average response: <15 mins"}
+                    </span>
+                  </div>
+                </div>
+                <div className="w-8 h-8 rounded-full border border-black/10 flex items-center justify-center group-hover:bg-[#25D366] group-hover:text-white transition-all shrink-0">
+                  <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
+                </div>
+              </a>
+
+              {/* Corporate Desk Info Card */}
+              <div className="card-superpower p-6 flex flex-col gap-5 bg-white shadow-xs">
+                {/* Address */}
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-full border border-black/10 bg-black/5 text-[#18181B] flex items-center justify-center shrink-0">
+                    <MapPin className="w-4 h-4 text-[#18181B]" />
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="font-sans text-[11px] uppercase tracking-wider text-[#71717A]">
+                      {t("contact.hqLabel", "Corporate Headquarters")}
+                    </span>
+                    <span className="text-sm font-normal text-[#18181B] mt-1 leading-relaxed">
+                      {t(
+                        "contact.hqAddress",
+                        "204 Capital Square, Parvat Godadara BRTS Road, Surat 395010, Gujarat, India"
+                      )}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Email */}
+                <div className="flex items-start gap-4 pt-4 border-t border-black/10">
+                  <div className="w-10 h-10 rounded-full border border-black/10 bg-black/5 text-[#18181B] flex items-center justify-center shrink-0">
+                    <Mail className="w-4 h-4 text-[#18181B]" />
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="font-sans text-[11px] uppercase tracking-wider text-[#71717A]">
+                      {t("contact.deskLabel", "Institutional Desk")}
+                    </span>
+                    <a
+                      href="mailto:corporate@solvexenergy.com"
+                      className="text-sm font-normal text-[#18181B] hover:text-[#059669] mt-1 transition-colors"
+                    >
+                      corporate@solvexenergy.com
+                    </a>
+                  </div>
+                </div>
+
+                {/* Operational Hours */}
+                <div className="flex items-start gap-4 pt-4 border-t border-black/10">
+                  <div className="w-10 h-10 rounded-full border border-black/10 bg-black/5 text-[#18181B] flex items-center justify-center shrink-0">
+                    <Clock className="w-4 h-4 text-[#18181B]" />
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="font-sans text-[11px] uppercase tracking-wider text-[#71717A]">
+                      {t("contact.hoursLabel", "Operations & Dispatch")}
+                    </span>
+                    <span className="text-sm font-normal text-[#18181B] mt-1">
+                      {t("contact.hoursTime", "Monday — Saturday: 09:30 - 18:30 IST")}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Compliance Guarantee */}
+              <div className="card-superpower p-5 flex items-center gap-4 bg-white shadow-xs">
+                <ShieldCheck className="w-6 h-6 text-[#059669] shrink-0" />
+                <p className="body-sm text-xs text-[#71717A] leading-relaxed">
+                  {t(
+                    "contact.guarantee",
+                    "Direct manufacturing allocations backed by MNRE ALMM standards. All enquiries are protected under India's DPDP Act 2023 with verified SLA guarantees."
+                  )}
+                </p>
+              </div>
+            </MotionReveal>
+          </div>
+
+          {/* Right Column: Dual Segmented Forms */}
+          <div className="lg:col-span-7">
+            <MotionReveal delay={0.1}>
+              <div className="card-superpower p-6 sm:p-8 lg:p-10 flex flex-col gap-6 bg-white shadow-xs border-black/10">
+                {/* Segmented Control Tabs */}
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-black/10">
+                  <div className="inline-flex p-1 rounded-full bg-zinc-100 border border-black/10 w-fit">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setActiveTab("buyer");
+                        trackEvent("cta_click", {
+                          cta_name: "switch_tab_product_buyer",
+                          source: "contact_section",
+                        });
+                      }}
+                      className={`px-4 sm:px-5 py-2 rounded-full text-xs font-semibold tracking-tight transition-all duration-200 inline-flex items-center gap-2 cursor-pointer ${
+                        activeTab === "buyer"
+                          ? "bg-white text-[#18181B] shadow-sm"
+                          : "text-[#71717A] hover:text-[#18181B]"
+                      }`}
+                    >
+                      <Sun className="w-3.5 h-3.5 text-amber-500" />
+                      <span>{isHindi ? "सोलर उपकरण व कोटेशन" : "Product Buyer Inquiry"}</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setActiveTab("partner");
+                        trackEvent("cta_click", {
+                          cta_name: "switch_tab_franchise_partner",
+                          source: "contact_section",
+                        });
+                      }}
+                      className={`px-4 sm:px-5 py-2 rounded-full text-xs font-semibold tracking-tight transition-all duration-200 inline-flex items-center gap-2 cursor-pointer ${
+                        activeTab === "partner"
+                          ? "bg-[#059669] text-white shadow-sm"
+                          : "text-[#71717A] hover:text-[#18181B]"
+                      }`}
+                    >
+                      <Briefcase className="w-3.5 h-3.5" />
+                      <span>{isHindi ? "फ्रैंचाइज़ी व डीलरशिप" : "Franchise & Dealership"}</span>
+                    </button>
+                  </div>
+
+                  <span className="font-mono text-[10px] tracking-wider uppercase text-emerald-800 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full font-medium w-fit">
+                    {activeTab === "buyer" ? "PM SURYA GHAR ELIGIBLE" : "FY 2026 TERRITORY INTAKE"}
+                  </span>
+                </div>
+
+                {/* TAB 1: PRODUCT BUYER ENQUIRY FORM */}
+                {activeTab === "buyer" && (
+                  <div>
+                    {!buyerSubmitted ? (
+                      <form onSubmit={handleBuyerSubmit} noValidate className="flex flex-col gap-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          <div className="flex flex-col gap-1.5">
+                            <Label htmlFor="buyer-name" className="text-xs font-medium text-[#18181B]">
+                              {isHindi ? "पूरा नाम" : "Full Name"} <span className="text-red-500">*</span>
+                            </Label>
+                            <Input
+                              id="buyer-name"
+                              placeholder={isHindi ? "उदा. राजेश पटेल" : "e.g. Rajesh Patel"}
+                              value={buyerData.fullName}
+                              onChange={(e) => setBuyerData({ ...buyerData, fullName: e.target.value })}
+                              onBlur={() => {
+                                setBuyerTouched((prev) => ({ ...prev, fullName: true }));
+                                setBuyerErrors((prev) => ({
+                                  ...prev,
+                                  fullName: validateBuyerField("fullName", buyerData.fullName),
+                                }));
+                              }}
+                              className={`h-11 rounded-full px-4 text-xs bg-[#FAFAFA] border ${
+                                buyerErrors.fullName && buyerTouched.fullName ? "border-red-500" : "border-black/10"
+                              }`}
+                            />
+                            {buyerErrors.fullName && buyerTouched.fullName && (
+                              <p className="text-[11px] text-red-600 flex items-center gap-1 mt-0.5">
+                                <AlertCircle className="w-3 h-3" />
+                                {buyerErrors.fullName}
+                              </p>
+                            )}
+                          </div>
+
+                          <div className="flex flex-col gap-1.5">
+                            <Label htmlFor="buyer-phone" className="text-xs font-medium text-[#18181B]">
+                              {isHindi ? "मोबाइल नंबर" : "Mobile Number"} <span className="text-red-500">*</span>
+                            </Label>
+                            <Input
+                              id="buyer-phone"
+                              type="tel"
+                              placeholder="+91 98765 43210"
+                              value={buyerData.phone}
+                              onChange={(e) => setBuyerData({ ...buyerData, phone: e.target.value })}
+                              onBlur={() => {
+                                setBuyerTouched((prev) => ({ ...prev, phone: true }));
+                                setBuyerErrors((prev) => ({
+                                  ...prev,
+                                  phone: validateBuyerField("phone", buyerData.phone),
+                                }));
+                              }}
+                              className={`h-11 rounded-full px-4 text-xs bg-[#FAFAFA] border ${
+                                buyerErrors.phone && buyerTouched.phone ? "border-red-500" : "border-black/10"
+                              }`}
+                            />
+                            {buyerErrors.phone && buyerTouched.phone && (
+                              <p className="text-[11px] text-red-600 flex items-center gap-1 mt-0.5">
+                                <AlertCircle className="w-3 h-3" />
+                                {buyerErrors.phone}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          <div className="flex flex-col gap-1.5">
+                            <Label htmlFor="buyer-email" className="text-xs font-medium text-[#18181B]">
+                              {isHindi ? "ईमेल पता (वैकल्पिक)" : "Email Address (Optional)"}
+                            </Label>
+                            <Input
+                              id="buyer-email"
+                              type="email"
+                              placeholder="name@example.com"
+                              value={buyerData.email}
+                              onChange={(e) => setBuyerData({ ...buyerData, email: e.target.value })}
+                              className="h-11 rounded-full px-4 text-xs bg-[#FAFAFA] border border-black/10"
+                            />
+                          </div>
+
+                          <div className="flex flex-col gap-1.5">
+                            <Label htmlFor="buyer-city" className="text-xs font-medium text-[#18181B]">
+                              {isHindi ? "शहर / जिला" : "City / District"} <span className="text-red-500">*</span>
+                            </Label>
+                            <Input
+                              id="buyer-city"
+                              placeholder={isHindi ? "उदा. सूरत, गुजरात" : "e.g. Surat, Gujarat"}
+                              value={buyerData.city}
+                              onChange={(e) => setBuyerData({ ...buyerData, city: e.target.value })}
+                              onBlur={() => {
+                                setBuyerTouched((prev) => ({ ...prev, city: true }));
+                                setBuyerErrors((prev) => ({
+                                  ...prev,
+                                  city: validateBuyerField("city", buyerData.city),
+                                }));
+                              }}
+                              className={`h-11 rounded-full px-4 text-xs bg-[#FAFAFA] border ${
+                                buyerErrors.city && buyerTouched.city ? "border-red-500" : "border-black/10"
+                              }`}
+                            />
+                            {buyerErrors.city && buyerTouched.city && (
+                              <p className="text-[11px] text-red-600 flex items-center gap-1 mt-0.5">
+                                <AlertCircle className="w-3 h-3" />
+                                {buyerErrors.city}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          <div className="flex flex-col gap-1.5">
+                            <Label className="text-xs font-medium text-[#18181B]">
+                              {isHindi ? "रुचि का उत्पाद" : "Product of Interest"}
+                            </Label>
+                            <Select
+                              value={buyerData.productInterest}
+                              onValueChange={(val) => setBuyerData({ ...buyerData, productInterest: val })}
+                            >
+                              <SelectTrigger className="h-11 rounded-full px-4 text-xs bg-[#FAFAFA] border border-black/10 cursor-pointer">
+                                <SelectValue />
+                              </SelectTrigger>
+                              <SelectContent className="bg-white border border-black/10 shadow-2xl rounded-2xl">
+                                <SelectItem value="Rooftop Solar EPC System">Rooftop Solar EPC (Turnkey + Subsidy)</SelectItem>
+                                <SelectItem value="Solvex Solar Inverters (rMPPT)">Solvex Smart rMPPT Inverter</SelectItem>
+                                <SelectItem value="Heavy Industrial Solar PCU">Heavy Industrial Solar PCU (3kVA - 15kVA)</SelectItem>
+                                <SelectItem value="SPGS Hybrid Combo Kits">SPGS Hybrid Rooftop Combo Kit</SelectItem>
+                                <SelectItem value="Lithium/Tubular Battery Bank">Solar Battery Storage Bank</SelectItem>
+                                <SelectItem value="Commercial Rooftop 25kW+">Commercial / Industrial 25kW+ Array</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
+
+                          <div className="flex flex-col gap-1.5">
+                            <Label className="text-xs font-medium text-[#18181B]">
+                              {isHindi ? "मासिक बिजली बिल या क्षमता" : "Monthly Bill Band / Capacity"}
+                            </Label>
+                            <Select
+                              value={buyerData.monthlyBill}
+                              onValueChange={(val) => setBuyerData({ ...buyerData, monthlyBill: val })}
+                            >
+                              <SelectTrigger className="h-11 rounded-full px-4 text-xs bg-[#FAFAFA] border border-black/10 cursor-pointer">
+                                <SelectValue />
+                              </SelectTrigger>
+                              <SelectContent className="bg-white border border-black/10 shadow-2xl rounded-2xl">
+                                <SelectItem value="tier_under_2k">₹1,000 - ₹2,500 / month (1kW - 2kW)</SelectItem>
+                                <SelectItem value="tier_2k_5k">₹2,500 - ₹5,000 / month (2kW - 3kW PM Surya Ghar)</SelectItem>
+                                <SelectItem value="tier_5k_15k">₹5,000 - ₹15,000 / month (4kW - 8kW)</SelectItem>
+                                <SelectItem value="tier_15k_plus">₹15,000+ / month (Commercial 10kW+)</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
+                        </div>
+
+                        <div className="flex flex-col gap-1.5">
+                          <Label htmlFor="buyer-notes" className="text-xs font-medium text-[#18181B]">
+                            {isHindi ? "विशिष्ट आवश्यकताएं (वैकल्पिक)" : "Specific Notes / Rooftop Details (Optional)"}
+                          </Label>
+                          <Textarea
+                            id="buyer-notes"
+                            placeholder={
+                              isHindi
+                                ? "अपनी छत के प्रकार, बिजली कनेक्शन या लोड के बारे में बताएं..."
+                                : "Describe your rooftop type, sanctioned load, or preferred battery backup..."
+                            }
+                            value={buyerData.notes}
+                            onChange={(e) => setBuyerData({ ...buyerData, notes: e.target.value })}
+                            className="min-h-[80px] p-3 text-xs bg-[#FAFAFA] border border-black/10 rounded-2xl resize-none"
+                          />
+                        </div>
+
+                        {/* DPDP Consent */}
+                        <div className="p-3 rounded-xl border border-black/10 bg-zinc-50/80 flex items-start gap-3">
+                          <input
+                            type="checkbox"
+                            id="buyer-consent"
+                            checked={buyerData.consentAgreed}
+                            onChange={(e) => {
+                              setBuyerData({ ...buyerData, consentAgreed: e.target.checked });
+                              setBuyerTouched((prev) => ({ ...prev, consentAgreed: true }));
+                              setBuyerErrors((prev) => ({
+                                ...prev,
+                                consentAgreed: validateBuyerField("consentAgreed", e.target.checked),
+                              }));
+                            }}
+                            className="mt-0.5 w-4 h-4 rounded text-emerald-600 accent-[#059669] cursor-pointer shrink-0"
+                          />
+                          <label htmlFor="buyer-consent" className="text-[11px] text-zinc-700 leading-relaxed cursor-pointer select-none">
+                            I consent to Solvex Energy contacting me regarding solar equipment sizing, PM Surya Ghar subsidy processing, and site survey under India&apos;s DPDP Act 2023.{" "}
+                            <button
+                              type="button"
+                              onClick={() => openLegalModal("privacy")}
+                              className="font-semibold text-emerald-700 hover:text-emerald-800 underline inline cursor-pointer"
+                            >
+                              Privacy Policy
+                            </button>
+                            . <span className="text-red-500">*</span>
+                          </label>
+                        </div>
+                        {buyerErrors.consentAgreed && buyerTouched.consentAgreed && (
+                          <p className="text-[11px] text-red-600 flex items-center gap-1 -mt-2 pl-2">
+                            <AlertCircle className="w-3 h-3" />
+                            {buyerErrors.consentAgreed}
+                          </p>
+                        )}
+
+                        <button
+                          type="submit"
+                          disabled={buyerSubmitting}
+                          className="w-full h-12 rounded-full bg-[#059669] hover:bg-[#047857] text-white text-xs font-semibold uppercase tracking-wider inline-flex items-center justify-center gap-2 mt-1 shadow-sm hover:shadow-md active:scale-[0.98] transition-all cursor-pointer"
+                        >
+                          {buyerSubmitting ? (
+                            <>
+                              <Loader2 className="w-4 h-4 animate-spin" />
+                              <span>{isHindi ? "प्रसंस्करण हो रहा है..." : "Processing Enquiry..."}</span>
+                            </>
+                          ) : (
+                            <>
+                              <span>{isHindi ? "सोलर कोटेशन व सर्वे बुक करें" : "Request Quote & Book Site Survey"}</span>
+                              <Send className="w-3.5 h-3.5" />
+                            </>
+                          )}
+                        </button>
+                      </form>
+                    ) : (
+                      /* Buyer Confirmation State */
+                      <div className="p-6 sm:p-8 rounded-2xl border border-emerald-500/30 bg-emerald-50/60 text-left flex flex-col gap-5 animate-in fade-in duration-300">
+                        <div className="flex items-center gap-4">
+                          <div className="w-12 h-12 rounded-full bg-[#059669] text-white flex items-center justify-center shrink-0 shadow-sm">
+                            <CheckCircle2 className="w-6 h-6" />
+                          </div>
+                          <div>
+                            <span className="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-200/80 text-emerald-950 mb-1">
+                              Enquiry Confirmed
+                            </span>
+                            <h4 className="text-lg font-bold text-zinc-900 tracking-tight">
+                              {isHindi ? "आपकी सोलर पूछताछ दर्ज हो गई है" : "Solar Quote Request Logged"}
+                            </h4>
+                          </div>
+                        </div>
+
+                        <div className="p-4 rounded-xl bg-white border border-black/10 flex flex-col gap-2.5 text-xs">
+                          <div className="flex justify-between items-center pb-2 border-b border-black/5">
+                            <span className="text-zinc-500">Tracking Reference:</span>
+                            <div className="flex items-center gap-2">
+                              <span className="font-mono font-bold text-emerald-800">{buyerRefId}</span>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  navigator.clipboard.writeText(buyerRefId);
+                                  setBuyerCopied(true);
+                                  setTimeout(() => setBuyerCopied(false), 2000);
+                                }}
+                                className="p-1 rounded hover:bg-zinc-100 text-zinc-500 cursor-pointer"
+                                title="Copy Reference ID"
+                              >
+                                {buyerCopied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                              </button>
+                            </div>
+                          </div>
+                          <div className="flex justify-between items-center pb-2 border-b border-black/5">
+                            <span className="text-zinc-500">Applicant:</span>
+                            <span className="font-semibold text-zinc-900">{buyerData.fullName}</span>
+                          </div>
+                          <div className="flex justify-between items-center pb-2 border-b border-black/5">
+                            <span className="text-zinc-500">Product / System:</span>
+                            <span className="font-semibold text-zinc-900">{buyerData.productInterest}</span>
+                          </div>
+                          <div className="flex justify-between items-center">
+                            <span className="text-zinc-500">SLA Commitment:</span>
+                            <span className="font-semibold text-emerald-700">Dedicated Solar Engineer Callback &lt; 24 Hrs</span>
+                          </div>
+                        </div>
+
+                        {/* Direct Follow-up CTAs */}
+                        <div className="flex flex-col sm:flex-row items-center gap-3 pt-2 border-t border-emerald-500/20">
+                          <a
+                            href={`https://wa.me/919879012345?text=${encodeURIComponent(
+                              `Hello Solvex Energy! I requested a quote for ${buyerData.productInterest}. Reference ID: ${buyerRefId}. Please connect me with the site surveyor.`
+                            )}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={() =>
+                              trackEvent("cta_click", {
+                                cta_name: "whatsapp_buyer_success",
+                                source: "contact_section",
+                                reference_id: buyerRefId,
+                              })
+                            }
+                            className="w-full sm:flex-1 h-11 px-4 bg-[#059669] hover:bg-[#047857] text-white rounded-full text-xs font-semibold inline-flex items-center justify-center gap-2 transition-all shadow-sm active:scale-95 cursor-pointer"
+                          >
+                            <MessageSquare className="w-4 h-4 text-white" />
+                            <span>Share on WhatsApp</span>
+                          </a>
+
+                          <a
+                            href="tel:+919879012345"
+                            onClick={() =>
+                              trackEvent("cta_click", {
+                                cta_name: "phone_call_buyer_success",
+                                source: "contact_section",
+                                reference_id: buyerRefId,
+                              })
+                            }
+                            className="w-full sm:flex-1 h-11 px-4 bg-white border border-black/15 text-zinc-800 hover:bg-zinc-50 rounded-full text-xs font-medium inline-flex items-center justify-center gap-2 transition-all active:scale-95 cursor-pointer"
+                          >
+                            <Phone className="w-3.5 h-3.5 text-[#059669]" />
+                            <span>Call Engineer Now</span>
+                          </a>
+                        </div>
+
+                        <div className="pt-2 flex items-center justify-between">
+                          <button
+                            type="button"
+                            onClick={() => setBuyerSubmitted(false)}
+                            className="text-xs font-semibold text-emerald-800 hover:text-emerald-950 underline underline-offset-2 cursor-pointer"
+                          >
+                            Submit Another Product Inquiry
+                          </button>
+                          <span className="text-[11px] text-zinc-500 flex items-center gap-1">
+                            <Lock className="w-3 h-3 text-emerald-700" />
+                            DPDP 2023 Encrypted
+                          </span>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* TAB 2: PROSPECTIVE FRANCHISE PARTNER FORM */}
+                {activeTab === "partner" && (
+                  <div>
+                    {!partnerSubmitted ? (
+                      <form onSubmit={handlePartnerSubmit} noValidate className="flex flex-col gap-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          <div className="flex flex-col gap-1.5">
+                            <Label htmlFor="partner-first" className="text-xs font-medium text-[#18181B]">
+                              {isHindi ? "पहला नाम" : "First Name"} <span className="text-red-500">*</span>
+                            </Label>
+                            <Input
+                              id="partner-first"
+                              placeholder={isHindi ? "उदा. विक्रम" : "e.g. Vikram"}
+                              value={partnerData.firstName}
+                              onChange={(e) => setPartnerData({ ...partnerData, firstName: e.target.value })}
+                              onBlur={() => {
+                                setPartnerTouched((prev) => ({ ...prev, firstName: true }));
+                                setPartnerErrors((prev) => ({
+                                  ...prev,
+                                  firstName: validatePartnerField("firstName", partnerData.firstName),
+                                }));
+                              }}
+                              className={`h-11 rounded-full px-4 text-xs bg-[#FAFAFA] border ${
+                                partnerErrors.firstName && partnerTouched.firstName ? "border-red-500" : "border-black/10"
+                              }`}
+                            />
+                            {partnerErrors.firstName && partnerTouched.firstName && (
+                              <p className="text-[11px] text-red-600 flex items-center gap-1 mt-0.5">
+                                <AlertCircle className="w-3 h-3" />
+                                {partnerErrors.firstName}
+                              </p>
+                            )}
+                          </div>
+
+                          <div className="flex flex-col gap-1.5">
+                            <Label htmlFor="partner-last" className="text-xs font-medium text-[#18181B]">
+                              {isHindi ? "अंतिम नाम" : "Last Name"} <span className="text-red-500">*</span>
+                            </Label>
+                            <Input
+                              id="partner-last"
+                              placeholder={isHindi ? "उदा. मेहता" : "e.g. Mehta"}
+                              value={partnerData.lastName}
+                              onChange={(e) => setPartnerData({ ...partnerData, lastName: e.target.value })}
+                              onBlur={() => {
+                                setPartnerTouched((prev) => ({ ...prev, lastName: true }));
+                                setPartnerErrors((prev) => ({
+                                  ...prev,
+                                  lastName: validatePartnerField("lastName", partnerData.lastName),
+                                }));
+                              }}
+                              className={`h-11 rounded-full px-4 text-xs bg-[#FAFAFA] border ${
+                                partnerErrors.lastName && partnerTouched.lastName ? "border-red-500" : "border-black/10"
+                              }`}
+                            />
+                            {partnerErrors.lastName && partnerTouched.lastName && (
+                              <p className="text-[11px] text-red-600 flex items-center gap-1 mt-0.5">
+                                <AlertCircle className="w-3 h-3" />
+                                {partnerErrors.lastName}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          <div className="flex flex-col gap-1.5">
+                            <Label htmlFor="partner-email" className="text-xs font-medium text-[#18181B]">
+                              {isHindi ? "आधिकारिक ईमेल" : "Official Business Email"} <span className="text-red-500">*</span>
+                            </Label>
+                            <Input
+                              id="partner-email"
+                              type="email"
+                              placeholder="partner@company.com"
+                              value={partnerData.email}
+                              onChange={(e) => setPartnerData({ ...partnerData, email: e.target.value })}
+                              onBlur={() => {
+                                setPartnerTouched((prev) => ({ ...prev, email: true }));
+                                setPartnerErrors((prev) => ({
+                                  ...prev,
+                                  email: validatePartnerField("email", partnerData.email),
+                                }));
+                              }}
+                              className={`h-11 rounded-full px-4 text-xs bg-[#FAFAFA] border ${
+                                partnerErrors.email && partnerTouched.email ? "border-red-500" : "border-black/10"
+                              }`}
+                            />
+                            {partnerErrors.email && partnerTouched.email && (
+                              <p className="text-[11px] text-red-600 flex items-center gap-1 mt-0.5">
+                                <AlertCircle className="w-3 h-3" />
+                                {partnerErrors.email}
+                              </p>
+                            )}
+                          </div>
+
+                          <div className="flex flex-col gap-1.5">
+                            <Label htmlFor="partner-phone" className="text-xs font-medium text-[#18181B]">
+                              {isHindi ? "मोबाइल नंबर" : "Mobile Number"} <span className="text-red-500">*</span>
+                            </Label>
+                            <Input
+                              id="partner-phone"
+                              type="tel"
+                              placeholder="+91 98765 43210"
+                              value={partnerData.phone}
+                              onChange={(e) => setPartnerData({ ...partnerData, phone: e.target.value })}
+                              onBlur={() => {
+                                setPartnerTouched((prev) => ({ ...prev, phone: true }));
+                                setPartnerErrors((prev) => ({
+                                  ...prev,
+                                  phone: validatePartnerField("phone", partnerData.phone),
+                                }));
+                              }}
+                              className={`h-11 rounded-full px-4 text-xs bg-[#FAFAFA] border ${
+                                partnerErrors.phone && partnerTouched.phone ? "border-red-500" : "border-black/10"
+                              }`}
+                            />
+                            {partnerErrors.phone && partnerTouched.phone && (
+                              <p className="text-[11px] text-red-600 flex items-center gap-1 mt-0.5">
+                                <AlertCircle className="w-3 h-3" />
+                                {partnerErrors.phone}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="flex flex-col gap-1.5">
+                          <Label htmlFor="partner-city" className="text-xs font-medium text-[#18181B]">
+                            {isHindi ? "लक्षित जिला / शहर" : "Target Operating District / City"} <span className="text-red-500">*</span>
+                          </Label>
+                          <Input
+                            id="partner-city"
+                            placeholder={isHindi ? "उदा. अहमदाबाद, गुजरात" : "e.g. Ahmedabad, Gujarat"}
+                            value={partnerData.city}
+                            onChange={(e) => setPartnerData({ ...partnerData, city: e.target.value })}
+                            onBlur={() => {
+                              setPartnerTouched((prev) => ({ ...prev, city: true }));
+                              setPartnerErrors((prev) => ({
+                                ...prev,
+                                city: validatePartnerField("city", partnerData.city),
+                              }));
+                            }}
+                            className={`h-11 rounded-full px-4 text-xs bg-[#FAFAFA] border ${
+                              partnerErrors.city && partnerTouched.city ? "border-red-500" : "border-black/10"
+                            }`}
+                          />
+                          {partnerErrors.city && partnerTouched.city && (
+                            <p className="text-[11px] text-red-600 flex items-center gap-1 mt-0.5">
+                              <AlertCircle className="w-3 h-3" />
+                              {partnerErrors.city}
+                            </p>
+                          )}
+                        </div>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          <div className="flex flex-col gap-1.5">
+                            <Label className="text-xs font-medium text-[#18181B]">
+                              {isHindi ? "साझेदारी का प्रकार" : "Partnership Tier"} <span className="text-red-500">*</span>
+                            </Label>
+                            <Select
+                              value={partnerData.partnershipType}
+                              onValueChange={(val) => {
+                                setPartnerData({ ...partnerData, partnershipType: val });
+                                setPartnerTouched((prev) => ({ ...prev, partnershipType: true }));
+                                setPartnerErrors((prev) => ({
+                                  ...prev,
+                                  partnershipType: validatePartnerField("partnershipType", val),
+                                }));
+                              }}
+                            >
+                              <SelectTrigger className={`h-11 rounded-full px-4 text-xs bg-[#FAFAFA] border cursor-pointer ${
+                                partnerErrors.partnershipType && partnerTouched.partnershipType ? "border-red-500" : "border-black/10"
+                              }`}>
+                                <SelectValue placeholder="Select Franchise Model" />
+                              </SelectTrigger>
+                              <SelectContent className="bg-white border border-black/10 shadow-2xl rounded-2xl">
+                                <SelectItem value="distributor">Distributor Partner (Territory)</SelectItem>
+                                <SelectItem value="master">Master Distributor (State / Zone)</SelectItem>
+                                <SelectItem value="channel">Channel EPC Partner</SelectItem>
+                                <SelectItem value="merchant">Retail Merchant Store</SelectItem>
+                              </SelectContent>
+                            </Select>
+                            {partnerErrors.partnershipType && partnerTouched.partnershipType && (
+                              <p className="text-[11px] text-red-600 flex items-center gap-1 mt-0.5">
+                                <AlertCircle className="w-3 h-3" />
+                                {partnerErrors.partnershipType}
+                              </p>
+                            )}
+                          </div>
+
+                          <div className="flex flex-col gap-1.5">
+                            <Label className="text-xs font-medium text-[#18181B]">
+                              {isHindi ? "निवेश पूंजी सीमा" : "Capital Allocation Band"} <span className="text-red-500">*</span>
+                            </Label>
+                            <Select
+                              value={partnerData.investmentCapacity}
+                              onValueChange={(val) => {
+                                setPartnerData({ ...partnerData, investmentCapacity: val });
+                                setPartnerTouched((prev) => ({ ...prev, investmentCapacity: true }));
+                                setPartnerErrors((prev) => ({
+                                  ...prev,
+                                  investmentCapacity: validatePartnerField("investmentCapacity", val),
+                                }));
+                              }}
+                            >
+                              <SelectTrigger className={`h-11 rounded-full px-4 text-xs bg-[#FAFAFA] border cursor-pointer ${
+                                partnerErrors.investmentCapacity && partnerTouched.investmentCapacity ? "border-red-500" : "border-black/10"
+                              }`}>
+                                <SelectValue placeholder="Select Capital Band" />
+                              </SelectTrigger>
+                              <SelectContent className="bg-white border border-black/10 shadow-2xl rounded-2xl">
+                                <SelectItem value="tier1">₹2,00,000 - ₹5,00,000</SelectItem>
+                                <SelectItem value="tier2">₹5,00,000 - ₹15,00,000</SelectItem>
+                                <SelectItem value="tier3">₹15,00,000 - ₹30,00,000</SelectItem>
+                                <SelectItem value="tier4">₹30,00,000+ (Institutional Master)</SelectItem>
+                              </SelectContent>
+                            </Select>
+                            {partnerErrors.investmentCapacity && partnerTouched.investmentCapacity && (
+                              <p className="text-[11px] text-red-600 flex items-center gap-1 mt-0.5">
+                                <AlertCircle className="w-3 h-3" />
+                                {partnerErrors.investmentCapacity}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="flex flex-col gap-1.5">
+                          <Label htmlFor="partner-exp" className="text-xs font-medium text-[#18181B]">
+                            {isHindi ? "व्यवसाय अनुभव / टीम का विवरण (वैकल्पिक)" : "Business Background / Distribution Footprint (Optional)"}
+                          </Label>
+                          <Textarea
+                            id="partner-exp"
+                            placeholder={
+                              isHindi
+                                ? "अपनी वर्तमान वितरण क्षमता, इलेक्ट्रिकल ट्रेड अनुभव या क्लाइंट नेटवर्क का उल्लेख करें..."
+                                : "Provide details regarding your current business footprint, electrical trade experience, team size, or client network..."
+                            }
+                            value={partnerData.experience}
+                            onChange={(e) => setPartnerData({ ...partnerData, experience: e.target.value })}
+                            className="min-h-[80px] p-3 text-xs bg-[#FAFAFA] border border-black/10 rounded-2xl resize-none"
+                          />
+                        </div>
+
+                        {/* DPDP Consent */}
+                        <div className="p-3 rounded-xl border border-black/10 bg-zinc-50/80 flex items-start gap-3">
+                          <input
+                            type="checkbox"
+                            id="partner-consent"
+                            checked={partnerData.consentAgreed}
+                            onChange={(e) => {
+                              setPartnerData({ ...partnerData, consentAgreed: e.target.checked });
+                              setPartnerTouched((prev) => ({ ...prev, consentAgreed: true }));
+                              setPartnerErrors((prev) => ({
+                                ...prev,
+                                consentAgreed: validatePartnerField("consentAgreed", e.target.checked),
+                              }));
+                            }}
+                            className="mt-0.5 w-4 h-4 rounded text-emerald-600 accent-[#059669] cursor-pointer shrink-0"
+                          />
+                          <label htmlFor="partner-consent" className="text-[11px] text-zinc-700 leading-relaxed cursor-pointer select-none">
+                            I authorize Solvex Energy Solutions Pvt. Ltd. to evaluate my commercial credentials for franchise allocation under India&apos;s DPDP Act 2023, and agree to the{" "}
+                            <button
+                              type="button"
+                              onClick={() => openLegalModal("privacy")}
+                              className="font-semibold text-emerald-700 hover:text-emerald-800 underline inline cursor-pointer"
+                            >
+                              Privacy Policy
+                            </button>{" "}
+                            and{" "}
+                            <button
+                              type="button"
+                              onClick={() => openLegalModal("terms")}
+                              className="font-semibold text-emerald-700 hover:text-emerald-800 underline inline cursor-pointer"
+                            >
+                              Commercial Terms
+                            </button>
+                            . <span className="text-red-500">*</span>
+                          </label>
+                        </div>
+                        {partnerErrors.consentAgreed && partnerTouched.consentAgreed && (
+                          <p className="text-[11px] text-red-600 flex items-center gap-1 -mt-2 pl-2">
+                            <AlertCircle className="w-3 h-3" />
+                            {partnerErrors.consentAgreed}
+                          </p>
+                        )}
+
+                        <button
+                          type="submit"
+                          disabled={partnerSubmitting}
+                          className="w-full h-12 rounded-full bg-[#059669] hover:bg-[#047857] text-white text-xs font-semibold uppercase tracking-wider inline-flex items-center justify-center gap-2 mt-1 shadow-sm hover:shadow-md active:scale-[0.98] transition-all cursor-pointer"
+                        >
+                          {partnerSubmitting ? (
+                            <>
+                              <Loader2 className="w-4 h-4 animate-spin" />
+                              <span>{isHindi ? "डोजियर सबमिट हो रहा है..." : "Submitting Dossier..."}</span>
+                            </>
+                          ) : (
+                            <>
+                              <span>{isHindi ? "फ्रैंचाइज़ी डोजियर जमा करें" : "Submit Franchise Dossier"}</span>
+                              <Send className="w-3.5 h-3.5" />
+                            </>
+                          )}
+                        </button>
+                      </form>
+                    ) : (
+                      /* Partner Confirmation State */
+                      <div className="p-6 sm:p-8 rounded-2xl border border-emerald-500/30 bg-emerald-50/60 text-left flex flex-col gap-5 animate-in fade-in duration-300">
+                        <div className="flex items-center gap-4">
+                          <div className="w-12 h-12 rounded-full bg-[#059669] text-white flex items-center justify-center shrink-0 shadow-sm">
+                            <CheckCircle2 className="w-6 h-6" />
+                          </div>
+                          <div>
+                            <span className="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-200/80 text-emerald-950 mb-1">
+                              Dossier Confirmed
+                            </span>
+                            <h4 className="text-lg font-bold text-zinc-900 tracking-tight">
+                              {isHindi ? "फ्रैंचाइज़ी आवेदन दर्ज हुआ" : "Franchise Application Registered"}
+                            </h4>
+                          </div>
+                        </div>
+
+                        <div className="p-4 rounded-xl bg-white border border-black/10 flex flex-col gap-2.5 text-xs">
+                          <div className="flex justify-between items-center pb-2 border-b border-black/5">
+                            <span className="text-zinc-500">Tracking Reference:</span>
+                            <div className="flex items-center gap-2">
+                              <span className="font-mono font-bold text-emerald-800">{partnerRefId}</span>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  navigator.clipboard.writeText(partnerRefId);
+                                  setPartnerCopied(true);
+                                  setTimeout(() => setPartnerCopied(false), 2000);
+                                }}
+                                className="p-1 rounded hover:bg-zinc-100 text-zinc-500 cursor-pointer"
+                                title="Copy Reference ID"
+                              >
+                                {partnerCopied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                              </button>
+                            </div>
+                          </div>
+                          <div className="flex justify-between items-center pb-2 border-b border-black/5">
+                            <span className="text-zinc-500">Applicant:</span>
+                            <span className="font-semibold text-zinc-900">{partnerData.firstName} {partnerData.lastName}</span>
+                          </div>
+                          <div className="flex justify-between items-center pb-2 border-b border-black/5">
+                            <span className="text-zinc-500">Target Territory:</span>
+                            <span className="font-semibold text-zinc-900">{partnerData.city}</span>
+                          </div>
+                          <div className="flex justify-between items-center">
+                            <span className="text-zinc-500">Commercial Committee SLA:</span>
+                            <span className="font-semibold text-emerald-700">Territory Feasibility Review within 24 Hours</span>
+                          </div>
+                        </div>
+
+                        {/* Direct Follow-up CTAs */}
+                        <div className="flex flex-col sm:flex-row items-center gap-3 pt-2 border-t border-emerald-500/20">
+                          <a
+                            href={`https://wa.me/919879012345?text=${encodeURIComponent(
+                              `Hello Solvex Energy! I submitted a franchise partner application for ${partnerData.city}. Reference ID: ${partnerRefId}. Please share dealership margins and procurement prospectus.`
+                            )}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={() =>
+                              trackEvent("cta_click", {
+                                cta_name: "whatsapp_partner_success",
+                                source: "contact_section",
+                                reference_id: partnerRefId,
+                              })
+                            }
+                            className="w-full sm:flex-1 h-11 px-4 bg-[#059669] hover:bg-[#047857] text-white rounded-full text-xs font-semibold inline-flex items-center justify-center gap-2 transition-all shadow-sm active:scale-95 cursor-pointer"
+                          >
+                            <MessageSquare className="w-4 h-4 text-white" />
+                            <span>Share on WhatsApp</span>
+                          </a>
+
+                          <a
+                            href="tel:+919879012345"
+                            onClick={() =>
+                              trackEvent("cta_click", {
+                                cta_name: "phone_call_partner_success",
+                                source: "contact_section",
+                                reference_id: partnerRefId,
+                              })
+                            }
+                            className="w-full sm:flex-1 h-11 px-4 bg-white border border-black/15 text-zinc-800 hover:bg-zinc-50 rounded-full text-xs font-medium inline-flex items-center justify-center gap-2 transition-all active:scale-95 cursor-pointer"
+                          >
+                            <Phone className="w-3.5 h-3.5 text-[#059669]" />
+                            <span>Call Expansion Desk</span>
+                          </a>
+                        </div>
+
+                        <div className="pt-2 flex items-center justify-between">
+                          <button
+                            type="button"
+                            onClick={() => setPartnerSubmitted(false)}
+                            className="text-xs font-semibold text-emerald-800 hover:text-emerald-950 underline underline-offset-2 cursor-pointer"
+                          >
+                            Submit Another Territory Inquiry
+                          </button>
+                          <span className="text-[11px] text-zinc-500 flex items-center gap-1">
+                            <Lock className="w-3 h-3 text-emerald-700" />
+                            Confidential Dossier Protected
+                          </span>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            </MotionReveal>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
   );
 }

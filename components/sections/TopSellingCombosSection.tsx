@@ -1,10 +1,12 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { Zap, ArrowRight, Sparkles } from "lucide-react";
+import { Zap, ArrowRight, Sparkles, MessageSquare } from "lucide-react";
 import { MotionReveal, MotionStagger, MotionItem } from "@/components/ui/motion-reveal";
 import { SlidingTabs } from "@/components/ui/sliding-tabs";
 import { useLanguage } from "@/context/LanguageContext";
+import { trackEvent } from "@/lib/analytics";
+import { openProductEnquiryDialog } from "@/components/forms/ProductEnquiryDialog";
 
 interface RawComboItem {
   id: string;
@@ -249,13 +251,24 @@ export default function TopSellingCombosSection() {
 
               {/* Action Button */}
               <div className="p-6 pt-0">
-                <a
-                  href="#partner-form"
-                  className="w-full h-[46px] rounded-full bg-primary text-white hover:bg-primary-hover text-xs font-normal tracking-[-0.1px] flex items-center justify-center gap-2 transition-all shadow-xs cursor-pointer"
+                <button
+                  type="button"
+                  onClick={() => {
+                    trackEvent("cta_click", {
+                      cta_name: "combo_boq_request",
+                      source: "combos_section",
+                      combo_title: combo.name,
+                      system_type: combo.systemType,
+                    });
+                    openProductEnquiryDialog({
+                      product: `${combo.name} (${combo.systemType})`,
+                    });
+                  }}
+                  className="w-full h-[46px] rounded-full bg-primary text-white hover:bg-primary-hover text-xs font-normal tracking-[-0.1px] flex items-center justify-center gap-2 transition-all shadow-xs cursor-pointer active:scale-95"
                 >
                   <span>{isHindi ? "पूर्ण सामग्री सूची (BOQ) मांगें" : "Request Full Bill of Materials"}</span>
                   <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1.5 transition-transform duration-200" />
-                </a>
+                </button>
               </div>
             </MotionItem>
           ))}
@@ -278,13 +291,44 @@ export default function TopSellingCombosSection() {
               </p>
             </div>
           </div>
-          <a
-            href="#partner-form"
-            className="h-[50px] px-7 rounded-full border border-black/15 bg-white text-[#18181B] hover:bg-zinc-100 text-sm font-normal tracking-[-0.2px] inline-flex items-center gap-2 shrink-0 transition-all shadow-xs"
-          >
-            <span>{isHindi ? "तकनीकी व्यवहार्यता का अनुरोध करें" : "Commission Feasibility Audit"}</span>
-            <ArrowRight className="w-4 h-4" />
-          </a>
+          <div className="flex flex-wrap items-center gap-3 shrink-0">
+            <a
+              href={`https://wa.me/919879012345?text=${encodeURIComponent(
+                "Hello Solvex team, I am planning a commercial/industrial solar project (15kW to 500kW+). Please share feasibility parameters and connect me with your EPC desk."
+              )}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => {
+                trackEvent("cta_click", {
+                  cta_name: "whatsapp_commercial_combos",
+                  source: "combos_custom_banner",
+                  capacity: "15-500kW",
+                });
+              }}
+              className="h-[50px] px-5 rounded-full border border-[#25D366]/40 bg-[#25D366]/10 text-emerald-800 hover:bg-[#25D366]/20 text-xs sm:text-sm font-medium inline-flex items-center gap-2 transition-all shadow-xs cursor-pointer active:scale-95"
+            >
+              <MessageSquare className="w-4 h-4 text-[#25D366]" />
+              <span>{isHindi ? "EPC व्हाट्सएप डेस्क" : "EPC WhatsApp Desk"}</span>
+            </a>
+            <button
+              type="button"
+              onClick={() => {
+                trackEvent("cta_click", {
+                  cta_name: "commission_feasibility_audit",
+                  source: "combos_custom_banner",
+                  capacity: "15-500kW",
+                });
+                openProductEnquiryDialog({
+                  product: "Commercial 15kW - 500kW+ Engineered Array & Feasibility",
+                  capacity: "25",
+                });
+              }}
+              className="h-[50px] px-6 rounded-full border border-black/15 bg-white text-[#18181B] hover:bg-zinc-100 text-xs sm:text-sm font-normal tracking-[-0.2px] inline-flex items-center gap-2 shrink-0 transition-all shadow-xs cursor-pointer active:scale-95"
+            >
+              <span>{isHindi ? "तकनीकी व्यवहार्यता ऑडिट" : "Commission Feasibility Audit"}</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
         </MotionReveal>
       </div>
     </section>

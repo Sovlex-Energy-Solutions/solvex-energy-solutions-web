@@ -7,6 +7,7 @@ import gsap from "gsap";
 import { useCinematicReveal } from "@/components/ui/cinematic-load-reveal";
 import { useLanguage } from "@/context/LanguageContext";
 import { LanguageSwitcher } from "@/components/ui/language-switcher";
+import { trackEvent } from "@/lib/analytics";
 
 export default function Navbar() {
   const { isRevealed } = useCinematicReveal();
@@ -211,6 +212,12 @@ export default function Navbar() {
                 : "bg-white text-[#18181B] hover:bg-neutral-100 shadow-sm"
             }`}
             href="#partner-form"
+            onClick={() =>
+              trackEvent("cta_click", {
+                cta_name: "navbar_partner_button",
+                source: "navbar_desktop",
+              })
+            }
           >
             {t("common.partnerLogin")}
           </a>
@@ -340,8 +347,14 @@ export default function Navbar() {
             ))}
             <a
               href="#partner-form"
-              onClick={() => setMobileMenuOpen(false)}
-              className={`mt-2 h-[44px] rounded-full flex items-center justify-center text-sm font-medium tracking-[-0.2px] transition-all active:scale-[0.98] ${
+              onClick={() => {
+                setMobileMenuOpen(false);
+                trackEvent("cta_click", {
+                  cta_name: "navbar_partner_button_mobile",
+                  source: "navbar_mobile_menu",
+                });
+              }}
+              className={`mt-2 h-[44px] rounded-full flex items-center justify-center text-sm font-medium tracking-[-0.2px] transition-all active:scale-[0.98] cursor-pointer ${
                 scrolled
                   ? "bg-[#059669] text-white hover:bg-[#047857] shadow-sm"
                   : "bg-white text-[#18181B] hover:bg-neutral-100 shadow-md"

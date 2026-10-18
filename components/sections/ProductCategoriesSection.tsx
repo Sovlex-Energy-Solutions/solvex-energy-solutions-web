@@ -5,6 +5,8 @@ import { ArrowRight, Sparkles, Truck, CreditCard, Headphones, ShieldCheck } from
 import { MotionReveal, MotionStagger, MotionItem } from "@/components/ui/motion-reveal";
 import { SlidingTabs } from "@/components/ui/sliding-tabs";
 import { useLanguage } from "@/context/LanguageContext";
+import { trackEvent } from "@/lib/analytics";
+import { openProductEnquiryDialog } from "@/components/forms/ProductEnquiryDialog";
 
 interface RawCategoryItem {
   id: string;
@@ -136,8 +138,10 @@ export default function ProductCategoriesSection() {
       icon: Headphones,
       title: isHindi ? "समर्पित तकनीकी सहायता" : "Dedicated Technical Dispatch",
       subtitle: isHindi
-        ? "तीव्र डायग्नोस्टिक्स और कमीशनिंग सहायता हेतु समर्पित हेल्पलाइन और फील्ड इंजीनियर नेटवर्क।"
-        : "Direct phone line and field engineer dispatch for rapid diagnostics and commissioning assistance.",
+        ? "तीव्र डायग्नोस्टिक्स और कमीशनिंग सहायता हेतु समर्पित हेल्पलाइन (+91 98790 12345)।"
+        : "Direct phone line (+91 98790 12345) and field engineer dispatch for rapid diagnostics.",
+      href: "tel:+919879012345",
+      cta: isHindi ? "हेल्पलाइन कॉल: +91 98790 12345" : "Call Helpline: +91 98790 12345",
     },
     {
       icon: ShieldCheck,
@@ -239,13 +243,23 @@ export default function ProductCategoriesSection() {
 
               {/* Action Button */}
               <div className="p-6 pt-0">
-                <a
-                  href="#partner-form"
-                  className="w-full h-[46px] rounded-full border border-black/15 bg-transparent hover:bg-primary hover:text-white hover:border-primary text-[#18181B] text-xs font-normal tracking-[-0.1px] flex items-center justify-between px-5 transition-all"
+                <button
+                  type="button"
+                  onClick={() => {
+                    trackEvent("cta_click", {
+                      cta_name: "category_hardware_enquiry",
+                      source: "product_categories",
+                      category: item.name,
+                    });
+                    openProductEnquiryDialog({
+                      product: item.name,
+                    });
+                  }}
+                  className="w-full h-[46px] rounded-full border border-black/15 bg-transparent hover:bg-primary hover:text-white hover:border-primary text-[#18181B] text-xs font-normal tracking-[-0.1px] flex items-center justify-between px-5 transition-all cursor-pointer shadow-2xs hover:shadow-sm active:scale-95"
                 >
                   <span>{isHindi ? "हार्डवेयर पूछताछ" : "Enquire Hardware"}</span>
                   <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1.5 transition-transform duration-200" />
-                </a>
+                </button>
               </div>
             </MotionItem>
           ))}
@@ -255,12 +269,9 @@ export default function ProductCategoriesSection() {
         <MotionStagger className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 pt-4">
           {trustBadges.map((badge, idx) => {
             const Icon = badge.icon;
-            return (
-              <MotionItem
-                key={idx}
-                className="p-6 rounded-lg border border-black/10 bg-white flex items-start gap-4 shadow-xs hover:border-black/25 transition-all"
-              >
-                <div className="w-10 h-10 rounded-full bg-zinc-100 flex items-center justify-center shrink-0 text-[#18181B]">
+            const content = (
+              <>
+                <div className="w-10 h-10 rounded-full bg-zinc-100 flex items-center justify-center shrink-0 text-[#18181B] group-hover:scale-105 transition-transform">
                   <Icon className="w-4 h-4" />
                 </div>
                 <div className="flex flex-col">
@@ -270,7 +281,35 @@ export default function ProductCategoriesSection() {
                   <span className="text-xs font-normal text-[#71717A] mt-1 leading-relaxed">
                     {badge.subtitle}
                   </span>
+                  {badge.cta && (
+                    <span className="text-[11px] font-medium text-primary mt-2 flex items-center gap-1 group-hover:underline">
+                      {badge.cta} →
+                    </span>
+                  )}
                 </div>
+              </>
+            );
+
+            return (
+              <MotionItem key={idx}>
+                {badge.href ? (
+                  <a
+                    href={badge.href}
+                    onClick={() => {
+                      trackEvent("cta_click", {
+                        cta_name: "trust_badge_call",
+                        source: "product_categories_trust",
+                      });
+                    }}
+                    className="group p-6 rounded-lg border border-black/10 bg-white flex items-start gap-4 shadow-xs hover:border-primary/40 hover:bg-zinc-50/50 transition-all cursor-pointer h-full"
+                  >
+                    {content}
+                  </a>
+                ) : (
+                  <div className="p-6 rounded-lg border border-black/10 bg-white flex items-start gap-4 shadow-xs hover:border-black/25 transition-all h-full">
+                    {content}
+                  </div>
+                )}
               </MotionItem>
             );
           })}

@@ -1,8 +1,9 @@
 "use client";
 
-import { Sun, Wind, BatteryCharging, Layers, ArrowRight } from "lucide-react";
+import { Sun, Wind, BatteryCharging, Layers, ArrowRight, Phone, MessageSquare } from "lucide-react";
 import { MotionReveal, MotionStagger, MotionItem } from "@/components/ui/motion-reveal";
 import { useLanguage } from "@/context/LanguageContext";
+import { trackEvent } from "@/lib/analytics";
 
 export default function SolutionsSection() {
   const { t } = useLanguage();
@@ -79,6 +80,53 @@ export default function SolutionsSection() {
             );
           })}
         </MotionStagger>
+
+        {/* EPC Technical Consultation Bar */}
+        <MotionReveal className="rounded-2xl border border-black/10 bg-gradient-to-r from-zinc-50 via-white to-zinc-50 p-6 sm:p-8 flex flex-col lg:flex-row items-center justify-between gap-6 shadow-xs">
+          <div className="flex flex-col gap-1 text-center lg:text-left">
+            <span className="text-[11px] font-semibold text-primary uppercase tracking-wider">
+              {t("solutions.banner_badge", "Commercial & Industrial EPC Advisory")}
+            </span>
+            <h3 className="text-lg lg:text-xl font-normal text-[#18181B] tracking-[-0.3px]">
+              {t("solutions.banner_title", "Planning a Factory, Warehouse, or Institutional Solar Array?")}
+            </h3>
+            <p className="text-xs sm:text-sm text-[#71717A] max-w-xl">
+              {t("solutions.banner_sub", "Connect directly with our Chief Projects Engineer for HT/LT connectivity assessment, 25-year LCOE financial models, and DISCOM sanctions.")}
+            </p>
+          </div>
+          <div className="flex flex-wrap items-center justify-center gap-3 shrink-0">
+            <a
+              href="tel:+919879012345"
+              onClick={() => {
+                trackEvent("cta_click", {
+                  cta_name: "call_epc_solutions",
+                  source: "solutions_section",
+                });
+              }}
+              className="h-[46px] px-5 rounded-full border border-black/15 bg-white hover:bg-zinc-100 text-[#18181B] text-xs font-medium inline-flex items-center gap-2 transition-all shadow-xs cursor-pointer active:scale-95"
+            >
+              <Phone className="w-3.5 h-3.5 text-primary" />
+              <span>+91 98790 12345</span>
+            </a>
+            <a
+              href={`https://wa.me/919879012345?text=${encodeURIComponent(
+                "Hello Solvex team, I need an EPC consultation for our commercial/industrial facility. Please connect me with your chief solar engineer."
+              )}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => {
+                trackEvent("cta_click", {
+                  cta_name: "whatsapp_epc_solutions",
+                  source: "solutions_section",
+                });
+              }}
+              className="h-[46px] px-5 rounded-full bg-[#25D366] hover:bg-[#20bd5a] text-white text-xs font-medium inline-flex items-center gap-2 transition-all shadow-sm cursor-pointer active:scale-95"
+            >
+              <MessageSquare className="w-3.5 h-3.5 text-white" />
+              <span>{t("solutions.chat_whatsapp", "WhatsApp EPC Desk")}</span>
+            </a>
+          </div>
+        </MotionReveal>
       </div>
     </section>
   );
