@@ -25,7 +25,10 @@ export default function Navbar() {
     hasAnimatedRef.current = true;
 
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      if (headerRef.current) gsap.set(headerRef.current, { y: 0, opacity: 1 });
+      if (headerRef.current) {
+        gsap.set(headerRef.current, { opacity: 1 });
+        headerRef.current.style.transform = "";
+      }
       return;
     }
 
@@ -38,7 +41,14 @@ export default function Navbar() {
           opacity: 1,
           duration: 0.65,
           ease: "power3.out",
-          clearProps: "willChange",
+          clearProps: "all",
+          onComplete: () => {
+            if (headerRef.current) {
+              headerRef.current.style.transform = "";
+              headerRef.current.style.opacity = "";
+              headerRef.current.style.willChange = "";
+            }
+          },
         }
       );
     }
@@ -57,6 +67,42 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setMobileMenuOpen(false);
+      }
+    };
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) {
+        setMobileMenuOpen(false);
+      }
+    };
+    if (mobileMenuOpen) {
+      window.addEventListener("keydown", handleKeyDown);
+    }
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [mobileMenuOpen]);
+
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+    const handleClickOutside = (e: MouseEvent | TouchEvent) => {
+      if (headerRef.current && !headerRef.current.contains(e.target as Node)) {
+        setMobileMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("touchstart", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside);
+    };
+  }, [mobileMenuOpen]);
+
   const navLinks = [
     { href: "#about-us", label: t("navigation.about") },
     { href: "#products-categories", label: t("navigation.products") },
@@ -71,8 +117,8 @@ export default function Navbar() {
   return (
     <header
       ref={headerRef}
-      style={{ opacity: 0, transform: "translateY(-24px)" }}
-      className="fixed top-0 inset-x-0 z-50 pointer-events-none transition-all duration-500 ease-out will-change-[transform,opacity]"
+      style={!isRevealed ? { opacity: 0, transform: "translateY(-24px)" } : undefined}
+      className="fixed top-0 inset-x-0 z-50 pointer-events-none transition-all duration-500 ease-out"
     >
       <div
         className={`pointer-events-auto mx-auto transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
@@ -138,8 +184,10 @@ export default function Navbar() {
 
         {/* Right CTAs */}
         <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-          {/* Desktop Language Switcher */}
-          <LanguageSwitcher scrolled={scrolled} className="hidden sm:inline-flex" />
+          {/* Desktop Language Switcher - visible only on lg+ screens; on smaller screens it lives inside the hamburger menu */}
+          <div className="hidden lg:flex items-center shrink-0">
+            <LanguageSwitcher scrolled={scrolled} />
+          </div>
 
           <div
             className={`hidden xl:flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-normal whitespace-nowrap shrink-0 transition-all duration-300 ${
@@ -154,7 +202,7 @@ export default function Navbar() {
 
           {/* Primary Pill Button */}
           <a
-            className={`rounded-full h-[38px] sm:h-[42px] px-5 sm:px-6 text-sm font-normal tracking-[-0.2px] whitespace-nowrap transition-all inline-flex items-center justify-center shrink-0 cursor-pointer active:scale-95 ${
+            className={`rounded-full h-[36px] sm:h-[40px] px-4 sm:px-5 text-xs sm:text-sm font-normal tracking-[-0.2px] whitespace-nowrap transition-all inline-flex items-center justify-center shrink-0 cursor-pointer active:scale-95 ${
               scrolled
                 ? "bg-[#059669] text-white hover:bg-[#047857] shadow-xs"
                 : "bg-white text-[#18181B] hover:bg-neutral-100 shadow-sm"
@@ -164,31 +212,56 @@ export default function Navbar() {
             {t("common.partnerLogin")}
           </a>
 
-          {/* Mobile hamburger button */}
+          {/* Mobile hamburger button - translucent in both unscrolled and scrolled states */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className={`lg:hidden p-2 rounded-full border transition-colors cursor-pointer shrink-0 ${
+            className={`lg:hidden p-2 rounded-full border transition-all duration-300 cursor-pointer shrink-0 ${
               scrolled
-                ? "text-[#18181B] border-black/10 hover:bg-black/5"
-                : "text-white border-white/20 hover:bg-white/10"
+                ? "text-[#18181B] border-black/10 bg-white/60 hover:bg-white/90 backdrop-blur-md shadow-xs active:scale-95"
+                : "text-white border-white/20 bg-white/10 hover:bg-white/20 backdrop-blur-md shadow-xs active:scale-95"
             }`}
             aria-label="Toggle navigation"
+            aria-expanded={mobileMenuOpen}
           >
             {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
         </div>
       </div>
 
+      {/* Translucent Backdrop Overlay for mobile menu */}
+      {mobileMenuOpen && (
+        <div
+          onClick={() => setMobileMenuOpen(false)}
+          className={`fixed inset-0 lg:hidden pointer-events-auto transition-opacity duration-300 ${
+            scrolled ? "bg-black/25" : "bg-black/40"
+          }`}
+          style={{
+            backdropFilter: "blur(10px)",
+            WebkitBackdropFilter: "blur(10px)",
+          }}
+          aria-hidden="true"
+        />
+      )}
+
       {/* Mobile Drawer (Glassmorphic Translucent dropdown) */}
       {mobileMenuOpen && (
         <div
-          className={`lg:hidden pointer-events-auto mx-auto w-[92%] sm:w-[90%] max-w-5xl mt-2 p-5 rounded-2xl border transition-all duration-300 shadow-2xl space-y-4 ${
+          style={{
+            backdropFilter: "blur(24px) saturate(180%)",
+            WebkitBackdropFilter: "blur(24px) saturate(180%)",
+          }}
+          className={`relative z-10 lg:hidden pointer-events-auto mx-auto w-[94%] sm:w-[90%] max-w-5xl mt-2 p-5 rounded-2xl border transition-all duration-300 shadow-2xl space-y-4 max-h-[calc(100dvh-88px)] overflow-y-auto ${
             scrolled
-              ? "bg-white/95 backdrop-blur-2xl border-black/10 text-[#18181B]"
-              : "bg-slate-950/85 backdrop-blur-2xl border-white/20 text-white"
+              ? "bg-white/75 hover:bg-white/80 border-black/10 text-[#18181B] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.15),inset_0_1px_1px_rgba(255,255,255,0.9)]"
+              : "bg-slate-950/45 sm:bg-slate-950/50 border-white/20 text-white shadow-[0_25px_60px_-15px_rgba(0,0,0,0.6),inset_0_1px_1px_rgba(255,255,255,0.2)]"
           }`}
         >
-          <div className="flex items-center justify-between pb-3 border-b border-black/10 dark:border-white/10">
+          {/* Drawer Header */}
+          <div
+            className={`flex items-center justify-between pb-3 border-b ${
+              scrolled ? "border-black/10" : "border-white/15"
+            }`}
+          >
             <div className="flex items-center gap-2.5">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
@@ -216,7 +289,7 @@ export default function Navbar() {
             <div
               className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-normal ${
                 scrolled
-                  ? "border border-black/10 bg-zinc-100 text-[#71717A]"
+                  ? "border border-black/10 bg-zinc-100/90 text-[#18181B]"
                   : "border border-white/20 bg-white/10 text-white/90"
               }`}
             >
@@ -225,8 +298,8 @@ export default function Navbar() {
             </div>
           </div>
 
-          {/* Mobile Language Switcher */}
-          <div className="pt-1">
+          {/* Mobile Language Switcher (shown only inside hamburger menu on smaller screens) */}
+          <div className="pt-0.5">
             <LanguageSwitcher
               scrolled={scrolled}
               isMobile
@@ -234,28 +307,38 @@ export default function Navbar() {
             />
           </div>
 
+          {/* Navigation Links - clear, bold, high-contrast & visible in both scrolled and unscrolled states */}
           <nav className="flex flex-col gap-1 pt-1">
             {navLinks.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className={`py-2 text-sm font-normal tracking-[-0.2px] transition-colors ${
+                className={`px-3.5 py-2.5 rounded-xl text-sm font-medium tracking-[-0.2px] transition-all duration-200 flex items-center justify-between group ${
                   scrolled
-                    ? "text-[#71717A] hover:text-[#18181B]"
-                    : "text-white/80 hover:text-white"
+                    ? "text-[#18181B] hover:text-[#059669] hover:bg-black/5 active:bg-black/10"
+                    : "text-white hover:text-emerald-300 hover:bg-white/10 active:bg-white/15"
                 }`}
               >
-                {link.label}
+                <span>{link.label}</span>
+                <span
+                  className={`text-xs transition-transform duration-200 group-hover:translate-x-1 ${
+                    scrolled
+                      ? "text-zinc-400 group-hover:text-[#059669]"
+                      : "text-white/40 group-hover:text-emerald-300"
+                  }`}
+                >
+                  →
+                </span>
               </a>
             ))}
             <a
               href="#partner-form"
               onClick={() => setMobileMenuOpen(false)}
-              className={`mt-3 h-[44px] rounded-full flex items-center justify-center text-sm font-normal tracking-[-0.2px] transition-colors ${
+              className={`mt-2 h-[44px] rounded-full flex items-center justify-center text-sm font-medium tracking-[-0.2px] transition-all active:scale-[0.98] ${
                 scrolled
-                  ? "bg-[#059669] text-white hover:bg-[#047857]"
-                  : "bg-white text-[#18181B] hover:bg-neutral-100"
+                  ? "bg-[#059669] text-white hover:bg-[#047857] shadow-sm"
+                  : "bg-white text-[#18181B] hover:bg-neutral-100 shadow-md"
               }`}
             >
               {t("common.partnerLogin")}

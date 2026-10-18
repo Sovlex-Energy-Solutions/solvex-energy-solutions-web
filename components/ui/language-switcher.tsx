@@ -3,6 +3,7 @@
 import React from "react";
 import { useLanguage, Locale } from "@/context/LanguageContext";
 import { Globe } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface LanguageSwitcherProps {
   scrolled?: boolean;
@@ -33,11 +34,13 @@ export function LanguageSwitcher({
       <div
         role="group"
         aria-label="Language selection"
-        className={`flex items-center justify-between p-1.5 rounded-xl border transition-colors ${
+        className={cn(
+          "flex items-center justify-between p-1.5 rounded-xl border transition-colors",
           scrolled
-            ? "border-black/10 bg-zinc-100/80 text-[#18181B]"
-            : "border-white/15 bg-white/10 text-white"
-        } ${className}`}
+            ? "border-black/10 bg-black/[0.04] text-[#18181B]"
+            : "border-white/15 bg-white/10 text-white",
+          className
+        )}
       >
         <div className="flex items-center gap-2 pl-2 text-xs font-medium">
           <Globe className="w-3.5 h-3.5 opacity-70" />
@@ -54,7 +57,7 @@ export function LanguageSwitcher({
                   ? "bg-primary text-white shadow-xs"
                   : "bg-white text-[#18181B] shadow-xs"
                 : scrolled
-                ? "text-[#71717A] hover:text-[#18181B]"
+                ? "text-zinc-600 hover:text-[#18181B]"
                 : "text-white/80 hover:text-white"
             }`}
           >
@@ -71,7 +74,7 @@ export function LanguageSwitcher({
                   ? "bg-primary text-white shadow-xs"
                   : "bg-white text-[#18181B] shadow-xs"
                 : scrolled
-                ? "text-[#71717A] hover:text-[#18181B]"
+                ? "text-zinc-600 hover:text-[#18181B]"
                 : "text-white/80 hover:text-white"
             }`}
           >
@@ -86,11 +89,13 @@ export function LanguageSwitcher({
     <div
       role="group"
       aria-label="Language selection"
-      className={`relative inline-flex items-center p-1 rounded-full border text-xs font-medium transition-all duration-300 select-none ${
+      className={cn(
+        "relative inline-flex items-center p-1 rounded-full border text-xs font-medium transition-all duration-300 select-none",
         scrolled
           ? "border-black/10 bg-zinc-50/90 backdrop-blur-sm text-[#18181B]"
-          : "border-white/20 bg-white/10 backdrop-blur-md text-white"
-      } ${className}`}
+          : "border-white/20 bg-white/10 backdrop-blur-md text-white",
+        className
+      )}
     >
       <Globe
         className={`w-3.5 h-3.5 ml-2 mr-1 transition-opacity ${
