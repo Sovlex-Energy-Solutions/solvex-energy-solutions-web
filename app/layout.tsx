@@ -206,7 +206,10 @@ export default function RootLayout({
           `}</style>
         </noscript>
       </head>
-      <body className="bg-[#FFFFFF] text-[#18181B] font-sans antialiased min-h-screen flex flex-col selection:bg-primary selection:text-white">
+      <body
+        className="bg-[#FFFFFF] text-[#18181B] font-sans antialiased min-h-screen flex flex-col selection:bg-primary selection:text-white"
+        suppressHydrationWarning
+      >
         <LanguageProvider>
           {children}
           {/* Global Quick Contact Speed Dial (Working Call & WhatsApp) */}
