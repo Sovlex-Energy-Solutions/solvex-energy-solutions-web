@@ -271,7 +271,7 @@ export default function FranchiseApplicationDialog({
 
               <div className="flex flex-col sm:flex-row items-center gap-3 w-full max-w-lg">
                 <a
-                  href={`https://wa.me/919879012345?text=${encodeURIComponent(
+                  href={`https://wa.me/919125127755?text=${encodeURIComponent(
                     `Hello Solvex Energy! I submitted a franchise partner application for ${submittedData?.city || "my territory"}. Reference ID: ${applicationRef}. Please share the dealership margins prospectus.`
                   )}`}
                   target="_blank"
@@ -289,7 +289,7 @@ export default function FranchiseApplicationDialog({
                   <span>{isHindi ? "व्हाट्सएप पर बात करें" : "Direct WhatsApp Chat"}</span>
                 </a>
                 <a
-                  href="tel:+919879012345"
+                  href="tel:+919125127755"
                   onClick={() =>
                     trackEvent("cta_click", {
                       cta_name: "phone_call_franchise_success",
@@ -300,7 +300,7 @@ export default function FranchiseApplicationDialog({
                   className="w-full sm:flex-1 h-[48px] px-5 bg-white border border-black/15 text-[#18181B] hover:bg-zinc-50 rounded-full text-xs font-medium inline-flex items-center justify-center gap-2 transition-all active:scale-95 cursor-pointer"
                 >
                   <Phone className="w-4 h-4 text-[#059669]" />
-                  <span>{isHindi ? "कॉल करें: +91 98790 12345" : "Call +91 98790 12345"}</span>
+                  <span>{isHindi ? "कॉल करें: +91 91251 27755" : "Call +91 91251 27755"}</span>
                 </a>
               </div>
 

@@ -138,10 +138,10 @@ export default function ProductCategoriesSection() {
       icon: Headphones,
       title: isHindi ? "समर्पित तकनीकी सहायता" : "Dedicated Technical Dispatch",
       subtitle: isHindi
-        ? "तीव्र डायग्नोस्टिक्स और कमीशनिंग सहायता हेतु समर्पित हेल्पलाइन (+91 98790 12345)।"
-        : "Direct phone line (+91 98790 12345) and field engineer dispatch for rapid diagnostics.",
-      href: "tel:+919879012345",
-      cta: isHindi ? "हेल्पलाइन कॉल: +91 98790 12345" : "Call Helpline: +91 98790 12345",
+        ? "तीव्र डायग्नोस्टिक्स और कमीशनिंग सहायता हेतु समर्पित हेल्पलाइन (+91 91251 27755)।"
+        : "Direct phone line (+91 91251 27755) and field engineer dispatch for rapid diagnostics.",
+      href: "tel:+919125127755",
+      cta: isHindi ? "हेल्पलाइन कॉल: +91 91251 27755" : "Call Helpline: +91 91251 27755",
     },
     {
       icon: ShieldCheck,

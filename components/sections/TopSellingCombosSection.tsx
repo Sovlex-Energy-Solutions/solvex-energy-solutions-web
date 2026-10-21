@@ -289,7 +289,7 @@ export default function TopSellingCombosSection() {
           </div>
           <div className="flex flex-wrap items-center gap-3 shrink-0">
             <a
-              href={`https://wa.me/919879012345?text=${encodeURIComponent(
+              href={`https://wa.me/919125127755?text=${encodeURIComponent(
                 "Hello Solvex team, I am planning a commercial/industrial solar project (15kW to 500kW+). Please share feasibility parameters and connect me with your EPC desk."
               )}`}
               target="_blank"

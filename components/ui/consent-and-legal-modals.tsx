@@ -59,7 +59,7 @@ export function PrivacyPolicyContent() {
           1. Institutional Commitment & Legal Identity
         </h3>
         <p>
-          This Privacy Policy applies to all digital platforms, portal interfaces, and customer interaction channels operated by <strong>Solvex Energy Solutions Private Limited</strong> (CIN: U43219GJ2025PTC168167), having its corporate office at 204 Capital Square, Parvat Godadara BRTS Road, Surat 395010, Gujarat, India (&ldquo;Solvex&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo;, or &ldquo;our&rdquo;). We act as a <em>Data Fiduciary</em> under the provisions of the Digital Personal Data Protection Act 2023 (DPDP Act) and the Information Technology Act 2000.
+          This Privacy Policy applies to all digital platforms, portal interfaces, and customer interaction channels operated by <strong>Solvex Energy Solutions Private Limited</strong> (CIN: U43219GJ2025PTC168167), having its corporate office at F-5A Shyam Nagar, EX Shiv Sadan, Jaipur 302019, Rajasthan, India (&ldquo;Solvex&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo;, or &ldquo;our&rdquo;). We act as a <em>Data Fiduciary</em> under the provisions of the Digital Personal Data Protection Act 2023 (DPDP Act) and the Information Technology Act 2000.
         </p>
       </section>
 
@@ -102,7 +102,7 @@ export function PrivacyPolicyContent() {
             Telephonic calls may be monitored or recorded strictly for quality assurance, engineering specification verification, and commercial record-keeping.
           </li>
           <li>
-            You may revoke communication consent at any time by replying &ldquo;STOP&rdquo; on WhatsApp or emailing <code>corporate@solvexenergy.com</code>.
+            You may revoke communication consent at any time by replying &ldquo;STOP&rdquo; on WhatsApp or emailing <code>Infosolvexenergysoltuion@gmail.com</code>.
           </li>
         </ul>
       </section>
@@ -223,8 +223,8 @@ export function PrivacyPolicyContent() {
         <p className="text-xs text-zinc-600 leading-relaxed font-mono">
           Attention: Legal & Regulatory Desk<br />
           Solvex Energy Solutions Private Limited<br />
-          204 Capital Square, Parvat Godadara BRTS Road, Surat 395010, Gujarat, India<br />
-          Email: corporate@solvexenergy.com | Direct Line: +91-98765-43210
+          F-5A Shyam Nagar, EX Shiv Sadan, Jaipur 302019, Rajasthan, India<br />
+          Email: Infosolvexenergysoltuion@gmail.com | Direct Line: +91-91251-27755
         </p>
       </section>
     </div>

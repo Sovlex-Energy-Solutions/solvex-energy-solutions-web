@@ -277,7 +277,7 @@ export default function ContactSection() {
 
               {/* Working Direct Phone Call Card */}
               <a
-                href="tel:+919879012345"
+                href="tel:+919125127755"
                 onClick={() =>
                   trackEvent("cta_click", {
                     cta_name: "phone_call",
@@ -285,7 +285,7 @@ export default function ContactSection() {
                   })
                 }
                 className="group p-5 rounded-2xl border border-black/10 bg-white hover:border-[#059669] hover:bg-emerald-50/40 transition-all duration-300 shadow-xs flex items-center justify-between cursor-pointer"
-                aria-label="Direct Phone Consultation +91 98790 12345"
+                aria-label="Direct Phone Consultation +91 91251 27755"
               >
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 rounded-full bg-[#059669]/10 text-[#059669] group-hover:bg-[#059669] group-hover:text-white flex items-center justify-center transition-all duration-300 shrink-0">
@@ -299,7 +299,7 @@ export default function ContactSection() {
                       <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                     </div>
                     <span className="text-base font-bold text-[#18181B] group-hover:text-[#059669] transition-colors mt-0.5">
-                      +91 98790 12345
+                      +91 91251 27755
                     </span>
                     <span className="text-[11px] text-[#71717A] mt-0.5">
                       {isHindi ? "सोम—शनि: 09:30 - 18:30 IST" : "Mon—Sat: 09:30 - 18:30 IST"}
@@ -313,7 +313,7 @@ export default function ContactSection() {
 
               {/* Working Direct WhatsApp Card */}
               <a
-                href={`https://wa.me/919879012345?text=${encodeURIComponent(
+                href={`https://wa.me/919125127755?text=${encodeURIComponent(
                   "Hello Solvex Energy! I would like to inquire about solar systems, subsidy assistance, and equipment allocation."
                 )}`}
                 target="_blank"
@@ -341,7 +341,7 @@ export default function ContactSection() {
                       </span>
                     </div>
                     <span className="text-base font-bold text-[#18181B] group-hover:text-[#059669] transition-colors mt-0.5">
-                      +91 98790 12345
+                      +91 91251 27755
                     </span>
                     <span className="text-[11px] text-[#71717A] mt-0.5">
                       {isHindi ? "औसतन प्रतिक्रिया समय: < 15 मिनट" : "Average response: <15 mins"}
@@ -367,7 +367,7 @@ export default function ContactSection() {
                     <span className="text-sm font-normal text-[#18181B] mt-1 leading-relaxed">
                       {t(
                         "contact.hqAddress",
-                        "204 Capital Square, Parvat Godadara BRTS Road, Surat 395010, Gujarat, India"
+                        "F-5A Shyam Nagar, EX Shiv Sadan, Jaipur 302019, Rajasthan, India"
                       )}
                     </span>
                   </div>
@@ -383,10 +383,10 @@ export default function ContactSection() {
                       {t("contact.deskLabel", "Institutional Desk")}
                     </span>
                     <a
-                      href="mailto:corporate@solvexenergy.com"
+                      href="mailto:Infosolvexenergysoltuion@gmail.com"
                       className="text-sm font-normal text-[#18181B] hover:text-[#059669] mt-1 transition-colors"
                     >
-                      corporate@solvexenergy.com
+                      Infosolvexenergysoltuion@gmail.com
                     </a>
                   </div>
                 </div>
@@ -734,7 +734,7 @@ export default function ContactSection() {
                         {/* Direct Follow-up CTAs */}
                         <div className="flex flex-col sm:flex-row items-center gap-3 pt-2 border-t border-emerald-500/20">
                           <a
-                            href={`https://wa.me/919879012345?text=${encodeURIComponent(
+                            href={`https://wa.me/919125127755?text=${encodeURIComponent(
                               `Hello Solvex Energy! I requested a quote for ${buyerData.productInterest}. Reference ID: ${buyerRefId}. Please connect me with the site surveyor.`
                             )}`}
                             target="_blank"
@@ -753,7 +753,7 @@ export default function ContactSection() {
                           </a>
 
                           <a
-                            href="tel:+919879012345"
+                            href="tel:+919125127755"
                             onClick={() =>
                               trackEvent("cta_click", {
                                 cta_name: "phone_call_buyer_success",
@@ -1140,7 +1140,7 @@ export default function ContactSection() {
                         {/* Direct Follow-up CTAs */}
                         <div className="flex flex-col sm:flex-row items-center gap-3 pt-2 border-t border-emerald-500/20">
                           <a
-                            href={`https://wa.me/919879012345?text=${encodeURIComponent(
+                            href={`https://wa.me/919125127755?text=${encodeURIComponent(
                               `Hello Solvex Energy! I submitted a franchise partner application for ${partnerData.city}. Reference ID: ${partnerRefId}. Please share dealership margins and procurement prospectus.`
                             )}`}
                             target="_blank"
@@ -1159,7 +1159,7 @@ export default function ContactSection() {
                           </a>
 
                           <a
-                            href="tel:+919879012345"
+                            href="tel:+919125127755"
                             onClick={() =>
                               trackEvent("cta_click", {
                                 cta_name: "phone_call_partner_success",

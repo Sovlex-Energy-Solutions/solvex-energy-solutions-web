@@ -9,8 +9,8 @@ export default function QuickContactWidget() {
   const { isHindi } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
 
-  const phoneHref = "tel:+919879012345";
-  const whatsappHref = `https://wa.me/919879012345?text=${encodeURIComponent(
+  const phoneHref = "tel:+919125127755";
+  const whatsappHref = `https://wa.me/919125127755?text=${encodeURIComponent(
     isHindi
       ? "नमस्ते सोल्वेक्स एनर्जी! मैं सोलर इनवर्टर, रूफटॉप प्लांट और पीएम सूर्य घर सब्सिडी की जानकारी लेना चाहता हूँ।"
       : "Hello Solvex Energy! I would like to inquire about solar systems, inverters, and PM Surya Ghar subsidy."
@@ -70,7 +70,7 @@ export default function QuickContactWidget() {
             <div className="flex flex-col">
               <span>{isHindi ? "सीधे कॉल करें" : "Call Sales Desk"}</span>
               <span className="text-[10px] text-[#71717A] font-normal font-mono">
-                +91 98790 12345
+                +91 91251 27755
               </span>
             </div>
           </a>

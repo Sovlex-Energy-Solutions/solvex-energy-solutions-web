@@ -121,7 +121,7 @@ export default function SolutionsSection() {
           </div>
           <div className="flex flex-wrap items-center justify-center gap-3 shrink-0">
             <a
-              href="tel:+919879012345"
+              href="tel:+919125127755"
               onClick={() => {
                 trackEvent("cta_click", {
                   cta_name: "call_epc_solutions",
@@ -131,10 +131,10 @@ export default function SolutionsSection() {
               className="h-[46px] px-5 rounded-full border border-black/15 bg-white hover:bg-zinc-100 text-[#18181B] text-xs font-medium inline-flex items-center gap-2 transition-all shadow-xs cursor-pointer active:scale-95"
             >
               <Phone className="w-3.5 h-3.5 text-primary" />
-              <span>+91 98790 12345</span>
+              <span>+91 91251 27755</span>
             </a>
             <a
-              href={`https://wa.me/919879012345?text=${encodeURIComponent(
+              href={`https://wa.me/919125127755?text=${encodeURIComponent(
                 "Hello Solvex team, I need an EPC consultation for our commercial/industrial facility. Please connect me with your chief solar engineer."
               )}`}
               target="_blank"

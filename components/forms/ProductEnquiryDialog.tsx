@@ -245,7 +245,7 @@ export default function ProductEnquiryDialog({
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const whatsappDirectUrl = `https://wa.me/919879012345?text=${encodeURIComponent(
+  const whatsappDirectUrl = `https://wa.me/919125127755?text=${encodeURIComponent(
     `Hello Solvex Energy! I submitted an enquiry for ${formData.productInterest || "Solar Systems"}. My Reference ID is ${referenceId}. Please share quote and site survey schedule.`
   )}`;
 
@@ -580,7 +580,7 @@ export default function ProductEnquiryDialog({
                 </a>
 
                 <a
-                  href="tel:+919879012345"
+                  href="tel:+919125127755"
                   onClick={() =>
                     trackEvent("call_cta_clicked", {
                       sourceLocation: "product_modal_confirmation",
@@ -590,7 +590,7 @@ export default function ProductEnquiryDialog({
                   className="h-11 rounded-full bg-white hover:bg-zinc-100 border border-black/10 text-[#18181B] font-medium text-xs flex items-center justify-center gap-2 transition-all cursor-pointer"
                 >
                   <Phone className="w-3.5 h-3.5 text-primary" />
-                  <span>{isHindi ? "हेल्पलाइन पर कॉल करें: +91 98790 12345" : "Call Helpline: +91 98790 12345"}</span>
+                  <span>{isHindi ? "हेल्पलाइन पर कॉल करें: +91 91251 27755" : "Call Helpline: +91 91251 27755"}</span>
                 </a>
 
                 <button

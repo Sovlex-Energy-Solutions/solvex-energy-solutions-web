@@ -667,7 +667,7 @@ export default function TopSellingPCUSection() {
                   {isHindi ? "बंद करें" : "DISMISS"}
                 </button>
                 <a
-                  href={`https://wa.me/919879012345?text=${encodeURIComponent(
+                  href={`https://wa.me/919125127755?text=${encodeURIComponent(
                     `Hello Solvex team, I need technical documentation and trade pricing for ${activeModalProduct.name} (${activeModalProduct.capacity}, ${activeModalProduct.voltage}). Please connect.`
                   )}`}
                   target="_blank"

@@ -626,7 +626,7 @@ export default function TopSellingInvertersSection() {
                   {isHindi ? "बंद करें" : "DISMISS"}
                 </button>
                 <a
-                  href={`https://wa.me/919879012345?text=${encodeURIComponent(
+                  href={`https://wa.me/919125127755?text=${encodeURIComponent(
                     `Hello Solvex team, I am interested in technical specs and dealership pricing for ${activeModalProduct.name} (${activeModalProduct.capacity}). Please share details.`
                   )}`}
                   target="_blank"
