@@ -108,8 +108,62 @@ export async function POST(req: Request) {
         console.warn("[CRM Webhook Forward Warning]:", webhookErr);
       }
     } else {
-      // In development or when webhook is pending config, log to structured lead store
       console.log(`[SOLVEX CRM Ingest Log - ${referenceId}]:`, JSON.stringify(enrichedLead, null, 2));
+    }
+
+    // Forward to Google Sheets Web App if configured
+    const googleSheetUrl =
+      process.env.GOOGLE_SHEETS_WEBHOOK_URL || process.env.FRANCHISE_SHEET_WEBAPP_URL;
+
+    if (googleSheetUrl) {
+      try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 8000);
+
+        // Build fallback query URL in case Google's 302 redirect turns POST into GET
+        const sheetUrlWithParams = new URL(googleSheetUrl);
+        sheetUrlWithParams.searchParams.set("referenceId", referenceId);
+        sheetUrlWithParams.searchParams.set("phone", leadData.phone);
+        sheetUrlWithParams.searchParams.set("city", leadData.city);
+        sheetUrlWithParams.searchParams.set("state", leadData.state || "Rajasthan");
+
+        if (leadData.leadType === "franchise_partner") {
+          sheetUrlWithParams.searchParams.set("firstName", leadData.firstName);
+          sheetUrlWithParams.searchParams.set("lastName", leadData.lastName);
+          sheetUrlWithParams.searchParams.set("fullName", `${leadData.firstName} ${leadData.lastName}`.trim());
+          sheetUrlWithParams.searchParams.set("email", leadData.email || "");
+          sheetUrlWithParams.searchParams.set("tier", leadData.partnershipType);
+          sheetUrlWithParams.searchParams.set("capital", leadData.investmentCapacity);
+          sheetUrlWithParams.searchParams.set("experience", leadData.experience || leadData.notes || "");
+          sheetUrlWithParams.searchParams.set("source", leadData.channelSource || "website_franchise_form");
+        } else {
+          sheetUrlWithParams.searchParams.set("fullName", leadData.fullName);
+          sheetUrlWithParams.searchParams.set("email", leadData.email || "");
+          sheetUrlWithParams.searchParams.set("tier", leadData.productInterest);
+          sheetUrlWithParams.searchParams.set("capital", leadData.monthlyBill);
+          sheetUrlWithParams.searchParams.set("experience", leadData.notes || "");
+          sheetUrlWithParams.searchParams.set("source", leadData.channelSource || "website_product_enquiry");
+        }
+
+        const sheetResponse = await fetch(sheetUrlWithParams.toString(), {
+          method: "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify(enrichedLead),
+          signal: controller.signal,
+          redirect: "follow",
+        });
+        clearTimeout(timeoutId);
+
+        if (sheetResponse.status === 401 || sheetResponse.status === 403) {
+          console.warn(
+            "[Google Sheets Sync Warning 401]: Google rejected access. In Google Apps Script, please click Deploy > Manage deployments > Edit > set 'Who has access' to 'Anyone'!"
+          );
+        } else {
+          console.log("[Google Sheets Sync Result]: HTTP", sheetResponse.status);
+        }
+      } catch (sheetErr) {
+        console.warn("[Google Sheets Lead Sync Warning]:", sheetErr);
+      }
     }
 
     return NextResponse.json(

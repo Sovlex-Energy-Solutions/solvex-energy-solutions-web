@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="solvexGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10B981" />
+      <stop offset="100%" stop-color="#047857" />
+    </linearGradient>
+    <linearGradient id="goldSun" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FCD34D" />
+      <stop offset="100%" stop-color="#F59E0B" />
+    </linearGradient>
+    <filter id="subtleGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#047857" flood-opacity="0.25" />
+    </filter>
+  </defs>
+
+  <!-- Background shield / tile with rounded corners -->
+  <rect width="64" height="64" rx="14" fill="#FFFFFF" />
+  <rect width="64" height="64" rx="14" fill="none" stroke="rgba(0,0,0,0.06)" stroke-width="1.5" />
+
+  <!-- Solvex Clean Energy Sunburst & Monogram Emblem -->
+  <g transform="translate(32, 32)" filter="url(#subtleGlow)">
+    <!-- Central Golden Sun Energy Core -->
+    <circle cx="0" cy="0" r="7.5" fill="url(#goldSun)" />
+    
+    <!-- Rotating Photovoltaic Petals / Leaves -->
+    <path d="M 0 -22 C 7 -15, 7 -7, 0 0 C -7 -7, -7 -15, 0 -22 Z" fill="url(#solvexGrad)" />
+    <path d="M 19 -11 C 18 -1, 11 4, 0 0 C 8 -8, 14 -12, 19 -11 Z" fill="url(#solvexGrad)" opacity="0.95" />
+    <path d="M 19 11 C 14 17, 6 15, 0 0 C 10 0, 17 6, 19 11 Z" fill="url(#solvexGrad)" opacity="0.9" />
+    <path d="M 0 22 C -7 15, -7 7, 0 0 C 7 7, 7 15, 0 22 Z" fill="url(#solvexGrad)" />
+    <path d="M -19 11 C -18 1, -11 -4, 0 0 C -8 8, -14 12, -19 11 Z" fill="url(#solvexGrad)" opacity="0.95" />
+    <path d="M -19 -11 C -14 -17, -6 -15, 0 0 C -10 0, -17 -6, -19 -11 Z" fill="url(#solvexGrad)" opacity="0.9" />
+
+    <!-- Center Light Dot -->
+    <circle cx="0" cy="0" r="3" fill="#FFFFFF" opacity="0.9" />
+  </g>
+</svg>

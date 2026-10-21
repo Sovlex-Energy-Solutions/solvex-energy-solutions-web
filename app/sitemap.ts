@@ -8,7 +8,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     {
       url: `${baseUrl}/`,
       lastModified: now,
-      changeFrequency: "weekly",
+      changeFrequency: "daily",
       priority: 1.0,
       alternates: {
         languages: {
@@ -18,58 +18,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
       },
     },
     {
-      url: `${baseUrl}/#about-us`,
+      url: `${baseUrl}/?lang=en`,
       lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/#products-categories`,
-      lastModified: now,
-      changeFrequency: "weekly",
+      changeFrequency: "daily",
       priority: 0.9,
     },
     {
-      url: `${baseUrl}/#spgs-combos`,
+      url: `${baseUrl}/?lang=hi`,
       lastModified: now,
-      changeFrequency: "weekly",
+      changeFrequency: "daily",
       priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/#solar-inverters`,
-      lastModified: now,
-      changeFrequency: "weekly",
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/#solar-pcu`,
-      lastModified: now,
-      changeFrequency: "weekly",
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/#solutions`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/#calculator`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/#faq`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/#partner-form`,
-      lastModified: now,
-      changeFrequency: "weekly",
-      priority: 0.95,
     },
   ];
 }
+

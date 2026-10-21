@@ -19,7 +19,10 @@ const notoDevanagari = Noto_Sans_Devanagari({
 });
 
 export const viewport: Viewport = {
-  themeColor: "#059669",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#059669" },
+    { media: "(prefers-color-scheme: dark)", color: "#0B0F17" },
+  ],
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
@@ -32,7 +35,7 @@ export const metadata: Metadata = {
     template: "%s | Solvex Energy Solutions",
   },
   description:
-    "Empowering India's clean energy transition. Manufacturer of Tier-1 ALMM bifacial solar arrays, smart rMPPT hybrid inverters, and heavy-duty PCUs. Turnkey PM Surya Ghar EPC execution and high-margin dealership opportunities.",
+    "Empowering India's clean energy transition. Manufacturer of Tier-1 ALMM bifacial solar arrays, smart rMPPT hybrid inverters, and heavy-duty industrial PCUs. Turnkey PM Surya Ghar EPC execution and high-margin dealership franchise opportunities across India.",
   keywords: [
     "Solvex Energy Solutions",
     "Solvex Energy",
@@ -44,42 +47,68 @@ export const metadata: Metadata = {
     "Solar PCU manufacturer",
     "Commercial rooftop solar EPC",
     "Bifacial solar panels",
-    "Gujarat solar manufacturer",
+    "Rajasthan solar manufacturer",
+    "Gujarat solar distributor",
     "Renewable energy distributor",
+    "Solar EPC turnkey Jaipur",
   ],
-  authors: [{ name: "Solvex Energy Solutions Private Limited" }],
+  authors: [{ name: "Solvex Energy Solutions Private Limited", url: "https://solvexenergy.com" }],
   creator: "Solvex Energy Solutions Private Limited",
   publisher: "Solvex Energy Solutions Private Limited",
+  category: "Renewable Energy & Solar Manufacturing",
+  manifest: "/site.webmanifest",
   alternates: {
     canonical: "https://solvexenergy.com",
     languages: {
       "en-IN": "https://solvexenergy.com/?lang=en",
       "hi-IN": "https://solvexenergy.com/?lang=hi",
+      "x-default": "https://solvexenergy.com",
     },
   },
   openGraph: {
     type: "website",
     locale: "en_IN",
+    alternateLocale: ["hi_IN"],
     url: "https://solvexenergy.com",
     siteName: "Solvex Energy Solutions",
     title: "Solvex Energy Solutions | Tier-1 B2B Solar Inverters, PCU & Franchise Ecosystem",
     description:
-      "Direct manufacturing allocations, ALMM Tier-1 hardware, smart rMPPT inverters, and commercial solar EPC partnerships across India.",
+      "Direct manufacturing allocations, ALMM Tier-1 hardware, smart rMPPT inverters, and commercial solar EPC partnerships across India under PM Surya Ghar.",
     images: [
       {
-        url: "/images/solar_hero_landscape.jpg",
+        url: "https://solvexenergy.com/og-image.png",
         width: 1200,
         height: 630,
+        type: "image/png",
+        alt: "Solvex Energy Solutions - Tier-1 Solar Inverters, PCU & Franchise Ecosystem",
+      },
+      {
+        url: "https://solvexenergy.com/images/solar_hero_landscape.jpg",
+        width: 1200,
+        height: 630,
+        type: "image/jpeg",
         alt: "Solvex Energy Solutions Industrial Solar Power Infrastructure",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Solvex Energy Solutions | Solar Franchise & Hardware Ecosystem",
+    site: "@solvexenergy",
+    creator: "@solvexenergy",
+    title: "Solvex Energy Solutions | Tier-1 Solar Inverters, PCU & Franchise Ecosystem",
     description:
-      "Join India's fastest-growing solar franchise ecosystem under PM Surya Ghar. High-margin territorial distributorships and Tier-1 ALMM hardware.",
-    images: ["/images/solar_hero_landscape.jpg"],
+      "Join India's fastest-growing solar franchise ecosystem under PM Surya Ghar. High-margin territorial distributorships, smart rMPPT inverters & Tier-1 ALMM hardware.",
+    images: ["https://solvexenergy.com/og-image.png"],
+  },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Solvex Energy",
+  },
+  formatDetection: {
+    telephone: false,
+    address: true,
+    email: true,
   },
   robots: {
     index: true,
@@ -95,11 +124,17 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/logo.png", type: "image/png" },
       { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icon-512.png", sizes: "512x512", type: "image/png" },
     ],
-    shortcut: "/logo.png",
-    apple: "/logo.png",
+    shortcut: "/favicon.ico",
+    apple: [
+      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    ],
   },
 };
 
@@ -115,9 +150,10 @@ const jsonLd = {
       logo: {
         "@type": "ImageObject",
         url: "https://solvexenergy.com/logo.png",
-        width: 512,
-        height: 512,
+        width: 500,
+        height: 500,
       },
+      image: "https://solvexenergy.com/og-image.png",
       description:
         "Leading clean tech manufacturer and national franchise network delivering Tier-1 ALMM bifacial solar arrays, smart rMPPT hybrid inverters, and industrial PCUs under PM Surya Ghar Muft Bijli Yojana.",
       telephone: "+91-91251-27755",
@@ -130,6 +166,23 @@ const jsonLd = {
         postalCode: "302019",
         addressCountry: "IN",
       },
+      contactPoint: [
+        {
+          "@type": "ContactPoint",
+          telephone: "+91-91251-27755",
+          contactType: "customer service",
+          areaServed: "IN",
+          availableLanguage: ["en", "hi"],
+        },
+        {
+          "@type": "ContactPoint",
+          telephone: "+91-91251-27755",
+          contactType: "sales",
+          contactOption: "TollFree",
+          areaServed: "IN",
+          availableLanguage: ["en", "hi"],
+        },
+      ],
       identifier: "CIN: U43219GJ2025PTC168167",
       sameAs: [
         "https://www.linkedin.com/company/solvex-energy",
@@ -138,6 +191,37 @@ const jsonLd = {
       award: [
         "MNRE ALMM Tier-1 Certified",
         "PM Surya Ghar Approved Channel Partner",
+      ],
+    },
+    {
+      "@type": "SolarEnergyCompany",
+      "@id": "https://solvexenergy.com/#localbusiness",
+      name: "Solvex Energy Solutions Head Office",
+      image: "https://solvexenergy.com/og-image.png",
+      telephone: "+91-91251-27755",
+      email: "Infosolvexenergysoltuion@gmail.com",
+      url: "https://solvexenergy.com",
+      priceRange: "₹₹₹",
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: "F-5A Shyam Nagar , EX Shiv Sadan",
+        addressLocality: "Jaipur",
+        addressRegion: "Rajasthan",
+        postalCode: "302019",
+        addressCountry: "IN",
+      },
+      geo: {
+        "@type": "GeoCoordinates",
+        latitude: 26.8928,
+        longitude: 75.7683,
+      },
+      openingHoursSpecification: [
+        {
+          "@type": "OpeningHoursSpecification",
+          dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+          opens: "09:30",
+          closes: "18:30",
+        },
       ],
     },
     {
@@ -195,6 +279,11 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <link rel="manifest" href="/site.webmanifest" />
+        <meta name="mobile-web-app-capable" content="yes" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

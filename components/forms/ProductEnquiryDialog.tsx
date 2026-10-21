@@ -308,7 +308,7 @@ export default function ProductEnquiryDialog({
                     id="pe-name"
                     type="text"
                     placeholder={isHindi ? "उदा. राहुल शर्मा" : "e.g. Rahul Sharma"}
-                    className={`h-11 rounded-xl text-xs bg-[#FAFAFA] border ${
+                    className={`h-11 rounded-xl text-xs bg-[#FAFAFA] border text-[#18181B] placeholder:text-[#71717A] ${
                       errors.fullName && touched.fullName
                         ? "border-red-500 focus:ring-red-500"
                         : "border-black/10 focus:border-primary"
@@ -333,7 +333,7 @@ export default function ProductEnquiryDialog({
                     id="pe-phone"
                     type="tel"
                     placeholder="+91 98765 43210"
-                    className={`h-11 rounded-xl text-xs bg-[#FAFAFA] border ${
+                    className={`h-11 rounded-xl text-xs bg-[#FAFAFA] border text-[#18181B] placeholder:text-[#71717A] ${
                       errors.phone && touched.phone
                         ? "border-red-500 focus:ring-red-500"
                         : "border-black/10 focus:border-primary"
@@ -361,7 +361,7 @@ export default function ProductEnquiryDialog({
                     id="pe-email"
                     type="email"
                     placeholder="name@example.com"
-                    className="h-11 rounded-xl text-xs bg-[#FAFAFA] border border-black/10 focus:border-primary"
+                    className="h-11 rounded-xl text-xs bg-[#FAFAFA] border border-black/10 focus:border-primary text-[#18181B] placeholder:text-[#71717A]"
                     value={formData.email}
                     onChange={(e) => handleChange("email", e.target.value)}
                   />
@@ -375,7 +375,7 @@ export default function ProductEnquiryDialog({
                     id="pe-city"
                     type="text"
                     placeholder={isHindi ? "उदा. सूरत, अहमदाबाद" : "e.g. Surat, Jaipur"}
-                    className={`h-11 rounded-xl text-xs bg-[#FAFAFA] border ${
+                    className={`h-11 rounded-xl text-xs bg-[#FAFAFA] border text-[#18181B] placeholder:text-[#71717A] ${
                       errors.city && touched.city
                         ? "border-red-500 focus:ring-red-500"
                         : "border-black/10 focus:border-primary"
@@ -457,7 +457,7 @@ export default function ProductEnquiryDialog({
                       ? "उदा. 3-फेज कनेक्शन, बैटरी बैकअप आवश्यकता या छाया-मुक्त छत क्षेत्र..."
                       : "e.g. 3-phase connection, battery backup needed, or shadow-free roof area..."
                   }
-                  className="rounded-xl text-xs bg-[#FAFAFA] border border-black/10 focus:border-primary min-h-[64px]"
+                  className="rounded-xl text-xs bg-[#FAFAFA] border border-black/10 focus:border-primary min-h-[64px] text-[#18181B] placeholder:text-[#71717A]"
                   value={formData.notes}
                   onChange={(e) => handleChange("notes", e.target.value)}
                 />

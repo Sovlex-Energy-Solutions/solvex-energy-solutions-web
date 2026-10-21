@@ -53,6 +53,29 @@ html, body {
   scroll-behavior: smooth;
 }
 
+/* Universal Form Control & Text Input Readability */
+input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]),
+textarea,
+select {
+  color: #18181B;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #71717A;
+  opacity: 1;
+}
+
+/* Ensure browser autofill does not render invisible white text */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active {
+  -webkit-text-fill-color: #18181B !important;
+  -webkit-box-shadow: 0 0 0px 1000px #FAFAFA inset !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
 /* Devanagari typography: adjust line-height and letter-spacing for ligatures and matras */
 html[lang="hi"], html.lang-hi {
   font-family: var(--font-devanagari);

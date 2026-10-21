@@ -481,7 +481,7 @@ export default function ContactSection() {
                                   fullName: validateBuyerField("fullName", buyerData.fullName),
                                 }));
                               }}
-                              className={`h-11 rounded-full px-4 text-xs bg-[#FAFAFA] border ${
+                              className={`h-11 rounded-full px-4 text-xs bg-[#FAFAFA] border text-[#18181B] placeholder:text-[#71717A] ${
                                 buyerErrors.fullName && buyerTouched.fullName ? "border-red-500" : "border-black/10"
                               }`}
                             />
@@ -510,7 +510,7 @@ export default function ContactSection() {
                                   phone: validateBuyerField("phone", buyerData.phone),
                                 }));
                               }}
-                              className={`h-11 rounded-full px-4 text-xs bg-[#FAFAFA] border ${
+                              className={`h-11 rounded-full px-4 text-xs bg-[#FAFAFA] border text-[#18181B] placeholder:text-[#71717A] ${
                                 buyerErrors.phone && buyerTouched.phone ? "border-red-500" : "border-black/10"
                               }`}
                             />
@@ -534,7 +534,7 @@ export default function ContactSection() {
                               placeholder="name@example.com"
                               value={buyerData.email}
                               onChange={(e) => setBuyerData({ ...buyerData, email: e.target.value })}
-                              className="h-11 rounded-full px-4 text-xs bg-[#FAFAFA] border border-black/10"
+                              className="h-11 rounded-full px-4 text-xs bg-[#FAFAFA] border border-black/10 text-[#18181B] placeholder:text-[#71717A]"
                             />
                           </div>
 
@@ -554,7 +554,7 @@ export default function ContactSection() {
                                   city: validateBuyerField("city", buyerData.city),
                                 }));
                               }}
-                              className={`h-11 rounded-full px-4 text-xs bg-[#FAFAFA] border ${
+                              className={`h-11 rounded-full px-4 text-xs bg-[#FAFAFA] border text-[#18181B] placeholder:text-[#71717A] ${
                                 buyerErrors.city && buyerTouched.city ? "border-red-500" : "border-black/10"
                               }`}
                             />
@@ -624,7 +624,7 @@ export default function ContactSection() {
                             }
                             value={buyerData.notes}
                             onChange={(e) => setBuyerData({ ...buyerData, notes: e.target.value })}
-                            className="min-h-[80px] p-3 text-xs bg-[#FAFAFA] border border-black/10 rounded-2xl resize-none"
+                            className="min-h-[80px] p-3 text-xs bg-[#FAFAFA] border border-black/10 rounded-2xl resize-none text-[#18181B] placeholder:text-[#71717A]"
                           />
                         </div>
 
@@ -808,7 +808,7 @@ export default function ContactSection() {
                                   firstName: validatePartnerField("firstName", partnerData.firstName),
                                 }));
                               }}
-                              className={`h-11 rounded-full px-4 text-xs bg-[#FAFAFA] border ${
+                              className={`h-11 rounded-full px-4 text-xs bg-[#FAFAFA] border text-[#18181B] placeholder:text-[#71717A] ${
                                 partnerErrors.firstName && partnerTouched.firstName ? "border-red-500" : "border-black/10"
                               }`}
                             />
@@ -836,7 +836,7 @@ export default function ContactSection() {
                                   lastName: validatePartnerField("lastName", partnerData.lastName),
                                 }));
                               }}
-                              className={`h-11 rounded-full px-4 text-xs bg-[#FAFAFA] border ${
+                              className={`h-11 rounded-full px-4 text-xs bg-[#FAFAFA] border text-[#18181B] placeholder:text-[#71717A] ${
                                 partnerErrors.lastName && partnerTouched.lastName ? "border-red-500" : "border-black/10"
                               }`}
                             />
@@ -867,7 +867,7 @@ export default function ContactSection() {
                                   email: validatePartnerField("email", partnerData.email),
                                 }));
                               }}
-                              className={`h-11 rounded-full px-4 text-xs bg-[#FAFAFA] border ${
+                              className={`h-11 rounded-full px-4 text-xs bg-[#FAFAFA] border text-[#18181B] placeholder:text-[#71717A] ${
                                 partnerErrors.email && partnerTouched.email ? "border-red-500" : "border-black/10"
                               }`}
                             />
@@ -896,7 +896,7 @@ export default function ContactSection() {
                                   phone: validatePartnerField("phone", partnerData.phone),
                                 }));
                               }}
-                              className={`h-11 rounded-full px-4 text-xs bg-[#FAFAFA] border ${
+                              className={`h-11 rounded-full px-4 text-xs bg-[#FAFAFA] border text-[#18181B] placeholder:text-[#71717A] ${
                                 partnerErrors.phone && partnerTouched.phone ? "border-red-500" : "border-black/10"
                               }`}
                             />
@@ -925,7 +925,7 @@ export default function ContactSection() {
                                 city: validatePartnerField("city", partnerData.city),
                               }));
                             }}
-                            className={`h-11 rounded-full px-4 text-xs bg-[#FAFAFA] border ${
+                            className={`h-11 rounded-full px-4 text-xs bg-[#FAFAFA] border text-[#18181B] placeholder:text-[#71717A] ${
                               partnerErrors.city && partnerTouched.city ? "border-red-500" : "border-black/10"
                             }`}
                           />
@@ -1022,7 +1022,7 @@ export default function ContactSection() {
                             }
                             value={partnerData.experience}
                             onChange={(e) => setPartnerData({ ...partnerData, experience: e.target.value })}
-                            className="min-h-[80px] p-3 text-xs bg-[#FAFAFA] border border-black/10 rounded-2xl resize-none"
+                            className="min-h-[80px] p-3 text-xs bg-[#FAFAFA] border border-black/10 rounded-2xl resize-none text-[#18181B] placeholder:text-[#71717A]"
                           />
                         </div>
 
