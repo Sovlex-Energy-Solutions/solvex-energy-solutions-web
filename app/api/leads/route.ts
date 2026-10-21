@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
+import { dispatchServerConversion } from "@/lib/analytics/server";
 
 // Schema for Product Buyer Inquiries
 const productBuyerSchema = z.object({
@@ -165,6 +166,21 @@ export async function POST(req: Request) {
         console.warn("[Google Sheets Lead Sync Warning]:", sheetErr);
       }
     }
+
+    // Dispatch server-side GA4 conversion event via Measurement Protocol (Zero PII)
+    dispatchServerConversion({
+      eventName:
+        leadData.leadType === "product_buyer"
+          ? "product_enquiry_submitted"
+          : "franchise_lead_submitted",
+      referenceId,
+      leadType: leadData.leadType,
+      city: leadData.city,
+      category:
+        leadData.leadType === "product_buyer"
+          ? leadData.productInterest
+          : leadData.partnershipType,
+    }).catch(() => {});
 
     return NextResponse.json(
       {

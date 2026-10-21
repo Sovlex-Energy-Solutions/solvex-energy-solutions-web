@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
+import { dispatchServerConversion } from "@/lib/analytics/server";
 
 // Schema for Franchise & Dealership Application
 const franchiseSchema = z.object({
@@ -142,6 +143,17 @@ export async function POST(req: Request) {
         JSON.stringify(payloadForSheet, null, 2)
       );
     }
+
+    // Dispatch server-side GA4 conversion event via Measurement Protocol (Zero PII)
+    dispatchServerConversion({
+      eventName: "franchise_lead_submitted",
+      referenceId,
+      leadType: "franchise_partner",
+      city: lead.city,
+      category: formattedTier,
+      partnershipType: formattedTier,
+      investmentCapacity: formattedCapital,
+    }).catch(() => {});
 
     return NextResponse.json(
       {

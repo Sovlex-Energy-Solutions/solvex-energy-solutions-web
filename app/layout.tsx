@@ -4,6 +4,7 @@ import { Geist, Noto_Sans_Devanagari } from "next/font/google";
 import "./globals.css";
 import QuickContactWidget from "@/components/ui/QuickContactWidget";
 import ProductEnquiryDialog from "@/components/forms/ProductEnquiryDialog";
+import GoogleAnalyticsLoader from "@/components/analytics/GoogleAnalyticsLoader";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -301,6 +302,8 @@ export default function RootLayout({
       >
         <LanguageProvider>
           {children}
+          {/* Privacy-First Google Analytics 4 Loader (Basic Consent Mode: Blocks all tags until consent) */}
+          <GoogleAnalyticsLoader />
           {/* Global Quick Contact Speed Dial (Working Call & WhatsApp) */}
           <QuickContactWidget />
           {/* Global Product & Subsidy Enquiry Dialog */}

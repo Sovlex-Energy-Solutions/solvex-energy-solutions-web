@@ -1,10 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { Phone, MessageSquare, Mail, MapPin, ArrowRight } from "lucide-react";
+import { Phone, MessageSquare, Mail, MapPin, ArrowRight, ShieldCheck } from "lucide-react";
 import { MotionReveal } from "@/components/ui/motion-reveal";
 import { useLanguage } from "@/context/LanguageContext";
 import { openLegalModal } from "@/components/ui/consent-and-legal-modals";
+import { openConsentPreferences } from "@/lib/consent/state";
 import { trackEvent } from "@/lib/analytics";
 
 export default function Footer() {
@@ -212,6 +213,15 @@ export default function Footer() {
             {t("footer.copyright")}
           </p>
           <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-xs text-zinc-950 font-bold">
+            <button
+              type="button"
+              onClick={() => openConsentPreferences()}
+              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-300 hover:border-emerald-500 transition-all cursor-pointer shadow-2xs"
+              aria-label="Manage Privacy and Cookie Preferences"
+            >
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-700" />
+              <span>Privacy & Cookie Settings</span>
+            </button>
             <button
               type="button"
               onClick={() => openLegalModal("privacy")}

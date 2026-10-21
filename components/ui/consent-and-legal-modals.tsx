@@ -11,13 +11,13 @@ import {
   RotateCcw,
   Zap,
   PhoneCall,
-  MessageSquare,
   Database,
   Sliders,
   Scale,
   Receipt,
   AlertTriangle,
 } from "lucide-react";
+import ConsentBanner from "@/components/consent/ConsentBanner";
 import {
   Dialog,
   DialogContent,
@@ -122,10 +122,16 @@ export function PrivacyPolicyContent() {
       <section className="space-y-2">
         <h3 className="text-sm sm:text-base font-bold text-zinc-900 flex items-center gap-2">
           <Zap className="w-4 h-4 text-emerald-700 shrink-0" />
-          5. Regional Analytics & Telemetry
+          5. Regional Analytics & Telemetry (Google Analytics 4)
         </h3>
         <p>
-          We process anonymous, aggregated analytics to measure regional clean-energy interest across Indian states, identify high-demand solar hardware configurations, and optimize web application performance. No personal identifiable information (PII) is sold, auctioned, or made publicly accessible.
+          We utilize <strong>Google Analytics 4</strong> (operated by Google Ireland Limited / Google LLC) to measure aggregate, district-level clean-energy interest across Indian states, optimize solar inverter allocations, and evaluate demand for government rooftop subsidies under the PM Surya Ghar initiative.
+        </p>
+        <p className="text-zinc-600">
+          <strong>Basic Consent Mode & Privacy by Default:</strong> Under our implementation, Google Analytics scripts and network requests remain <em>completely blocked</em> by default. No cookies are placed and no network requests are sent until you choose to provide affirmative opt-in consent.
+        </p>
+        <p className="text-zinc-600">
+          <strong>Strict Data Minimization:</strong> IP addresses are automatically anonymized. All outbound page URLs and event parameters are scrubbed to ensure that personal data (such as full names, email addresses, phone numbers, quotation inputs, or security tokens) is never transmitted to Google Analytics.
         </p>
       </section>
 
@@ -136,24 +142,24 @@ export function PrivacyPolicyContent() {
           6. Cookies & Local Storage Management
         </h3>
         <p>
-          Our portal utilizes cookies and secure browser storage (`localStorage`) divided into three distinct tiers:
+          Our platform utilizes cookies and secure browser storage (`localStorage`) organized into two distinct functional categories:
         </p>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1 text-xs">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1 text-xs">
           <div className="p-3 rounded-lg border border-black/10 bg-zinc-50">
-            <span className="font-semibold text-zinc-900 block">Strictly Necessary</span>
-            <span className="text-zinc-500 text-[11px]">Session security, token caching, CSRF protection, and language choice. Always active.</span>
+            <span className="font-semibold text-zinc-900 block text-xs">Strictly Necessary (Essential)</span>
+            <span className="text-zinc-500 text-[11px] block mt-1">
+              Required for secure browsing, token caching, CSRF defense, and language selection (English/Hindi). Always active. Cannot be disabled.
+            </span>
           </div>
           <div className="p-3 rounded-lg border border-black/10 bg-zinc-50">
-            <span className="font-semibold text-zinc-900 block">Regional Analytics</span>
-            <span className="text-zinc-500 text-[11px]">Anonymized district-level traffic patterns to scale clean energy supply pipelines.</span>
-          </div>
-          <div className="p-3 rounded-lg border border-black/10 bg-zinc-50">
-            <span className="font-semibold text-zinc-900 block">Marketing & Ads</span>
-            <span className="text-zinc-500 text-[11px]">B2B commercial campaign attribution and retargeting analytics across partner networks.</span>
+            <span className="font-semibold text-zinc-900 block text-xs">Optional Regional Analytics (GA4)</span>
+            <span className="text-zinc-500 text-[11px] block mt-1">
+              Anonymized traffic patterns to scale clean energy supply pipelines across districts. Disabled by default. Requires explicit opt-in.
+            </span>
           </div>
         </div>
         <p className="text-xs text-zinc-500 pt-1">
-          You can update your cookie preferences at any time via the consent widget located in the bottom-right corner of the website.
+          You can adjust your consent choices or withdraw consent at any time via the persistent &ldquo;Privacy &amp; Cookie Settings&rdquo; link in the website footer.
         </p>
       </section>
 
@@ -204,24 +210,28 @@ export function PrivacyPolicyContent() {
       <section className="space-y-2">
         <h3 className="text-sm sm:text-base font-bold text-zinc-900 flex items-center gap-2">
           <Scale className="w-4 h-4 text-emerald-700 shrink-0" />
-          10. Data Principal Rights
+          10. Data Principal Rights & Request Procedure
         </h3>
-        <p>Under the DPDP Act 2023, you retain the following enforceable rights:</p>
+        <p>Under the DPDP Act 2023, you retain the following statutory rights:</p>
         <ul className="list-disc pl-5 space-y-1 text-zinc-600">
           <li><strong>Right to Access:</strong> Request a summary of personal and commercial data processed by Solvex.</li>
-          <li><strong>Right to Correction & Erasure:</strong> Request the correction of misleading or outdated details, or deletion of records where commercial obligations have ceased.</li>
-          <li><strong>Right to Grievance Redressal:</strong> Submit complaints regarding data mishandling directly to our designated Grievance Officer.</li>
-          <li><strong>Right to Withdraw Consent:</strong> Revoke consent for optional marketing communications and analytics at any time.</li>
+          <li><strong>Right to Correction &amp; Erasure:</strong> Request the correction of misleading or outdated details, or deletion of commercial inquiry records where obligations have ceased.</li>
+          <li><strong>Right to Grievance Redressal:</strong> Submit complaints regarding data processing directly to our Grievance Officer.</li>
+          <li><strong>Right to Withdraw Consent:</strong> Revoke consent for optional analytics at any time via our footer &ldquo;Privacy &amp; Cookie Settings&rdquo; link, which immediately stops all future telemetry collection.</li>
         </ul>
+        <div className="p-3 rounded-lg bg-zinc-50 border border-black/10 text-xs text-zinc-600 space-y-1">
+          <p className="font-semibold text-zinc-900">How to Submit a Rights Request:</p>
+          <p>Email our Legal Desk at <code>Infosolvexenergysoltuion@gmail.com</code> with the subject &ldquo;DPDP Rights Request&rdquo; along with your commercial enquiry reference number (e.g. SLX-PRD-XXXX). We verify identity using the registered email/mobile number to avoid demanding unnecessary identity documents. Requests are processed within 30 days as provided under applicable law.</p>
+        </div>
       </section>
 
       {/* 11. Grievance Redressal Officer */}
       <section className="p-4 rounded-xl bg-zinc-100/80 border border-black/10 space-y-1.5">
         <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-900">
-          Grievance Redressal & Data Protection Officer
+          Grievance Redressal &amp; Data Protection Officer
         </h4>
         <p className="text-xs text-zinc-600 leading-relaxed font-mono">
-          Attention: Legal & Regulatory Desk<br />
+          Attention: Grievance Redressal Officer [DPO Designation]<br />
           Solvex Energy Solutions Private Limited<br />
           F-5A Shyam Nagar, EX Shiv Sadan, Jaipur 302019, Rajasthan, India<br />
           Email: Infosolvexenergysoltuion@gmail.com | Direct Line: +91-91251-27755
@@ -609,186 +619,8 @@ export function TermsDialog({
 }
 
 /**
- * Enterprise Cookie Consent Banner
+ * Enterprise Cookie Consent Banner (Wraps the Privacy-First ConsentBanner)
  */
 export function CookieConsentBanner() {
-  const [visible, setVisible] = useState(false);
-  const [showPreferences, setShowPreferences] = useState(false);
-  const [preferences, setPreferences] = useState({
-    essential: true,
-    analytics: true,
-    marketing: false,
-  });
-
-  useEffect(() => {
-    try {
-      const stored = localStorage.getItem("solvex_consent_preferences");
-      if (!stored) {
-        // Show after a brief delay for smoother UX
-        const timer = setTimeout(() => setVisible(true), 1200);
-        return () => clearTimeout(timer);
-      }
-    } catch {
-      // localStorage may fail in private mode
-    }
-  }, []);
-
-  const handleAcceptAll = () => {
-    const full = { essential: true, analytics: true, marketing: true, timestamp: Date.now() };
-    try {
-      localStorage.setItem("solvex_consent_preferences", JSON.stringify(full));
-    } catch {}
-    setVisible(false);
-  };
-
-  const handleDeclineOptional = () => {
-    const essentialOnly = { essential: true, analytics: false, marketing: false, timestamp: Date.now() };
-    try {
-      localStorage.setItem("solvex_consent_preferences", JSON.stringify(essentialOnly));
-    } catch {}
-    setVisible(false);
-  };
-
-  const handleSavePreferences = () => {
-    const custom = { ...preferences, essential: true, timestamp: Date.now() };
-    try {
-      localStorage.setItem("solvex_consent_preferences", JSON.stringify(custom));
-    } catch {}
-    setVisible(false);
-    setShowPreferences(false);
-  };
-
-  if (!visible) return null;
-
-  return (
-    <aside
-      role="region"
-      aria-label="Privacy and Cookie Consent"
-      className="fixed bottom-4 inset-x-4 sm:inset-x-auto sm:right-6 sm:max-w-md z-[90] p-5 sm:p-6 rounded-2xl bg-white/95 backdrop-blur-xl border border-black/10 shadow-[0_20px_50px_rgba(0,0,0,0.18)] transition-all animate-in slide-in-from-bottom-5 duration-300"
-    >
-      <div className="flex items-start gap-3.5">
-        <div className="w-9 h-9 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 mt-0.5">
-          <Cookie className="w-5 h-5" />
-        </div>
-        <div className="flex-1">
-          <div className="flex items-center justify-between">
-            <h3 className="text-sm font-bold text-zinc-900 tracking-tight">
-              Enterprise Privacy & Cookies
-            </h3>
-            <button
-              onClick={handleDeclineOptional}
-              className="text-zinc-400 hover:text-zinc-700 p-1 rounded-full transition-colors cursor-pointer"
-              aria-label="Dismiss banner with essential cookies only"
-            >
-              ✕
-            </button>
-          </div>
-          <p className="text-xs text-zinc-600 mt-1.5 leading-relaxed">
-            Solvex uses essential cookies to secure partner sessions and optional telemetry to analyze regional clean-energy demand under India&apos;s DPDP Act 2023.
-          </p>
-
-          {!showPreferences ? (
-            <div className="mt-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
-              <button
-                type="button"
-                onClick={handleAcceptAll}
-                className="px-4 py-2 rounded-full bg-[#059669] hover:bg-[#047857] text-white text-xs font-semibold transition-all cursor-pointer active:scale-95 text-center shadow-xs"
-              >
-                Accept All
-              </button>
-              <button
-                type="button"
-                onClick={handleDeclineOptional}
-                className="px-4 py-2 rounded-full border border-black/15 bg-zinc-50 hover:bg-zinc-100 text-zinc-800 text-xs font-medium transition-all cursor-pointer text-center"
-              >
-                Essential Only
-              </button>
-              <button
-                type="button"
-                onClick={() => setShowPreferences(true)}
-                className="text-xs text-zinc-500 hover:text-emerald-700 underline underline-offset-2 py-1 text-center cursor-pointer"
-              >
-                Preferences
-              </button>
-            </div>
-          ) : (
-            <div className="mt-4 space-y-3 pt-3 border-t border-black/10">
-              <div className="flex items-center justify-between text-xs">
-                <div>
-                  <span className="font-semibold text-zinc-900 block">Strictly Necessary</span>
-                  <span className="text-zinc-500 text-[11px]">Security & session tokens</span>
-                </div>
-                <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded">
-                  Always Active
-                </span>
-              </div>
-
-              <div className="flex items-center justify-between text-xs">
-                <div>
-                  <span className="font-semibold text-zinc-900 block">Regional Analytics</span>
-                  <span className="text-zinc-500 text-[11px]">Territory demand metrics</span>
-                </div>
-                <input
-                  type="checkbox"
-                  id="cookie-analytics"
-                  checked={preferences.analytics}
-                  onChange={(e) => setPreferences({ ...preferences, analytics: e.target.checked })}
-                  className="w-4 h-4 accent-emerald-600 rounded cursor-pointer"
-                />
-              </div>
-
-              <div className="flex items-center justify-between text-xs">
-                <div>
-                  <span className="font-semibold text-zinc-900 block">Marketing & Ads</span>
-                  <span className="text-zinc-500 text-[11px]">Commercial campaign tracking</span>
-                </div>
-                <input
-                  type="checkbox"
-                  id="cookie-marketing"
-                  checked={preferences.marketing}
-                  onChange={(e) => setPreferences({ ...preferences, marketing: e.target.checked })}
-                  className="w-4 h-4 accent-emerald-600 rounded cursor-pointer"
-                />
-              </div>
-
-              <div className="flex items-center justify-between pt-2">
-                <button
-                  type="button"
-                  onClick={() => setShowPreferences(false)}
-                  className="text-xs text-zinc-500 hover:text-zinc-800"
-                >
-                  Back
-                </button>
-                <button
-                  type="button"
-                  onClick={handleSavePreferences}
-                  className="px-4 py-1.5 rounded-full bg-[#059669] hover:bg-[#047857] text-white text-xs font-semibold transition-all cursor-pointer"
-                >
-                  Save Choices
-                </button>
-              </div>
-            </div>
-          )}
-
-          <div className="mt-2.5 pt-2 border-t border-black/5 flex items-center gap-3 text-[11px] text-zinc-500">
-            <button
-              type="button"
-              onClick={() => openLegalModal("privacy")}
-              className="hover:text-emerald-700 underline underline-offset-2 cursor-pointer"
-            >
-              Privacy Policy
-            </button>
-            <span>•</span>
-            <button
-              type="button"
-              onClick={() => openLegalModal("terms")}
-              className="hover:text-emerald-700 underline underline-offset-2 cursor-pointer"
-            >
-              Terms of Service
-            </button>
-          </div>
-        </div>
-      </div>
-    </aside>
-  );
+  return <ConsentBanner />;
 }
