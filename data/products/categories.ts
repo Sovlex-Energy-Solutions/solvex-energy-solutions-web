@@ -16,7 +16,7 @@ export const rawCategories: RawCategoryItem[] = [
   {
     id: "rooftop",
     category: "rooftop",
-    image: "/images/products/rooftop_solar.png",
+    image: "/products/turnkey_rooftop_solar_system.webp",
     nameEn: "Turnkey Rooftop Solar Systems",
     nameHi: "टर्नकी रूफटॉप सोलर सिस्टम",
     descriptionEn:
@@ -29,9 +29,24 @@ export const rawCategories: RawCategoryItem[] = [
     badgeHi: "सब्सिडी मान्य",
   },
   {
+    id: "complete-kit",
+    category: "rooftop",
+    image: "/products/complete_solar_solution_kit.webp",
+    nameEn: "Complete Turnkey Solar Generation Kits",
+    nameHi: "टर्नकी सोलर जेनरेशन पूर्ण किट्स",
+    descriptionEn:
+      "All-in-one pre-engineered rooftop packages bundled with Tier-1 bifacial panels, on-grid inverters, certified ACDB/DCDB protection, and BOS hardware.",
+    descriptionHi:
+      "टियर-1 बाइफेशियल पैनल, ऑन-ग्रिड इन्वर्टर, प्रमाणित एसीडीबी/डीसीडीबी सुरक्षा और संरचनात्मक हार्डवेयर से युक्त ऑल-इन-वन सोलर पैकेज।",
+    featuresEn: ["Guaranteed DBT Subsidy Settlement", "Full Balance of System (BOS) Included", "Plug-and-Play Net-Metering Ready"],
+    featuresHi: ["गारंटीड डीबीटी सब्सिडी निपटान", "संपूर्ण बैलेंस ऑफ सिस्टम (BOS) शामिल", "प्लग-एंड-प्ले नेट-मीटरिंग हेतु तैयार"],
+    badgeEn: "SUPERIOR HARVEST",
+    badgeHi: "उत्कृष्ट उत्पादन",
+  },
+  {
     id: "panels",
     category: "panels",
-    image: "/images/products/solar_panel.png",
+    image: "/products/bifacial_solar_pv_modules.webp",
     nameEn: "High-Density Bifacial PV Modules",
     nameHi: "हाई-डेंसिटी बाइफेशियल पीवी मॉड्यूल",
     descriptionEn:
@@ -44,24 +59,9 @@ export const rawCategories: RawCategoryItem[] = [
     badgeHi: "TOPCON / MONO PERC",
   },
   {
-    id: "batteries",
-    category: "batteries",
-    image: "/images/products/inverter_battery.png",
-    nameEn: "Heavy-Duty Tall Tubular Solar Batteries",
-    nameHi: "हेवी-ड्यूटी टॉल ट्यूबलर सोलर बैटरियां",
-    descriptionEn:
-      "Thick-plate antimonial spine lead-acid batteries with enhanced electrolyte reserve, engineered to withstand continuous deep discharges.",
-    descriptionHi:
-      "अधिक इलेक्ट्रोलाइट रिज़र्व और मोटी प्लेट वाली लेड-एसिड बैटरियां, जो बार-बार होने वाले डीप डिस्चार्ज को आसानी से संभालती हैं।",
-    featuresEn: ["C10 Deep Cycle Endurance", "Micro-Porous Ceramic Vent Plugs", "Ultra-Low Self-Discharge"],
-    featuresHi: ["C10 डीप साइकल सहनशीलता", "माइक्रो-पोरस सेरामिक वेंट प्लग", "न्यूनतम सेल्फ-डिस्चार्ज"],
-    badgeEn: "EXTREME CYCLIC LIFE",
-    badgeHi: "दीर्घकालिक साइकल लाइफ",
-  },
-  {
     id: "solar-inverters",
     category: "inverters",
-    image: "/images/products/solar_inverter.png",
+    image: "/products/intelligent_mppt_solar_inverters.webp",
     nameEn: "Intelligent Hybrid & Solar Inverters",
     nameHi: "इंटेलिजेंट हाइब्रिड व सोलर इन्वर्टर",
     descriptionEn:
@@ -76,7 +76,7 @@ export const rawCategories: RawCategoryItem[] = [
   {
     id: "home-inverters",
     category: "inverters",
-    image: "/images/products/home_inverter.png",
+    image: "/products/pure_sine_wave_inverters.webp",
     nameEn: "Microcontroller Pure Sine Wave Inverters",
     nameHi: "माइक्रोकंट्रोलर प्योर साइन वेव इन्वर्टर",
     descriptionEn:
@@ -89,9 +89,39 @@ export const rawCategories: RawCategoryItem[] = [
     badgeHi: "प्योर साइन वेव",
   },
   {
+    id: "batteries",
+    category: "batteries",
+    image: "/products/tall_tubular_solar_batteries.webp",
+    nameEn: "Heavy-Duty Tall Tubular Solar Batteries",
+    nameHi: "हेवी-ड्यूटी टॉल ट्यूबलर सोलर बैटरियां",
+    descriptionEn:
+      "Thick-plate antimonial spine lead-acid batteries with enhanced electrolyte reserve, engineered to withstand continuous deep discharges.",
+    descriptionHi:
+      "अधिक इलेक्ट्रोलाइट रिज़र्व और मोटी प्लेट वाली लेड-एसिड बैटरियां, जो बार-बार होने वाले डीप डिस्चार्ज को आसानी से संभालती हैं।",
+    featuresEn: ["C10 Deep Cycle Endurance", "Micro-Porous Ceramic Vent Plugs", "Ultra-Low Self-Discharge"],
+    featuresHi: ["C10 डीप साइकल सहनशीलता", "माइक्रो-पोरस सेरामिक वेंट प्लग", "न्यूनतम सेल्फ-डिस्चार्ज"],
+    badgeEn: "EXTREME CYCLIC LIFE",
+    badgeHi: "दीर्घकालिक साइकल लाइफ",
+  },
+  {
+    id: "deep-cycle-batteries",
+    category: "batteries",
+    image: "/products/deep_cycle_tubular_batteries.webp",
+    nameEn: "Deep-Cycle Inverter Tubular Batteries",
+    nameHi: "डीप-साइकल इन्वर्टर ट्यूबलर बैटरियां",
+    descriptionEn:
+      "Long-duration lead-antimony tubular batteries engineered with high reserve electrolyte capacity for heavy cyclic backup duty.",
+    descriptionHi:
+      "भारी बैकअप और बार-बार होने वाले पावर कट के लिए अधिक इलेक्ट्रोलाइट क्षमता वाली टिकाऊ ट्यूबलर बैटरियां।",
+    featuresEn: ["Extended Backup Endurance", "High Acid Volume per Ampere-Hour", "Optimized Deep-Discharge Recovery"],
+    featuresHi: ["विस्तारित बैकअप क्षमता", "प्रति एम्पीयर-घंटे उच्च एसिड वॉल्यूम", "डीप-डिस्चार्ज रिकवरी अनुकूलित"],
+    badgeEn: "DEEP CYCLE PERFORMANCE",
+    badgeHi: "डीप साइकल प्रदर्शन",
+  },
+  {
     id: "lithium",
     category: "batteries",
-    image: "/images/products/lithium_battery.png",
+    image: "/products/lifepo4_lithium_energy_storage.webp",
     nameEn: "Modular LiFePO4 Energy Storage Banks",
     nameHi: "मॉड्यूलर LiFePO4 स्टोरेज बैंक",
     descriptionEn:

@@ -130,20 +130,22 @@ export default function ProductCategoriesSection() {
             >
               <div>
                 {/* Product Image Frame */}
-                <div className="project-card__media relative w-full h-56 bg-zinc-50 border-b border-black/5 p-6 flex items-center justify-center overflow-hidden">
+                <div className="project-card__media relative w-full h-60 bg-zinc-50/70 border-b border-black/5 p-4 flex items-center justify-center overflow-hidden">
                   <Image
                     src={item.image}
                     alt={item.name}
                     loading="lazy"
-                    width={320}
-                    height={176}
-                    className="project-card__image max-h-44 max-w-full object-contain"
+                    width={400}
+                    height={400}
+                    className="project-card__image max-h-52 max-w-full object-contain transition-transform duration-300 group-hover:scale-105"
                   />
-                  <div className="absolute top-3 right-3">
-                    <span className="rounded-full bg-primary text-white text-[10px] font-normal tracking-[-0.1px] px-2.5 py-1">
-                      {item.badge}
-                    </span>
-                  </div>
+                  {(isHindi || !["complete-kit", "solar-inverters", "home-inverters", "batteries", "deep-cycle-batteries", "lithium"].includes(item.id)) && (
+                    <div className="absolute top-3 right-3 z-10 pointer-events-none">
+                      <span className="rounded-full bg-primary text-white text-[10px] font-normal tracking-[-0.1px] px-2.5 py-1 shadow-xs">
+                        {item.badge}
+                      </span>
+                    </div>
+                  )}
                 </div>
 
                 {/* Content */}
