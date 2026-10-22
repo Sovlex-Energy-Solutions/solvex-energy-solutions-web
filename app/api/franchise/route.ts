@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { dispatchServerConversion } from "@/lib/analytics/server";
 
-// Schema for Franchise & Dealership Application
+// Schema for Franchise & partnership
 const franchiseSchema = z.object({
   leadType: z.string().optional().default("franchise_partner"),
   firstName: z.string().min(1, "First name is required").optional(),

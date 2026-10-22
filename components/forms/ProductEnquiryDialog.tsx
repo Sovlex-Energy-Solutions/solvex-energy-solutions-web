@@ -202,7 +202,7 @@ export default function ProductEnquiryDialog({
     setIsSubmitting(true);
 
     try {
-      const res = await fetch("/api/leads", {
+      const res = await fetch("/api/solar-quote", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
