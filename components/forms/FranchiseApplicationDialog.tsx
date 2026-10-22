@@ -105,18 +105,21 @@ export default function FranchiseApplicationDialog({
     }
 
     try {
-      const res = await fetch("/api/leads", {
+      const res = await fetch("/api/franchise", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           leadType: "franchise_partner",
           firstName: values.fullName.trim().split(" ")[0] || values.fullName,
           lastName: values.fullName.trim().split(" ").slice(1).join(" ") || "Partner",
+          fullName: values.fullName,
           email: values.email || undefined,
           phone: values.phone,
           city: values.city,
           state: values.state,
           pincode: values.pinCode || undefined,
+          applicantType: values.applicantType,
+          investment: values.investment,
           partnershipType:
             values.applicantType.includes("Existing business")
               ? "distributor"
@@ -124,10 +127,12 @@ export default function FranchiseApplicationDialog({
               ? "master"
               : "channel",
           investmentCapacity: values.investment,
-          experience: `${values.experience} | Timeline: ${values.timeline} | Opportunity: ${values.opportunity}`,
+          experience: values.experience,
+          opportunity: values.opportunity,
+          timeline: values.timeline,
           notes: values.notes || undefined,
           consentAgreed: values.consent,
-          channelSource: "franchise_dialog",
+          channelSource: "hero_apply_franchise_modal",
         }),
       });
 

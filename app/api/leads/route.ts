@@ -13,6 +13,7 @@ const productBuyerSchema = z.object({
   propertyType: z.string().optional().default("residential_rooftop"),
   productInterest: z.string().min(1, "Product interest is required"),
   monthlyBill: z.string().optional().default("tier_5k_15k"),
+  capacityKw: z.string().optional().default(""),
   requiredCapacityKw: z.string().optional().default(""),
   rooftopAreaSqFt: z.string().optional().default(""),
   notes: z.string().optional().default(""),
@@ -133,17 +134,26 @@ export async function POST(req: Request) {
           sheetUrlWithParams.searchParams.set("lastName", leadData.lastName);
           sheetUrlWithParams.searchParams.set("fullName", `${leadData.firstName} ${leadData.lastName}`.trim());
           sheetUrlWithParams.searchParams.set("email", leadData.email || "");
+          sheetUrlWithParams.searchParams.set("pincode", leadData.pincode || "");
           sheetUrlWithParams.searchParams.set("tier", leadData.partnershipType);
           sheetUrlWithParams.searchParams.set("capital", leadData.investmentCapacity);
-          sheetUrlWithParams.searchParams.set("experience", leadData.experience || leadData.notes || "");
+          sheetUrlWithParams.searchParams.set("experience", leadData.experience || "");
+          sheetUrlWithParams.searchParams.set("notes", leadData.notes || "");
           sheetUrlWithParams.searchParams.set("source", leadData.channelSource || "website_franchise_form");
         } else {
+          sheetUrlWithParams.searchParams.set("leadType", "product_buyer");
           sheetUrlWithParams.searchParams.set("fullName", leadData.fullName);
           sheetUrlWithParams.searchParams.set("email", leadData.email || "");
+          sheetUrlWithParams.searchParams.set("propertyType", leadData.propertyType || "residential_rooftop");
+          sheetUrlWithParams.searchParams.set("productInterest", leadData.productInterest);
+          sheetUrlWithParams.searchParams.set("monthlyBill", leadData.monthlyBill || "tier_5k_15k");
+          sheetUrlWithParams.searchParams.set("capacityKw", leadData.capacityKw || leadData.requiredCapacityKw || "");
+          sheetUrlWithParams.searchParams.set("notes", leadData.notes || "");
+          sheetUrlWithParams.searchParams.set("source", leadData.channelSource || "website_product_enquiry");
+          // Legacy aliases for backward compatibility
           sheetUrlWithParams.searchParams.set("tier", leadData.productInterest);
           sheetUrlWithParams.searchParams.set("capital", leadData.monthlyBill);
           sheetUrlWithParams.searchParams.set("experience", leadData.notes || "");
-          sheetUrlWithParams.searchParams.set("source", leadData.channelSource || "website_product_enquiry");
         }
 
         const sheetResponse = await fetch(sheetUrlWithParams.toString(), {

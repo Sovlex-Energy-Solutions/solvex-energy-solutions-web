@@ -162,7 +162,7 @@ export default function ContactSection() {
 
     setBuyerSubmitting(true);
     try {
-      const res = await fetch("/api/leads", {
+      const res = await fetch("/api/buyer", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
