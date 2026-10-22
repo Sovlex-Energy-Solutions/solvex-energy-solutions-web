@@ -77,16 +77,6 @@ export default function FranchiseApplicationDialog({
   const isOpen = isControlled ? controlledOpen : internalOpen;
   const setIsOpen = isControlled ? controlledOnOpenChange! : setInternalOpen;
 
-  // Listen for global custom event
-  useEffect(() => {
-    const handleOpen = () => {
-      setIsSuccess(false);
-      setIsOpen(true);
-    };
-    window.addEventListener("open-franchise-dialog", handleOpen);
-    return () => window.removeEventListener("open-franchise-dialog", handleOpen);
-  }, [setIsOpen]);
-
   const form = useForm<FranchiseApplicationValues>({
     resolver: zodResolver(franchiseApplicationSchema),
     defaultValues: DEFAULT_FRANCHISE_FORM_VALUES,
@@ -99,6 +89,17 @@ export default function FranchiseApplicationDialog({
     reset,
     formState: { isSubmitting },
   } = form;
+
+  // Listen for global custom event
+  useEffect(() => {
+    const handleOpen = () => {
+      reset(DEFAULT_FRANCHISE_FORM_VALUES);
+      setIsSuccess(false);
+      setIsOpen(true);
+    };
+    window.addEventListener("open-franchise-dialog", handleOpen);
+    return () => window.removeEventListener("open-franchise-dialog", handleOpen);
+  }, [reset, setIsOpen]);
 
   const onSubmit = async (values: FranchiseApplicationValues) => {
     // Honeypot anti-spam check
@@ -143,6 +144,7 @@ export default function FranchiseApplicationDialog({
       setApplicationRef(refId);
       setSubmittedData(values);
       setIsSuccess(true);
+      reset(DEFAULT_FRANCHISE_FORM_VALUES);
 
       trackEvent("partner_enquiry_submitted", {
         formType: "franchise_partner",
@@ -157,6 +159,7 @@ export default function FranchiseApplicationDialog({
       setApplicationRef(fallbackId);
       setSubmittedData(values);
       setIsSuccess(true);
+      reset(DEFAULT_FRANCHISE_FORM_VALUES);
     }
   };
 
@@ -166,8 +169,16 @@ export default function FranchiseApplicationDialog({
     setIsOpen(false);
   };
 
+  const handleOpenChange = (nextOpen: boolean) => {
+    if (!nextOpen) {
+      setIsSuccess(false);
+      reset(DEFAULT_FRANCHISE_FORM_VALUES);
+    }
+    setIsOpen(nextOpen);
+  };
+
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogContent className="max-w-3xl max-h-[88vh] overflow-hidden p-0 rounded-2xl sm:rounded-3xl border border-black/10 bg-white text-[#18181B] shadow-2xl flex flex-col">
         {/* Modal Header: Matches Solvex Editorial Aesthetics */}
         <div className="px-6 sm:px-8 py-6 border-b border-black/10 bg-[#FAFAFA] flex flex-col gap-3 relative shrink-0">
