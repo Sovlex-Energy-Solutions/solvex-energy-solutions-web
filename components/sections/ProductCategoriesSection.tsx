@@ -139,7 +139,7 @@ export default function ProductCategoriesSection() {
                     height={400}
                     className="project-card__image max-h-52 max-w-full object-contain transition-transform duration-300 group-hover:scale-105"
                   />
-                  {(isHindi || !["complete-kit", "solar-inverters", "home-inverters", "batteries", "deep-cycle-batteries", "lithium"].includes(item.id)) && (
+                  {(isHindi || !["solar-inverters", "home-inverters", "batteries", "lithium"].includes(item.id)) && (
                     <div className="absolute top-3 right-3 z-10 pointer-events-none">
                       <span className="rounded-full bg-primary text-white text-[10px] font-normal tracking-[-0.1px] px-2.5 py-1 shadow-xs">
                         {item.badge}

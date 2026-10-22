@@ -29,21 +29,6 @@ export const rawCategories: RawCategoryItem[] = [
     badgeHi: "सब्सिडी मान्य",
   },
   {
-    id: "complete-kit",
-    category: "rooftop",
-    image: "/products/complete_solar_solution_kit.webp",
-    nameEn: "Complete Turnkey Solar Generation Kits",
-    nameHi: "टर्नकी सोलर जेनरेशन पूर्ण किट्स",
-    descriptionEn:
-      "All-in-one pre-engineered rooftop packages bundled with Tier-1 bifacial panels, on-grid inverters, certified ACDB/DCDB protection, and BOS hardware.",
-    descriptionHi:
-      "टियर-1 बाइफेशियल पैनल, ऑन-ग्रिड इन्वर्टर, प्रमाणित एसीडीबी/डीसीडीबी सुरक्षा और संरचनात्मक हार्डवेयर से युक्त ऑल-इन-वन सोलर पैकेज।",
-    featuresEn: ["Guaranteed DBT Subsidy Settlement", "Full Balance of System (BOS) Included", "Plug-and-Play Net-Metering Ready"],
-    featuresHi: ["गारंटीड डीबीटी सब्सिडी निपटान", "संपूर्ण बैलेंस ऑफ सिस्टम (BOS) शामिल", "प्लग-एंड-प्ले नेट-मीटरिंग हेतु तैयार"],
-    badgeEn: "SUPERIOR HARVEST",
-    badgeHi: "उत्कृष्ट उत्पादन",
-  },
-  {
     id: "panels",
     category: "panels",
     image: "/products/bifacial_solar_pv_modules.webp",
@@ -102,21 +87,6 @@ export const rawCategories: RawCategoryItem[] = [
     featuresHi: ["C10 डीप साइकल सहनशीलता", "माइक्रो-पोरस सेरामिक वेंट प्लग", "न्यूनतम सेल्फ-डिस्चार्ज"],
     badgeEn: "EXTREME CYCLIC LIFE",
     badgeHi: "दीर्घकालिक साइकल लाइफ",
-  },
-  {
-    id: "deep-cycle-batteries",
-    category: "batteries",
-    image: "/products/deep_cycle_tubular_batteries.webp",
-    nameEn: "Deep-Cycle Inverter Tubular Batteries",
-    nameHi: "डीप-साइकल इन्वर्टर ट्यूबलर बैटरियां",
-    descriptionEn:
-      "Long-duration lead-antimony tubular batteries engineered with high reserve electrolyte capacity for heavy cyclic backup duty.",
-    descriptionHi:
-      "भारी बैकअप और बार-बार होने वाले पावर कट के लिए अधिक इलेक्ट्रोलाइट क्षमता वाली टिकाऊ ट्यूबलर बैटरियां।",
-    featuresEn: ["Extended Backup Endurance", "High Acid Volume per Ampere-Hour", "Optimized Deep-Discharge Recovery"],
-    featuresHi: ["विस्तारित बैकअप क्षमता", "प्रति एम्पीयर-घंटे उच्च एसिड वॉल्यूम", "डीप-डिस्चार्ज रिकवरी अनुकूलित"],
-    badgeEn: "DEEP CYCLE PERFORMANCE",
-    badgeHi: "डीप साइकल प्रदर्शन",
   },
   {
     id: "lithium",
