@@ -16,7 +16,7 @@ export const rawCategories: RawCategoryItem[] = [
   {
     id: "rooftop",
     category: "rooftop",
-    image: "/products/turnkey_rooftop_solar_system.webp",
+    image: "/products/Turnkey_Rooftop_Solar_Systems.jpg",
     nameEn: "Turnkey Rooftop Solar Systems",
     nameHi: "टर्नकी रूफटॉप सोलर सिस्टम",
     descriptionEn:
@@ -31,7 +31,7 @@ export const rawCategories: RawCategoryItem[] = [
   {
     id: "panels",
     category: "panels",
-    image: "/products/bifacial_solar_pv_modules.webp",
+    image: "/products/High_Density_Bifacial_PV_Modules.jpg",
     nameEn: "High-Density Bifacial PV Modules",
     nameHi: "हाई-डेंसिटी बाइफेशियल पीवी मॉड्यूल",
     descriptionEn:
@@ -46,7 +46,7 @@ export const rawCategories: RawCategoryItem[] = [
   {
     id: "solar-inverters",
     category: "inverters",
-    image: "/products/intelligent_mppt_solar_inverters.webp",
+    image: "/products/Intelligent_Hybrid_&_Solar_Inverters.jpg",
     nameEn: "Intelligent Hybrid & Solar Inverters",
     nameHi: "इंटेलिजेंट हाइब्रिड व सोलर इन्वर्टर",
     descriptionEn:
@@ -61,7 +61,7 @@ export const rawCategories: RawCategoryItem[] = [
   {
     id: "home-inverters",
     category: "inverters",
-    image: "/products/pure_sine_wave_inverters.webp",
+    image: "/products/Microcontroller_Pure_Sine_Wave_Inverters.jpg",
     nameEn: "Microcontroller Pure Sine Wave Inverters",
     nameHi: "माइक्रोकंट्रोलर प्योर साइन वेव इन्वर्टर",
     descriptionEn:
@@ -76,7 +76,7 @@ export const rawCategories: RawCategoryItem[] = [
   {
     id: "batteries",
     category: "batteries",
-    image: "/products/tall_tubular_solar_batteries.webp",
+    image: "/products/Heavy_Duty_Tall_Tubular_Solar_Batteries.jpg",
     nameEn: "Heavy-Duty Tall Tubular Solar Batteries",
     nameHi: "हेवी-ड्यूटी टॉल ट्यूबलर सोलर बैटरियां",
     descriptionEn:
@@ -91,7 +91,7 @@ export const rawCategories: RawCategoryItem[] = [
   {
     id: "lithium",
     category: "batteries",
-    image: "/products/lifepo4_lithium_energy_storage.webp",
+    image: "/products/Modular_LiFePO4_Energy_Storage_Banks.jpg",
     nameEn: "Modular LiFePO4 Energy Storage Banks",
     nameHi: "मॉड्यूलर LiFePO4 स्टोरेज बैंक",
     descriptionEn:

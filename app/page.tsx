@@ -29,9 +29,9 @@ export default function Home() {
           {/* <HeroSlider /> */}
           <AboutUsSection />
           <ProductCategoriesSection />
-          {/* <TopSellingCombosSection /> */}
-          {/* <TopSellingInvertersSection /> */}
-          {/* <TopSellingPCUSection /> */}
+          <TopSellingCombosSection />
+          <TopSellingInvertersSection />
+          <TopSellingPCUSection />
           <MissionPillarsSection />
           <SolutionsSection />
           <PartnershipSection />

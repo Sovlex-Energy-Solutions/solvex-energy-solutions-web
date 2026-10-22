@@ -15,13 +15,13 @@ export function PCUCard({ pcu, onOpenModal, isHindi = false }: PCUCardProps) {
   return (
     <div
       onClick={onOpenModal}
-      className={`card-superpower project-card h-full flex flex-col justify-between overflow-hidden group cursor-pointer transition-all duration-300 hover:border-black/30 p-0 shadow-xs ${
+      className={`card-superpower project-card bg-white h-full flex flex-col justify-between overflow-hidden group cursor-pointer transition-all duration-300 hover:border-black/30 p-0 shadow-xs ${
         pcu.isPopular ? "border-primary/40 ring-1 ring-primary/20" : ""
       }`}
     >
       <div className="flex flex-col">
         {/* Clean Showcase Frame with Clipped Overflow */}
-        <div className="project-card__media relative w-full h-44 bg-[#FAFAFA] border-b border-black/10 flex items-center justify-center p-6 overflow-hidden">
+        <div className="project-card__media relative w-full h-44 bg-white border-b border-black/10 flex items-center justify-center p-6 overflow-hidden">
           <Image
             src={pcu.image}
             alt={pcu.name}
@@ -61,7 +61,7 @@ export function PCUCard({ pcu, onOpenModal, isHindi = false }: PCUCardProps) {
 
       {/* Sleek CTA Button */}
       <div className="p-6 pt-0">
-        <div className="w-full h-[42px] rounded-full border border-black/10 bg-[#FAFAFA] group-hover:bg-primary group-hover:text-white group-hover:border-primary text-[#18181B] font-sans text-xs font-normal flex items-center justify-center gap-1.5 transition-all">
+        <div className="w-full h-[42px] rounded-full border border-black/10 bg-white group-hover:bg-primary group-hover:text-white group-hover:border-primary text-[#18181B] font-sans text-xs font-normal flex items-center justify-center gap-1.5 transition-all">
           <span>{isHindi ? "औद्योगिक विवरण देखें" : "Inspect Industrial Specs"}</span>
           <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
         </div>

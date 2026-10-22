@@ -28,7 +28,7 @@ export const inverters: InverterProduct[] = [
     categoryLabel: "Rapid-MPPT Series",
     capacity: "800W Load",
     voltage: "12V Single Battery",
-    image: "/images/inverters/gamma_1kva.png",
+    image: "/products/Solvex_Gamma+_1kVA_Pure_Sine_Wave_Inverter.jpg",
     badge: "RESIDENTIAL FLAGSHIP",
     isPopular: true,
     idealFor: "Modern Apartments, POS Terminal Hubs & Home Workstations",
@@ -53,7 +53,7 @@ export const inverters: InverterProduct[] = [
     categoryLabel: "Rapid-MPPT Series",
     capacity: "560W Load",
     voltage: "12V Single Battery",
-    image: "/images/inverters/sunplus_pro_920.png",
+    image: "/products/Solvex_SunPlus_Pro_920_Hybrid_Inverter.jpg",
     badge: "HIGH VALUE COMPACT",
     idealFor: "Compact Dwellings, Micro-Retail & Rural Power Backups",
     specs: [
@@ -77,7 +77,7 @@ export const inverters: InverterProduct[] = [
     categoryLabel: "Industrial High-kVA",
     capacity: "1600W Load (2kVA)",
     voltage: "24V Dual Battery",
-    image: "/images/inverters/gamma_2600.png",
+    image: "/products/Solvex_Gamma+_2600_Heavy_Duty_24V_Core.jpg",
     badge: "DUAL-BATTERY ASSET",
     isPopular: true,
     idealFor: "Spacious Residences, Medical Diagnostic Centers & Retail Floors",
@@ -102,7 +102,7 @@ export const inverters: InverterProduct[] = [
     categoryLabel: "Rapid-MPPT Series",
     capacity: "720W Load (900 VA)",
     voltage: "12V Single Battery",
-    image: "/images/inverters/sunplus_pro_1020.png",
+    image: "/products/Solvex_SunPlus_Pro_1020_Acoustic_Silent_Inverter.jpg",
     badge: "WHISPER QUIET",
     idealFor: "Multi-Room Urban Residences, Consultancies & Office Suites",
     specs: [
@@ -126,7 +126,7 @@ export const inverters: InverterProduct[] = [
     categoryLabel: "Lithium BMS Ready",
     capacity: "1000W Load (1.2kVA)",
     voltage: "Lithium LiFePO4",
-    image: "/images/inverters/gamma_lion_1200.png",
+    image: "/products/Solvex_Gamma+_LiON_1200_Lithium_Integrated_Inverter.jpg",
     badge: "NEXT-GEN LITHIUM",
     idealFor: "Luxury Condos, Enterprise Server Nodes & Modern Smart Homes",
     specs: [
@@ -150,7 +150,7 @@ export const inverters: InverterProduct[] = [
     categoryLabel: "Industrial High-kVA",
     capacity: "2800W Load (3.4kVA)",
     voltage: "24V Dual Battery",
-    image: "/images/inverters/gamma_3400.png",
+    image: "/products/Solvex_Gamma+_3400_Commercial_Power_Center.jpg",
     badge: "HIGH-DUTY CYCLE",
     idealFor: "Light Industrial Units, Educational Campuses & Departmental Outlets",
     specs: [
@@ -174,7 +174,7 @@ export const inverters: InverterProduct[] = [
     categoryLabel: "Lithium BMS Ready",
     capacity: "1 kVA All-in-One",
     voltage: "Built-In LiFePO4",
-    image: "/images/inverters/sunlion_1000.png",
+    image: "/products/Solvex_SunLion_1000_Architectural_Wall_Mount_Inverter.jpg",
     badge: "ARCHITECTURAL MONOLITH",
     idealFor: "Designer Villas, Penthouse Lounges & Minimalist Studio Offices",
     specs: [

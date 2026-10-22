@@ -104,7 +104,7 @@ export default function TopSellingCombosSection() {
             >
               <div className="flex flex-col">
                 {/* Image Area with hover scale */}
-                <div className="project-card__media relative w-full h-44 bg-zinc-50 border-b border-black/5 flex items-center justify-center p-4 overflow-hidden">
+                <div className="project-card__media relative w-full h-44 bg-white border-b border-black/5 flex items-center justify-center p-4 overflow-hidden">
                   <Image
                     src={combo.image}
                     alt={combo.name}

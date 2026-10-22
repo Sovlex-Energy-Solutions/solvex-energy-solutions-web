@@ -47,7 +47,7 @@ export function PCUModal({ product, onClose, isHindi = false }: PCUModalProps) {
         <div className="p-6 flex flex-col gap-6">
           {/* Top Summary Row */}
           <div className="flex flex-col sm:flex-row items-center gap-6">
-            <div className="w-40 h-40 shrink-0 rounded-lg border border-black/10 bg-[#FAFAFA] p-3 flex items-center justify-center">
+            <div className="w-40 h-40 shrink-0 rounded-lg border border-black/10 bg-white p-3 flex items-center justify-center">
               <Image
                 src={product.image}
                 alt={product.name}

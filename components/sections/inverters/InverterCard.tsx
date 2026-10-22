@@ -19,13 +19,13 @@ export function InverterCard({
   return (
     <div
       onClick={onOpenModal}
-      className={`card-superpower project-card flex flex-col justify-between overflow-hidden h-full group cursor-pointer transition-all duration-300 hover:border-black/30 p-0 shadow-xs ${
+      className={`card-superpower project-card bg-white flex flex-col justify-between overflow-hidden h-full group cursor-pointer transition-all duration-300 hover:border-black/30 p-0 shadow-xs ${
         item.isPopular ? "border-primary/40 ring-1 ring-primary/20" : ""
       }`}
     >
       <div className="flex flex-col">
         {/* Clean Showcase Frame (Restrained 1.035 zoom per Section 5) */}
-        <div className="project-card__media relative w-full h-44 bg-[#FAFAFA] border-b border-black/10 flex items-center justify-center p-6 overflow-hidden">
+        <div className="project-card__media relative w-full h-44 bg-white border-b border-black/10 flex items-center justify-center p-6 overflow-hidden">
           <Image
             src={item.image}
             alt={item.name}
@@ -65,7 +65,7 @@ export function InverterCard({
 
       {/* Sleek CTA Button */}
       <div className="p-6 pt-0">
-        <div className="w-full h-[42px] rounded-full border border-black/10 bg-[#FAFAFA] group-hover:bg-primary group-hover:text-white group-hover:border-primary text-[#18181B] font-sans text-xs font-normal flex items-center justify-center gap-1.5 transition-all">
+        <div className="w-full h-[42px] rounded-full border border-black/10 bg-white group-hover:bg-primary group-hover:text-white group-hover:border-primary text-[#18181B] font-sans text-xs font-normal flex items-center justify-center gap-1.5 transition-all">
           <span>{isHindi ? "आर्किटेक्चर व विशिष्टताएं" : "Inspect Architecture & Specs"}</span>
           <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1.5 transition-transform duration-200" />
         </div>

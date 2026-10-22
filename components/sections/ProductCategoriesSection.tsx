@@ -130,7 +130,7 @@ export default function ProductCategoriesSection() {
             >
               <div>
                 {/* Product Image Frame */}
-                <div className="project-card__media relative w-full h-60 bg-zinc-50/70 border-b border-black/5 p-4 flex items-center justify-center overflow-hidden">
+                <div className="project-card__media relative w-full h-60 bg-white border-b border-black/5 p-4 flex items-center justify-center overflow-hidden">
                   <Image
                     src={item.image}
                     alt={item.name}
