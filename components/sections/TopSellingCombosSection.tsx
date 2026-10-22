@@ -1,103 +1,16 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import Image from "next/image";
 import { Zap, ArrowRight, Sparkles, MessageSquare } from "lucide-react";
 import { MotionReveal, MotionStagger, MotionItem } from "@/components/ui/motion-reveal";
 import { SlidingTabs } from "@/components/ui/sliding-tabs";
 import { useLanguage } from "@/context/LanguageContext";
 import { trackEvent } from "@/lib/analytics";
 import { openProductEnquiryDialog } from "@/components/forms/ProductEnquiryDialog";
+import { rawCombos, type RawComboItem } from "@/data/products/combos";
 
-interface RawComboItem {
-  id: string;
-  category: "all" | "residential" | "commercial" | "offgrid";
-  nameEn: string;
-  nameHi: string;
-  systemTypeEn: string;
-  systemTypeHi: string;
-  dailyGenerationEn: string;
-  dailyGenerationHi: string;
-  image: string;
-  recommendedForEn: string;
-  recommendedForHi: string;
-  badgeEn?: string;
-  badgeHi?: string;
-  isPopular?: boolean;
-  subsidyTextEn: string;
-  subsidyTextHi: string;
-}
-
-const rawCombos: RawComboItem[] = [
-  {
-    id: "combo-3kw",
-    category: "residential",
-    nameEn: "Solvex Prime 3.2kW Monocrystalline Grid-Tied Suite",
-    nameHi: "Solvex Prime 3.2kW मोनोक्रिस्टलाइन ग्रिड-टाइड सुइट",
-    systemTypeEn: "Single-Phase Synchronous Array",
-    systemTypeHi: "सिंगल-फेज सिंक्रोनस एरे",
-    dailyGenerationEn: "12-14 Units / Day",
-    dailyGenerationHi: "12-14 यूनिट / प्रतिदिन",
-    image: "/images/combos/combo_3kw.png",
-    recommendedForEn: "Urban 2-3 BHK Residences & Independent Floors",
-    recommendedForHi: "शहरी 2-3 बीएचके मकान एवं स्वतंत्र आवास",
-    badgeEn: "RESIDENTIAL BENCHMARK",
-    badgeHi: "आवासीय बेंचमार्क",
-    isPopular: true,
-    subsidyTextEn: "PM Surya Ghar DBT Subsidy Eligible (Up to ₹78,000)",
-    subsidyTextHi: "पीएम सूर्य घर योजना के तहत ₹78,000 तक डीबीटी सब्सिडी हेतु मान्य",
-  },
-  {
-    id: "combo-5kw",
-    category: "residential",
-    nameEn: "Solvex Apex 5kW Three-Phase High-Capacity Array",
-    nameHi: "Solvex Apex 5kW थ्री-फेज उच्च-क्षमता एरे",
-    systemTypeEn: "Three-Phase Synchronous Grid-Tie",
-    systemTypeHi: "थ्री-फेज सिंक्रोनस ग्रिड-टाई",
-    dailyGenerationEn: "20-22 Units / Day",
-    dailyGenerationHi: "20-22 यूनिट / प्रतिदिन",
-    image: "/images/combos/combo_5kw.png",
-    recommendedForEn: "Bungalows, Duplexes & Multi-Story Villas",
-    recommendedForHi: "बड़े बंगले, डुप्लेक्स एवं बहुमंजिला विला",
-    badgeEn: "SUPERIOR HARVEST",
-    badgeHi: "उत्कृष्ट उत्पादन",
-    subsidyTextEn: "PM Surya Ghar DBT Subsidy Eligible (Up to ₹78,000)",
-    subsidyTextHi: "पीएम सूर्य घर योजना के तहत ₹78,000 तक डीबीटी सब्सिडी हेतु मान्य",
-  },
-  {
-    id: "combo-500w",
-    category: "offgrid",
-    nameEn: "Solvex Nomad 500W Autonomous Micro-Generation Kit",
-    nameHi: "Solvex Nomad 500W ऑटोनॉमस माइक्रो-जेनरेशन किट",
-    systemTypeEn: "Islanded Off-Grid DC/AC Core",
-    systemTypeHi: "आइसलैंडेड ऑफ-ग्रिड DC/AC कोर",
-    dailyGenerationEn: "2-2.5 Units / Day",
-    dailyGenerationHi: "2-2.5 यूनिट / प्रतिदिन",
-    image: "/images/combos/combo_500w.png",
-    recommendedForEn: "Farmhouses, Outposts & Remote Agri-Stations",
-    recommendedForHi: "फार्महाउस, रिमोट आउटपोस्ट एवं कृषि स्टेशन",
-    badgeEn: "TRUE GRID INDEPENDENCE",
-    badgeHi: "पूर्ण ग्रिड स्वतंत्रता",
-    subsidyTextEn: "100% Autonomous Storage — Zero Grid Dependency",
-    subsidyTextHi: "100% स्वतंत्र स्टोरेज — ग्रिड पर शून्य निर्भरता",
-  },
-  {
-    id: "combo-10kw",
-    category: "commercial",
-    nameEn: "Solvex Enterprise 10kW Three-Phase Commercial Suite",
-    nameHi: "Solvex Enterprise 10kW थ्री-फेज कमर्शियल सुइट",
-    systemTypeEn: "High-Yield C&I Synchronous Array",
-    systemTypeHi: "उच्च-उत्पादन सीएंडआई सिंक्रोनस एरे",
-    dailyGenerationEn: "40-45 Units / Day",
-    dailyGenerationHi: "40-45 यूनिट / प्रतिदिन",
-    image: "/images/combos/combo_10kw.png",
-    recommendedForEn: "Corporate Showrooms, Clinics & Light Factories",
-    recommendedForHi: "कॉर्पोरेट शोरूम, क्लिनिक एवं लघु कारखाने",
-    badgeEn: "COMMERCIAL ASSET",
-    badgeHi: "कमर्शियल संपत्ति",
-    subsidyTextEn: "Qualifies for Section 32 40% Tax Depreciation",
-    subsidyTextHi: "धारा 32 के तहत 40% कर मूल्यह्रास (Depreciation) हेतु मान्य",
-  },
-];
+export type { RawComboItem };
 
 export default function TopSellingCombosSection() {
   const { isHindi } = useLanguage();
@@ -182,7 +95,7 @@ export default function TopSellingCombosSection() {
           />
         </MotionReveal>
 
-        {/* 4 Combo Packages Grid - Staggered per Section 2 & 5 */}
+        {/* 4 Combo Packages Grid */}
         <MotionStagger className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
           {filteredCombos.map((combo) => (
             <MotionItem
@@ -190,14 +103,12 @@ export default function TopSellingCombosSection() {
               className="card-superpower project-card p-0 rounded-lg flex flex-col justify-between overflow-hidden bg-white hover:border-black/30 transition-all shadow-xs group"
             >
               <div className="flex flex-col">
-                {/* Image Area with Section 5 hover scale */}
+                {/* Image Area with hover scale */}
                 <div className="project-card__media relative w-full h-44 bg-zinc-50 border-b border-black/5 flex items-center justify-center p-4 overflow-hidden">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
+                  <Image
                     src={combo.image}
                     alt={combo.name}
                     loading="lazy"
-                    decoding="async"
                     width={280}
                     height={128}
                     className="project-card__image max-h-32 max-w-[85%] object-contain"

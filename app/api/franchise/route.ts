@@ -154,8 +154,8 @@ export async function POST(req: Request) {
           sheetError = `HTTP ${sheetResponse.status}: ${sheetResponse.statusText}`;
           console.warn("[Google Sheet Post Warning]:", sheetError);
         }
-      } catch (err: any) {
-        sheetError = err?.message || String(err);
+      } catch (err: unknown) {
+        sheetError = err instanceof Error ? err.message : String(err);
         console.warn("[Google Sheet Post Error]:", sheetError);
       }
     } else {

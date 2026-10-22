@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import {
   Megaphone,
   Award,
@@ -57,11 +58,12 @@ export default function WhyChooseSection() {
           WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 18%, black 82%, transparent 100%)",
         }}
       >
-        <img
+        <Image
           src="/media/optimized/clean_energy_wind_hub.webp"
           alt=""
           aria-hidden="true"
-          className="w-full h-full object-cover opacity-50 sm:opacity-60"
+          fill
+          className="object-cover opacity-50 sm:opacity-60"
         />
         {/* Soft edge blend gradients to dissolve seamlessly into white */}
         <div className="absolute inset-x-0 top-0 h-44 bg-gradient-to-b from-white via-white/80 to-transparent z-[1]" />

@@ -1,10 +1,38 @@
 /**
  * Solvex Energy Solutions - Privacy-First GA4 Integration Test Suite
- * Covers Scenarios A through G as specified in the Senior Engineer Implementation Brief.
+ * Covers Scenarios A through H as specified in the Senior Engineer Implementation Brief.
  */
 
 import { describe, it, beforeEach } from "node:test";
 import assert from "node:assert/strict";
+
+// Imports under test
+import {
+  DEFAULT_DENIED_CONSENT,
+  getStoredConsent,
+  hasAnalyticsConsent,
+  acceptAllConsent,
+  rejectAllConsent,
+  saveCustomConsent,
+  withdrawConsent,
+} from "../lib/consent/state";
+import {
+  initGoogleAnalytics,
+  trackPageView,
+  trackEvent,
+  withdrawAnalyticsTracking,
+} from "../lib/analytics";
+import {
+  isValidMeasurementId,
+  isAllowedEvent,
+  isAllowedParamKey,
+} from "../lib/analytics/config";
+import {
+  sanitizeUrl,
+  sanitizeString,
+  sanitizeParamValue,
+} from "../lib/analytics/sanitizer";
+import { dispatchServerConversion } from "../lib/analytics/server";
 
 // Mock minimal browser environment
 class MockLocalStorage {
@@ -31,7 +59,38 @@ class MockLocalStorage {
 const mockStorage = new MockLocalStorage();
 const eventListeners = new Map<string, Array<(e: unknown) => void>>();
 
-(globalThis as any).window = {
+interface MockWindow {
+  localStorage: MockLocalStorage;
+  location: {
+    href: string;
+    origin: string;
+    pathname: string;
+    search: string;
+    hash: string;
+  };
+  addEventListener: (event: string, cb: (e: unknown) => void) => void;
+  removeEventListener: (event: string, cb: (e: unknown) => void) => void;
+  dispatchEvent: (event: { type?: string; detail?: { type?: string } }) => boolean;
+  gtag?: (...args: unknown[]) => void;
+  dataLayer?: unknown[][];
+  [key: string]: unknown;
+}
+
+interface MockDocument {
+  title: string;
+}
+
+interface MockGlobal {
+  window: MockWindow;
+  document: MockDocument;
+  CustomEvent: typeof CustomEvent | unknown;
+  fetch: typeof fetch;
+  [key: string]: unknown;
+}
+
+const mockGlobal = globalThis as unknown as MockGlobal;
+
+mockGlobal.window = {
   localStorage: mockStorage,
   location: {
     href: "https://solvexenergy.com/",
@@ -51,21 +110,21 @@ const eventListeners = new Map<string, Array<(e: unknown) => void>>();
       list.filter((fn) => fn !== cb)
     );
   },
-  dispatchEvent(event: { type?: string; detail?: unknown }) {
-    const type = (event as any).type || (event as any).detail?.type;
+  dispatchEvent(event: { type?: string; detail?: { type?: string } }) {
+    const type = event.type || event.detail?.type || "";
     const list = eventListeners.get(type) || [];
     list.forEach((fn) => fn(event));
     return true;
   },
 };
 
-(globalThis as any).document = {
+mockGlobal.document = {
   title: "Solvex Energy Solutions",
 };
 
 // Polyfill CustomEvent if needed in Node
-if (typeof (globalThis as any).CustomEvent === "undefined") {
-  (globalThis as any).CustomEvent = class CustomEvent {
+if (typeof mockGlobal.CustomEvent === "undefined") {
+  mockGlobal.CustomEvent = class CustomEvent {
     type: string;
     detail: unknown;
     constructor(type: string, params?: { detail?: unknown }) {
@@ -75,46 +134,18 @@ if (typeof (globalThis as any).CustomEvent === "undefined") {
   };
 }
 
-// Imports under test
-import {
-  DEFAULT_DENIED_CONSENT,
-  getStoredConsent,
-  hasAnalyticsConsent,
-  acceptAllConsent,
-  rejectAllConsent,
-  saveCustomConsent,
-  withdrawConsent,
-  validateConsentRecord,
-} from "../lib/consent/state";
-import {
-  initGoogleAnalytics,
-  trackPageView,
-  trackEvent,
-  withdrawAnalyticsTracking,
-} from "../lib/analytics";
-import {
-  isValidMeasurementId,
-  isAllowedEvent,
-  isAllowedParamKey,
-} from "../lib/analytics/config";
-import {
-  sanitizeUrl,
-  sanitizeString,
-  sanitizeParamValue,
-} from "../lib/analytics/sanitizer";
-
 describe("Privacy-First GA4 & Consent Architecture", () => {
   const TEST_GA_ID = "G-ABC123XYZ9";
 
   beforeEach(() => {
     mockStorage.clear();
-    delete (globalThis as any).window.gtag;
-    delete (globalThis as any).window.dataLayer;
-    delete (globalThis as any).window[`ga-disable-${TEST_GA_ID}`];
-    (globalThis as any).window.location.href = "https://solvexenergy.com/";
-    (globalThis as any).window.location.pathname = "/";
-    (globalThis as any).window.location.search = "";
-    (globalThis as any).window.location.hash = "";
+    delete mockGlobal.window.gtag;
+    delete mockGlobal.window.dataLayer;
+    delete mockGlobal.window[`ga-disable-${TEST_GA_ID}`];
+    mockGlobal.window.location.href = "https://solvexenergy.com/";
+    mockGlobal.window.location.pathname = "/";
+    mockGlobal.window.location.search = "";
+    mockGlobal.window.location.hash = "";
   });
 
   describe("Scenario A: First Visit (Privacy-by-Default)", () => {
@@ -128,12 +159,12 @@ describe("Privacy-First GA4 & Consent Architecture", () => {
     it("strictly prevents GA4 initialization before consent", () => {
       const initResult = initGoogleAnalytics(TEST_GA_ID);
       assert.equal(initResult, false);
-      assert.equal((globalThis as any).window.gtag, undefined);
+      assert.equal(mockGlobal.window.gtag, undefined);
     });
 
     it("strictly blocks custom event dispatch before consent", () => {
       let eventFired = false;
-      (globalThis as any).window.gtag = () => {
+      mockGlobal.window.gtag = () => {
         eventFired = true;
       };
 
@@ -143,7 +174,7 @@ describe("Privacy-First GA4 & Consent Architecture", () => {
 
     it("strictly blocks page_view dispatch before consent", () => {
       let pageViewFired = false;
-      (globalThis as any).window.gtag = () => {
+      mockGlobal.window.gtag = () => {
         pageViewFired = true;
       };
 
@@ -167,51 +198,50 @@ describe("Privacy-First GA4 & Consent Architecture", () => {
     it("initializes GA4 in Basic Consent Mode after opt-in", () => {
       acceptAllConsent();
 
-      const gtagCalls: unknown[][] = [];
-      (globalThis as any).window.dataLayer = [];
+      mockGlobal.window.dataLayer = [];
 
       const initSuccess = initGoogleAnalytics(TEST_GA_ID);
       assert.equal(initSuccess, true);
-      assert.equal(typeof (globalThis as any).window.gtag, "function");
+      assert.equal(typeof mockGlobal.window.gtag, "function");
 
       // Verify gtag consent commands
-      const dataLayer = (globalThis as any).window.dataLayer;
-      assert.ok(dataLayer.length >= 3);
+      const dataLayer = mockGlobal.window.dataLayer;
+      assert.ok(dataLayer && dataLayer.length >= 3);
 
       // default consent denied signal
       assert.equal(dataLayer[0][0], "consent");
       assert.equal(dataLayer[0][1], "default");
-      assert.equal(dataLayer[0][2].analytics_storage, "denied");
+      assert.equal((dataLayer[0][2] as Record<string, unknown>).analytics_storage, "denied");
 
       // update consent granted signal
       assert.equal(dataLayer[1][0], "consent");
       assert.equal(dataLayer[1][1], "update");
-      assert.equal(dataLayer[1][2].analytics_storage, "granted");
+      assert.equal((dataLayer[1][2] as Record<string, unknown>).analytics_storage, "granted");
 
       // config call
       assert.equal(dataLayer[3][0], "config");
       assert.equal(dataLayer[3][1], TEST_GA_ID);
-      assert.equal(dataLayer[3][2].send_page_view, false);
-      assert.equal(dataLayer[3][2].anonymize_ip, true);
+      assert.equal((dataLayer[3][2] as Record<string, unknown>).send_page_view, false);
+      assert.equal((dataLayer[3][2] as Record<string, unknown>).anonymize_ip, true);
     });
 
     it("dispatches sanitized page_view and prevents duplicate tracking", () => {
       acceptAllConsent();
       initGoogleAnalytics(TEST_GA_ID);
 
-      const capturedEvents: any[] = [];
-      const originalGtag = (globalThis as any).window.gtag;
-      (globalThis as any).window.gtag = (...args: any[]) => {
+      const capturedEvents: unknown[][] = [];
+      const originalGtag = mockGlobal.window.gtag;
+      mockGlobal.window.gtag = (...args: unknown[]) => {
         capturedEvents.push(args);
-        originalGtag(...args);
+        originalGtag?.(...args);
       };
 
-      (globalThis as any).window.location.href = "https://solvexenergy.com/products";
+      mockGlobal.window.location.href = "https://solvexenergy.com/products";
       trackPageView("https://solvexenergy.com/products");
 
       const pageViews = capturedEvents.filter((ev) => ev[0] === "event" && ev[1] === "page_view");
       assert.equal(pageViews.length, 1);
-      assert.equal(pageViews[0][2].page_path, "/products");
+      assert.equal((pageViews[0][2] as Record<string, unknown>).page_path, "/products");
 
       // Duplicate navigation call with identical path should be ignored
       trackPageView("https://solvexenergy.com/products");
@@ -266,10 +296,10 @@ describe("Privacy-First GA4 & Consent Architecture", () => {
       initGoogleAnalytics(TEST_GA_ID);
       assert.equal(hasAnalyticsConsent(), true);
 
-      let gtagUpdateCall: any = null;
-      (globalThis as any).window.gtag = (...args: any[]) => {
+      let gtagUpdateCall: Record<string, unknown> | null = null;
+      mockGlobal.window.gtag = (...args: unknown[]) => {
         if (args[0] === "consent" && args[1] === "update") {
-          gtagUpdateCall = args[2];
+          gtagUpdateCall = args[2] as Record<string, unknown>;
         }
       };
 
@@ -278,13 +308,13 @@ describe("Privacy-First GA4 & Consent Architecture", () => {
       withdrawAnalyticsTracking(TEST_GA_ID);
 
       assert.equal(hasAnalyticsConsent(), false);
-      assert.equal((globalThis as any).window[`ga-disable-${TEST_GA_ID}`], true);
+      assert.equal(mockGlobal.window[`ga-disable-${TEST_GA_ID}`], true);
       assert.ok(gtagUpdateCall);
-      assert.equal(gtagUpdateCall.analytics_storage, "denied");
+      assert.equal((gtagUpdateCall as Record<string, unknown>).analytics_storage, "denied");
 
       // Verify subsequent events are dropped immediately
       let eventDispatched = false;
-      (globalThis as any).window.gtag = (...args: any[]) => {
+      mockGlobal.window.gtag = (...args: unknown[]) => {
         if (args[0] === "event") eventDispatched = true;
       };
 
@@ -430,23 +460,21 @@ describe("Privacy-First GA4 & Consent Architecture", () => {
   });
 
   describe("Scenario H: Server-Side Measurement Protocol Conversion Telemetry", () => {
-    const { dispatchServerConversion } = require("../lib/analytics/server");
-
     it("safely handles conversion dispatch when credentials are set or omitted", async () => {
       process.env.GA_MEASUREMENT_ID = "G-SLVX2026IN";
       process.env.GA_API_SECRET = "XIyfDbwq5HmtOjzgWrDtyDGd";
       process.env.ANALYTICS_SALT = "8b7a01e7d1a8596e0742955390db7be18b0931cb4f79417ec8323223a544e1ce";
 
       // Mock global fetch
-      const originalFetch = (globalThis as any).fetch;
-      let requestPayload: any = null;
+      const originalFetch = mockGlobal.fetch;
+      let requestPayload: { events: Array<{ name: string; params: Record<string, unknown> }>; client_id: string } | null = null;
       let targetUrl = "";
 
-      (globalThis as any).fetch = async (url: string, init: any) => {
-        targetUrl = url;
-        requestPayload = JSON.parse(init.body);
-        return { ok: true, status: 204 };
-      };
+      mockGlobal.fetch = (async (url: string | URL | Request, init?: RequestInit) => {
+        targetUrl = String(url);
+        requestPayload = JSON.parse(String(init?.body));
+        return { ok: true, status: 204 } as Response;
+      }) as typeof fetch;
 
       const result = await dispatchServerConversion({
         eventName: "product_enquiry_submitted",
@@ -459,12 +487,14 @@ describe("Privacy-First GA4 & Consent Architecture", () => {
       assert.equal(result, true);
       assert.ok(targetUrl.includes("measurement_id=G-SLVX2026IN"));
       assert.ok(targetUrl.includes("api_secret=XIyfDbwq5HmtOjzgWrDtyDGd"));
-      assert.equal(requestPayload.events[0].name, "product_enquiry_submitted");
-      assert.equal(requestPayload.events[0].params.lead_reference_id, "SLX-PRD-2026-98765");
-      assert.ok(requestPayload.client_id.includes("."));
+      assert.ok(requestPayload !== null);
+      const payload = requestPayload as { events: Array<{ name: string; params: Record<string, unknown> }>; client_id: string };
+      assert.equal(payload.events[0].name, "product_enquiry_submitted");
+      assert.equal(payload.events[0].params.lead_reference_id, "SLX-PRD-2026-98765");
+      assert.ok(payload.client_id.includes("."));
 
       // Clean up mock
-      (globalThis as any).fetch = originalFetch;
+      mockGlobal.fetch = originalFetch;
     });
 
     it("respects ANALYTICS_ENVIRONMENT=disabled gate", async () => {
@@ -479,4 +509,3 @@ describe("Privacy-First GA4 & Consent Architecture", () => {
     });
   });
 });
-

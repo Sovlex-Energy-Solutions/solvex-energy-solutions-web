@@ -46,6 +46,27 @@ export function openProductEnquiryDialog(detail?: ProductEnquiryDetails) {
   }
 }
 
+export interface ProductEnquiryFormData {
+  fullName: string;
+  phone: string;
+  email: string;
+  city: string;
+  state: string;
+  propertyType: string;
+  productInterest: string;
+  monthlyBill: string;
+  requiredCapacityKw: string;
+  rooftopAreaSqFt: string;
+  notes: string;
+  consentAgreed: boolean;
+}
+
+function generateProductFallbackReferenceId(): string {
+  const currentYear = new Date().getFullYear();
+  const randomSuffix = Math.floor(10000 + Math.random() * 90000);
+  return `SLX-PRD-${currentYear}-${randomSuffix}`;
+}
+
 export interface ProductEnquiryDialogProps {
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
@@ -70,7 +91,7 @@ export default function ProductEnquiryDialog({
   const open = isControlled ? controlledOpen : internalOpen;
   const onOpenChange = isControlled ? controlledOnOpenChange! : setInternalOpen;
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<ProductEnquiryFormData>({
     fullName: "",
     phone: "",
     email: "",
@@ -91,6 +112,23 @@ export default function ProductEnquiryDialog({
   const [submitted, setSubmitted] = useState(false);
   const [referenceId, setReferenceId] = useState("");
   const [copied, setCopied] = useState(false);
+
+  const [prevOpen, setPrevOpen] = useState(open);
+  if (open !== prevOpen) {
+    setPrevOpen(open);
+    if (open) {
+      setFormData((prev) => ({
+        ...prev,
+        productInterest: initialProductInterest || prev.productInterest || "Rooftop Solar EPC System",
+        requiredCapacityKw: initialCapacityKw || prev.requiredCapacityKw,
+        rooftopAreaSqFt: initialRooftopArea || prev.rooftopAreaSqFt,
+        monthlyBill: initialMonthlyBill || prev.monthlyBill,
+      }));
+      setSubmitted(false);
+      setErrors({});
+      setTouched({});
+    }
+  }
 
   // Global event listener
   useEffect(() => {
@@ -120,38 +158,28 @@ export default function ProductEnquiryDialog({
     return () => window.removeEventListener("open-product-enquiry-dialog", handleGlobalOpen);
   }, [isControlled, controlledOnOpenChange]);
 
-  // Sync initial props when dialog opens
-  useEffect(() => {
-    if (open) {
-      setFormData((prev) => ({
-        ...prev,
-        productInterest: initialProductInterest || prev.productInterest || "Rooftop Solar EPC System",
-        requiredCapacityKw: initialCapacityKw || prev.requiredCapacityKw,
-        rooftopAreaSqFt: initialRooftopArea || prev.rooftopAreaSqFt,
-        monthlyBill: initialMonthlyBill || prev.monthlyBill,
-      }));
-      setSubmitted(false);
-      setErrors({});
-      setTouched({});
-    }
-  }, [open, initialProductInterest, initialCapacityKw, initialRooftopArea, initialMonthlyBill]);
-
-  const validateField = (field: string, value: any): string => {
+  const validateField = (field: keyof ProductEnquiryFormData, value: unknown): string => {
     switch (field) {
-      case "fullName":
-        if (!value || !value.trim()) return isHindi ? "नाम दर्ज करना आवश्यक है" : "Full name is required.";
-        if (value.trim().length < 2) return isHindi ? "कम से कम 2 अक्षर आवश्यक हैं" : "Must be at least 2 characters.";
+      case "fullName": {
+        const str = typeof value === "string" ? value.trim() : "";
+        if (!str) return isHindi ? "नाम दर्ज करना आवश्यक है" : "Full name is required.";
+        if (str.length < 2) return isHindi ? "कम से कम 2 अक्षर आवश्यक हैं" : "Must be at least 2 characters.";
         return "";
-      case "phone":
-        if (!value || !value.trim()) return isHindi ? "मोबाइल नंबर आवश्यक है" : "Mobile number is required.";
-        const clean = value.replace(/[\s\-\(\)]/g, "");
+      }
+      case "phone": {
+        const str = typeof value === "string" ? value.trim() : "";
+        if (!str) return isHindi ? "मोबाइल नंबर आवश्यक है" : "Mobile number is required.";
+        const clean = str.replace(/[\s\-\(\)]/g, "");
         if (!/^(?:\+?91)?[6-9]\d{9}$/.test(clean)) {
           return isHindi ? "मान्य 10-अंकीय भारतीय मोबाइल नंबर दर्ज करें" : "Enter a valid 10-digit mobile number (+91).";
         }
         return "";
-      case "city":
-        if (!value || !value.trim()) return isHindi ? "शहर या जिला आवश्यक है" : "City / District is required.";
+      }
+      case "city": {
+        const str = typeof value === "string" ? value.trim() : "";
+        if (!str) return isHindi ? "शहर या जिला आवश्यक है" : "City / District is required.";
         return "";
+      }
       case "consentAgreed":
         if (!value) return isHindi ? "कृपया आगे बढ़ने के लिए सहमति दें" : "Consent is required to proceed.";
         return "";
@@ -160,13 +188,13 @@ export default function ProductEnquiryDialog({
     }
   };
 
-  const handleBlur = (field: string) => {
+  const handleBlur = (field: keyof ProductEnquiryFormData) => {
     setTouched((prev) => ({ ...prev, [field]: true }));
-    const err = validateField(field, (formData as any)[field]);
+    const err = validateField(field, formData[field]);
     setErrors((prev) => ({ ...prev, [field]: err }));
   };
 
-  const handleChange = (field: string, value: any) => {
+  const handleChange = (field: keyof ProductEnquiryFormData, value: string | boolean) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
     if (touched[field]) {
       const err = validateField(field, value);
@@ -177,12 +205,12 @@ export default function ProductEnquiryDialog({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const requiredFields = ["fullName", "phone", "city", "consentAgreed"];
+    const requiredFields: (keyof ProductEnquiryFormData)[] = ["fullName", "phone", "city", "consentAgreed"];
     const newErrors: Record<string, string> = {};
     let hasError = false;
 
     requiredFields.forEach((field) => {
-      const err = validateField(field, (formData as any)[field]);
+      const err = validateField(field, formData[field]);
       if (err) {
         newErrors[field] = err;
         hasError = true;
@@ -225,13 +253,12 @@ export default function ProductEnquiryDialog({
           category: "Leads",
         });
       } else {
-        // Fallback reference code
-        const fallbackId = `SLX-PRD-2026-${Math.floor(10000 + Math.random() * 90000)}`;
+        const fallbackId = generateProductFallbackReferenceId();
         setReferenceId(fallbackId);
         setSubmitted(true);
       }
     } catch {
-      const fallbackId = `SLX-PRD-2026-${Math.floor(10000 + Math.random() * 90000)}`;
+      const fallbackId = generateProductFallbackReferenceId();
       setReferenceId(fallbackId);
       setSubmitted(true);
     } finally {

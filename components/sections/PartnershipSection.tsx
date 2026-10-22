@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { Users, Store, Building2, Share2, CreditCard, Check } from "lucide-react";
 import { MotionReveal, MotionStagger, MotionItem } from "@/components/ui/motion-reveal";
 import { useLanguage } from "@/context/LanguageContext";
@@ -17,11 +18,12 @@ export default function PartnershipSection() {
           WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 18%, black 82%, transparent 100%)",
         }}
       >
-        <img
+        <Image
           src="/media/optimized/india_solar_grid.webp"
           alt=""
           aria-hidden="true"
-          className="w-full h-full object-cover opacity-50 sm:opacity-60"
+          fill
+          className="object-cover opacity-50 sm:opacity-60"
         />
         {/* Soft edge blend gradients to dissolve seamlessly into white */}
         <div className="absolute inset-x-0 top-0 h-44 bg-gradient-to-b from-white via-[#F4F6F9]/60 to-transparent z-[1]" />

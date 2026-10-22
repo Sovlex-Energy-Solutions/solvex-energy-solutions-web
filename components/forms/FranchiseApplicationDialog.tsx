@@ -4,9 +4,7 @@ import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  ShieldCheck,
   CheckCircle2,
-  FileCheck2,
   ArrowRight,
   Loader2,
   Phone,
@@ -16,8 +14,6 @@ import {
   ChevronDown,
   ExternalLink,
   Sparkles,
-  X,
-  AlertCircle,
   MessageSquare,
 } from "lucide-react";
 
@@ -58,6 +54,12 @@ export function openFranchiseDialog() {
 interface FranchiseApplicationDialogProps {
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
+}
+
+function generateFallbackReferenceId(): string {
+  const year = new Date().getFullYear();
+  const randomSuffix = Math.floor(10000 + Math.random() * 90000);
+  return `SLX-PRT-${year}-${randomSuffix}`;
 }
 
 export default function FranchiseApplicationDialog({
@@ -137,7 +139,7 @@ export default function FranchiseApplicationDialog({
       });
 
       const json = await res.json();
-      const refId = json.referenceId || `SLX-PRT-2026-${Math.floor(10000 + Math.random() * 90000)}`;
+      const refId = json.referenceId || generateFallbackReferenceId();
       setApplicationRef(refId);
       setSubmittedData(values);
       setIsSuccess(true);
@@ -151,7 +153,7 @@ export default function FranchiseApplicationDialog({
         investment_band: values.investment,
       });
     } catch {
-      const fallbackId = `SLX-PRT-2026-${Math.floor(10000 + Math.random() * 90000)}`;
+      const fallbackId = generateFallbackReferenceId();
       setApplicationRef(fallbackId);
       setSubmittedData(values);
       setIsSuccess(true);

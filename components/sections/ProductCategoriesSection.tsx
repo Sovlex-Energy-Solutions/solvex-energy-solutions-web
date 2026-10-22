@@ -1,107 +1,16 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import Image from "next/image";
 import { ArrowRight, Sparkles, Truck, CreditCard, Headphones, ShieldCheck } from "lucide-react";
 import { MotionReveal, MotionStagger, MotionItem } from "@/components/ui/motion-reveal";
 import { SlidingTabs } from "@/components/ui/sliding-tabs";
 import { useLanguage } from "@/context/LanguageContext";
 import { trackEvent } from "@/lib/analytics";
 import { openProductEnquiryDialog } from "@/components/forms/ProductEnquiryDialog";
+import { rawCategories, type RawCategoryItem } from "@/data/products/categories";
 
-interface RawCategoryItem {
-  id: string;
-  category: "all" | "rooftop" | "panels" | "inverters" | "batteries";
-  image: string;
-  nameEn: string;
-  nameHi: string;
-  descriptionEn: string;
-  descriptionHi: string;
-  featuresEn: string[];
-  featuresHi: string[];
-  badgeEn: string;
-  badgeHi: string;
-}
-
-const rawCategories: RawCategoryItem[] = [
-  {
-    id: "rooftop",
-    category: "rooftop",
-    image: "/images/products/rooftop_solar.png",
-    nameEn: "Turnkey Rooftop Solar Systems",
-    nameHi: "टर्नकी रूफटॉप सोलर सिस्टम",
-    descriptionEn: "Engineered on-grid photovoltaic arrays custom-built for residential, institutional, and commercial rooftops under PM Surya Ghar.",
-    descriptionHi: "पीएम सूर्य घर योजना के तहत आवासीय, संस्थागत और वाणिज्यिक छतों हेतु विशेष रूप से निर्मित ऑन-ग्रिड सोलर सिस्टम।",
-    featuresEn: ["Direct DBT Subsidy Linked", "Bi-Directional Net Metering", "Turnkey Structural EPC"],
-    featuresHi: ["सीधी डीबीटी सब्सिडी से संबद्ध", "द्विदिशी नेट मीटरिंग", "टर्नकी स्ट्रक्चरल ईपीसी"],
-    badgeEn: "SUBSIDY VALIDATED",
-    badgeHi: "सब्सिडी मान्य",
-  },
-  {
-    id: "panels",
-    category: "panels",
-    image: "/images/products/solar_panel.png",
-    nameEn: "High-Density Bifacial PV Modules",
-    nameHi: "हाई-डेंसिटी बाइफेशियल पीवी मॉड्यूल",
-    descriptionEn: "N-Type TOPCon and Mono PERC dual-glass panels delivering enhanced low-light absorption and rear-side albedo energy boost.",
-    descriptionHi: "N-टाइप TOPCon और मोनो PERC ड्यूल-ग्लास पैनल, जो कम रोशनी में भी अधिक ऊर्जा अवशोषित करते हैं और 30 साल तक विश्वसनीय बिजली देते हैं।",
-    featuresEn: ["Up to 22.8% Conversion Efficiency", "30-Year Linear Power Warranty", "ALMM Tier-1 Certified Standard"],
-    featuresHi: ["22.8% तक रूपांतरण दक्षता", "30-वर्षीय लीनियर पावर वारंटी", "ALMM टियर-1 प्रमाणित मानक"],
-    badgeEn: "TOPCON / MONO PERC",
-    badgeHi: "TOPCON / MONO PERC",
-  },
-  {
-    id: "batteries",
-    category: "batteries",
-    image: "/images/products/inverter_battery.png",
-    nameEn: "Heavy-Duty Tall Tubular Solar Batteries",
-    nameHi: "हेवी-ड्यूटी टॉल ट्यूबलर सोलर बैटरियां",
-    descriptionEn: "Thick-plate antimonial spine lead-acid batteries with enhanced electrolyte reserve, engineered to withstand continuous deep discharges.",
-    descriptionHi: "अधिक इलेक्ट्रोलाइट रिज़र्व और मोटी प्लेट वाली लेड-एसिड बैटरियां, जो बार-बार होने वाले डीप डिस्चार्ज को आसानी से संभालती हैं।",
-    featuresEn: ["C10 Deep Cycle Endurance", "Micro-Porous Ceramic Vent Plugs", "Ultra-Low Self-Discharge"],
-    featuresHi: ["C10 डीप साइकल सहनशीलता", "माइक्रो-पोरस सेरामिक वेंट प्लग", "न्यूनतम सेल्फ-डिस्चार्ज"],
-    badgeEn: "EXTREME CYCLIC LIFE",
-    badgeHi: "दीर्घकालिक साइकल लाइफ",
-  },
-  {
-    id: "solar-inverters",
-    category: "inverters",
-    image: "/images/products/solar_inverter.png",
-    nameEn: "Intelligent Hybrid & Solar Inverters",
-    nameHi: "इंटेलिजेंट हाइब्रिड व सोलर इन्वर्टर",
-    descriptionEn: "Transformerless digital power plants with ultra-fast dynamic MPPT algorithms and native cloud telemetry for real-time yield monitoring.",
-    descriptionHi: "अल्ट्रा-फास्ट डायनामिक एमपीपीटी एल्गोरिदम और रीयल-टाइम मॉनिटरिंग हेतु क्लाउड टेलीमेट्री से सुसज्जित इन्वर्टर।",
-    featuresEn: ["98.6% Euro Peak Efficiency", "Dual Independent MPPT Trackers", "Pure Sine Wave Architecture"],
-    featuresHi: ["98.6% यूरो पीक दक्षता", "ड्यूल स्वतंत्र MPPT ट्रैकर्स", "प्योर साइन वेव आर्किटेक्चर"],
-    badgeEn: "INTELLIGENT MPPT",
-    badgeHi: "इंटेलिजेंट MPPT",
-  },
-  {
-    id: "home-inverters",
-    category: "inverters",
-    image: "/images/products/home_inverter.png",
-    nameEn: "Microcontroller Pure Sine Wave Inverters",
-    nameHi: "माइक्रोकंट्रोलर प्योर साइन वेव इन्वर्टर",
-    descriptionEn: "Silent domestic uninterruptible power systems engineered to safeguard sensitive electronics and high-surge induction motors.",
-    descriptionHi: "संवेदनशील इलेक्ट्रॉनिक्स और भारी मोटरों को बिना रुकावट सुरक्षित बिजली देने वाले शांत घरेलू यूपीएस सिस्टम।",
-    featuresEn: ["Microsecond Transfer Time", "Adaptive Multi-Stage Charging", "Intelligent Overload Protection"],
-    featuresHi: ["माइक्रोसेकंड स्विचओवर टाइम", "अनुकूली मल्टी-स्टेज चार्जिंग", "इंटेलिजेंट ओवरलोड सुरक्षा"],
-    badgeEn: "STUDIO SINE WAVE",
-    badgeHi: "प्योर साइन वेव",
-  },
-  {
-    id: "lithium",
-    category: "batteries",
-    image: "/images/products/lithium_battery.png",
-    nameEn: "Modular LiFePO4 Energy Storage Banks",
-    nameHi: "मॉड्यूलर LiFePO4 स्टोरेज बैंक",
-    descriptionEn: "High-density lithium iron phosphate storage units featuring integrated multi-layer thermal and electrical Battery Management Systems (BMS).",
-    descriptionHi: "मल्टी-लेयर थर्मल व इलेक्ट्रिकल बीएमएस (BMS) से सुसज्जित उच्च-ऊर्जा लिथियम आयरन फॉस्फेट बैटरी मॉड्यूल।",
-    featuresEn: ["6000+ Deep Charge Cycles", "Active Cell Balancing Architecture", "Compact Wall-Mount Form Factor"],
-    featuresHi: ["6000+ डीप चार्ज साइकल", "सक्रिय सेल बैलेंसिंग तकनीक", "कॉम्पैक्ट वॉल-माउंट डिज़ाइन"],
-    badgeEn: "SAFE LIFEPO4 TECH",
-    badgeHi: "सुरक्षित LiFePO4 तकनीक",
-  },
-];
+export type { RawCategoryItem };
 
 export default function ProductCategoriesSection() {
   const { isHindi } = useLanguage();
@@ -167,13 +76,12 @@ export default function ProductCategoriesSection() {
           WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 18%, black 82%, transparent 100%)",
         }}
       >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
+        <Image
           src="/media/optimized/bifacial_hardware_showcase.webp"
           alt="Bifacial solar hardware engineering showcase"
           loading="lazy"
-          decoding="async"
-          className="w-full h-full object-cover opacity-50 sm:opacity-60"
+          fill
+          className="object-cover opacity-50 sm:opacity-60"
         />
         {/* Soft edge blend gradients with feathered margins */}
         <div className="absolute inset-x-0 top-0 h-44 bg-gradient-to-b from-white via-[#F4F6F9]/60 to-transparent z-[1]" />
@@ -213,7 +121,7 @@ export default function ProductCategoriesSection() {
           />
         </MotionReveal>
 
-        {/* Categories 6-Card Responsive Grid (Staggered entrance per Section 2 & 5) */}
+        {/* Categories 6-Card Responsive Grid */}
         <MotionStagger className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredCategories.map((item) => (
             <MotionItem
@@ -221,14 +129,12 @@ export default function ProductCategoriesSection() {
               className="card-superpower project-card p-0 rounded-lg flex flex-col justify-between group overflow-hidden bg-white hover:border-black/30 transition-all shadow-xs"
             >
               <div>
-                {/* Product Image Frame (Restrained 1.035 zoom per Section 5) */}
+                {/* Product Image Frame */}
                 <div className="project-card__media relative w-full h-56 bg-zinc-50 border-b border-black/5 p-6 flex items-center justify-center overflow-hidden">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
+                  <Image
                     src={item.image}
                     alt={item.name}
                     loading="lazy"
-                    decoding="async"
                     width={320}
                     height={176}
                     className="project-card__image max-h-44 max-w-full object-contain"
@@ -287,7 +193,7 @@ export default function ProductCategoriesSection() {
           ))}
         </MotionStagger>
 
-        {/* Trust Badges Strip (Staggered per Section 2) */}
+        {/* Trust Badges Strip */}
         <MotionStagger className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 pt-4">
           {trustBadges.map((badge, idx) => {
             const Icon = badge.icon;

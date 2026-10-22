@@ -44,6 +44,46 @@ const partnerSubSchema = z.object({
   channelSource: z.string().optional().default("contact_section_partner_tab"),
 });
 
+interface EnrichedPartnerPayload {
+  leadType: "franchise_partner";
+  referenceId: string;
+  firstName: string;
+  lastName: string;
+  fullName: string;
+  email: string;
+  phone: string;
+  city: string;
+  state: string;
+  pincode: string;
+  partnershipType: string;
+  investmentCapacity: string;
+  experience: string;
+  notes: string;
+  channelSource: string;
+  submittedAt: string;
+  status: string;
+  slaCommitment: string;
+}
+
+interface EnrichedBuyerPayload {
+  leadType: "product_buyer";
+  referenceId: string;
+  fullName: string;
+  phone: string;
+  email: string;
+  city: string;
+  state: string;
+  propertyType: string;
+  productInterest: string;
+  monthlyBill: string;
+  capacityKw: string;
+  notes: string;
+  channelSource: string;
+  submittedAt: string;
+  status: string;
+  slaCommitment: string;
+}
+
 export async function POST(req: Request) {
   try {
     const rawBody = await req.json();
@@ -53,70 +93,80 @@ export async function POST(req: Request) {
       rawBody.leadType === "franchise_partner" ||
       Boolean(rawBody.partnershipType || rawBody.investmentCapacity);
 
-    const parseResult = isPartner
-      ? partnerSubSchema.safeParse({ ...rawBody, leadType: "franchise_partner" })
-      : buyerSubSchema.safeParse({ ...rawBody, leadType: "product_buyer" });
-
-    if (!parseResult.success) {
-      return NextResponse.json(
-        {
-          success: false,
-          errors: parseResult.error.flatten(),
-          message: "Validation failed. Please verify required fields.",
-        },
-        { status: 400 }
-      );
-    }
-
-    const data = parseResult.data;
     const year = new Date().getFullYear();
     const randomSuffix = Math.floor(10000 + Math.random() * 90000);
-
     const referenceId = isPartner
       ? `SLX-PRT-${year}-${randomSuffix}`
       : `SLX-PRD-${year}-${randomSuffix}`;
-
     const timestamp = new Date().toISOString();
 
-    const enrichedPayload = isPartner
-      ? {
-          leadType: "franchise_partner",
-          referenceId,
-          firstName: (data as any).firstName,
-          lastName: (data as any).lastName,
-          fullName: `${(data as any).firstName} ${(data as any).lastName}`.trim(),
-          email: data.email || "",
-          phone: data.phone,
-          city: data.city,
-          state: data.state || "Rajasthan",
-          pincode: (data as any).pincode || "",
-          partnershipType: (data as any).partnershipType,
-          investmentCapacity: (data as any).investmentCapacity,
-          experience: (data as any).experience || "",
-          notes: (data as any).notes || "",
-          channelSource: data.channelSource || "contact_section_partner_tab",
-          submittedAt: timestamp,
-          status: "NEW_APPLICATION",
-          slaCommitment: "Territory Feasibility Review within 24 Hours",
-        }
-      : {
-          leadType: "product_buyer",
-          referenceId,
-          fullName: (data as any).fullName,
-          phone: data.phone,
-          email: data.email || "",
-          city: data.city,
-          state: data.state || "Rajasthan",
-          propertyType: (data as any).propertyType || "residential_rooftop",
-          productInterest: (data as any).productInterest,
-          monthlyBill: (data as any).monthlyBill || "tier_5k_15k",
-          capacityKw: (data as any).capacityKw || (data as any).requiredCapacityKw || "",
-          notes: (data as any).notes || "",
-          channelSource: data.channelSource || "contact_section_buyer_tab",
-          submittedAt: timestamp,
-          status: "NEW_INQUIRY",
-          slaCommitment: "Dedicated Solar Engineer Callback < 24 Hrs",
-        };
+    let enrichedPayload: EnrichedPartnerPayload | EnrichedBuyerPayload;
+
+    if (isPartner) {
+      const parseResult = partnerSubSchema.safeParse({ ...rawBody, leadType: "franchise_partner" });
+      if (!parseResult.success) {
+        return NextResponse.json(
+          {
+            success: false,
+            errors: parseResult.error.flatten(),
+            message: "Validation failed. Please verify required fields.",
+          },
+          { status: 400 }
+        );
+      }
+      const data = parseResult.data;
+      enrichedPayload = {
+        leadType: "franchise_partner",
+        referenceId,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        fullName: `${data.firstName} ${data.lastName}`.trim(),
+        email: data.email || "",
+        phone: data.phone,
+        city: data.city,
+        state: data.state || "Rajasthan",
+        pincode: data.pincode || "",
+        partnershipType: data.partnershipType,
+        investmentCapacity: data.investmentCapacity,
+        experience: data.experience || "",
+        notes: data.notes || "",
+        channelSource: data.channelSource || "contact_section_partner_tab",
+        submittedAt: timestamp,
+        status: "NEW_APPLICATION",
+        slaCommitment: "Territory Feasibility Review within 24 Hours",
+      };
+    } else {
+      const parseResult = buyerSubSchema.safeParse({ ...rawBody, leadType: "product_buyer" });
+      if (!parseResult.success) {
+        return NextResponse.json(
+          {
+            success: false,
+            errors: parseResult.error.flatten(),
+            message: "Validation failed. Please verify required fields.",
+          },
+          { status: 400 }
+        );
+      }
+      const data = parseResult.data;
+      enrichedPayload = {
+        leadType: "product_buyer",
+        referenceId,
+        fullName: data.fullName,
+        phone: data.phone,
+        email: data.email || "",
+        city: data.city,
+        state: data.state || "Rajasthan",
+        propertyType: data.propertyType || "residential_rooftop",
+        productInterest: data.productInterest,
+        monthlyBill: data.monthlyBill || "tier_5k_15k",
+        capacityKw: data.capacityKw || data.requiredCapacityKw || "",
+        notes: data.notes || "",
+        channelSource: data.channelSource || "contact_section_buyer_tab",
+        submittedAt: timestamp,
+        status: "NEW_INQUIRY",
+        slaCommitment: "Dedicated Solar Engineer Callback < 24 Hrs",
+      };
+    }
 
     // Forward to Google Sheets Web App
     const googleSheetUrl =
@@ -134,26 +184,24 @@ export async function POST(req: Request) {
         sheetUrlWithParams.searchParams.set("city", enrichedPayload.city);
         sheetUrlWithParams.searchParams.set("state", enrichedPayload.state);
 
-        if (isPartner) {
-          const p = enrichedPayload as any;
-          sheetUrlWithParams.searchParams.set("firstName", p.firstName);
-          sheetUrlWithParams.searchParams.set("lastName", p.lastName);
-          sheetUrlWithParams.searchParams.set("fullName", p.fullName);
-          sheetUrlWithParams.searchParams.set("email", p.email);
-          sheetUrlWithParams.searchParams.set("partnershipType", p.partnershipType);
-          sheetUrlWithParams.searchParams.set("investmentCapacity", p.investmentCapacity);
-          sheetUrlWithParams.searchParams.set("experience", p.experience);
-          sheetUrlWithParams.searchParams.set("source", p.channelSource);
+        if (enrichedPayload.leadType === "franchise_partner") {
+          sheetUrlWithParams.searchParams.set("firstName", enrichedPayload.firstName);
+          sheetUrlWithParams.searchParams.set("lastName", enrichedPayload.lastName);
+          sheetUrlWithParams.searchParams.set("fullName", enrichedPayload.fullName);
+          sheetUrlWithParams.searchParams.set("email", enrichedPayload.email);
+          sheetUrlWithParams.searchParams.set("partnershipType", enrichedPayload.partnershipType);
+          sheetUrlWithParams.searchParams.set("investmentCapacity", enrichedPayload.investmentCapacity);
+          sheetUrlWithParams.searchParams.set("experience", enrichedPayload.experience);
+          sheetUrlWithParams.searchParams.set("source", enrichedPayload.channelSource);
         } else {
-          const b = enrichedPayload as any;
-          sheetUrlWithParams.searchParams.set("fullName", b.fullName);
-          sheetUrlWithParams.searchParams.set("email", b.email);
-          sheetUrlWithParams.searchParams.set("productInterest", b.productInterest);
-          sheetUrlWithParams.searchParams.set("monthlyBill", b.monthlyBill);
-          sheetUrlWithParams.searchParams.set("propertyType", b.propertyType);
-          sheetUrlWithParams.searchParams.set("capacityKw", b.capacityKw);
-          sheetUrlWithParams.searchParams.set("notes", b.notes);
-          sheetUrlWithParams.searchParams.set("source", b.channelSource);
+          sheetUrlWithParams.searchParams.set("fullName", enrichedPayload.fullName);
+          sheetUrlWithParams.searchParams.set("email", enrichedPayload.email);
+          sheetUrlWithParams.searchParams.set("productInterest", enrichedPayload.productInterest);
+          sheetUrlWithParams.searchParams.set("monthlyBill", enrichedPayload.monthlyBill);
+          sheetUrlWithParams.searchParams.set("propertyType", enrichedPayload.propertyType);
+          sheetUrlWithParams.searchParams.set("capacityKw", enrichedPayload.capacityKw);
+          sheetUrlWithParams.searchParams.set("notes", enrichedPayload.notes);
+          sheetUrlWithParams.searchParams.set("source", enrichedPayload.channelSource);
         }
 
         const sheetResponse = await fetch(sheetUrlWithParams.toString(), {
@@ -169,22 +217,18 @@ export async function POST(req: Request) {
           console.warn(
             "[Google Sheets Sync 401]: Please ensure Apps Script is deployed with 'Who has access' set to 'Anyone'."
           );
-        } else {
-          console.log(`[Google Sheets Contact Sync - ${referenceId}]: HTTP ${sheetResponse.status}`);
         }
       } catch (sheetErr) {
         console.warn("[Google Sheets Contact Sync Warning]:", sheetErr);
       }
     }
 
-    // Forward to CRM if configured
-    const crmWebhookUrl = process.env.CRM_WEBHOOK_URL;
-    if (crmWebhookUrl) {
+    // Forward to CRM Webhook if configured
+    if (process.env.CRM_WEBHOOK_URL) {
       try {
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 3500);
-
-        await fetch(crmWebhookUrl, {
+        const timeoutId = setTimeout(() => controller.abort(), 8000);
+        await fetch(process.env.CRM_WEBHOOK_URL, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -206,7 +250,10 @@ export async function POST(req: Request) {
       referenceId,
       leadType: isPartner ? "franchise_partner" : "product_buyer",
       city: enrichedPayload.city,
-      category: isPartner ? (enrichedPayload as any).partnershipType : (enrichedPayload as any).productInterest,
+      category:
+        enrichedPayload.leadType === "franchise_partner"
+          ? enrichedPayload.partnershipType
+          : enrichedPayload.productInterest,
     }).catch(() => {});
 
     return NextResponse.json(
