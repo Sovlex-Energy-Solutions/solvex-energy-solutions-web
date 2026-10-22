@@ -15,6 +15,7 @@ import {
   rejectAllConsent,
   saveCustomConsent,
   withdrawConsent,
+  getConsentCookie,
 } from "../lib/consent/state";
 import {
   initGoogleAnalytics,
@@ -55,8 +56,35 @@ class MockLocalStorage {
   }
 }
 
+class MockCookieJar {
+  private cookies: Map<string, string> = new Map();
+
+  getCookie(): string {
+    return Array.from(this.cookies.entries())
+      .map(([k, v]) => `${k}=${v}`)
+      .join("; ");
+  }
+
+  setCookie(val: string): void {
+    if (!val) return;
+    const parts = val.split(";")[0].split("=");
+    const name = parts[0].trim();
+    const value = parts.slice(1).join("=").trim();
+    if (val.includes("max-age=0") || val.includes("expires=Thu, 01 Jan 1970")) {
+      this.cookies.delete(name);
+    } else {
+      this.cookies.set(name, value);
+    }
+  }
+
+  clear(): void {
+    this.cookies.clear();
+  }
+}
+
 // Global setup for Node environment
 const mockStorage = new MockLocalStorage();
+const mockCookieJar = new MockCookieJar();
 const eventListeners = new Map<string, Array<(e: unknown) => void>>();
 
 interface MockWindow {
@@ -67,6 +95,8 @@ interface MockWindow {
     pathname: string;
     search: string;
     hash: string;
+    hostname: string;
+    protocol: string;
   };
   addEventListener: (event: string, cb: (e: unknown) => void) => void;
   removeEventListener: (event: string, cb: (e: unknown) => void) => void;
@@ -78,6 +108,7 @@ interface MockWindow {
 
 interface MockDocument {
   title: string;
+  cookie: string;
 }
 
 interface MockGlobal {
@@ -98,6 +129,8 @@ mockGlobal.window = {
     pathname: "/",
     search: "",
     hash: "",
+    hostname: "solvexenergy.com",
+    protocol: "https:",
   },
   addEventListener(event: string, cb: (e: unknown) => void) {
     if (!eventListeners.has(event)) eventListeners.set(event, []);
@@ -120,6 +153,12 @@ mockGlobal.window = {
 
 mockGlobal.document = {
   title: "Solvex Energy Solutions",
+  get cookie() {
+    return mockCookieJar.getCookie();
+  },
+  set cookie(val: string) {
+    mockCookieJar.setCookie(val);
+  },
 };
 
 // Polyfill CustomEvent if needed in Node
@@ -139,6 +178,7 @@ describe("Privacy-First GA4 & Consent Architecture", () => {
 
   beforeEach(() => {
     mockStorage.clear();
+    mockCookieJar.clear();
     delete mockGlobal.window.gtag;
     delete mockGlobal.window.dataLayer;
     delete mockGlobal.window[`ga-disable-${TEST_GA_ID}`];
@@ -192,6 +232,31 @@ describe("Privacy-First GA4 & Consent Architecture", () => {
       assert.equal(recorded.policyVersion, "2026.1-dpdp");
       assert.ok(recorded.timestamp > 0);
       assert.ok(recorded.updatedAt >= recorded.timestamp);
+      assert.equal(hasAnalyticsConsent(), true);
+    });
+
+    it("persists affirmative consent record to both localStorage and cookie storage", () => {
+      const recorded = acceptAllConsent();
+      assert.equal(recorded.decision, "accepted");
+      assert.equal(recorded.analyticsGranted, true);
+      assert.equal(hasAnalyticsConsent(), true);
+
+      // Verify cookie storage contains the consent record
+      const cookieData = getConsentCookie();
+      assert.ok(cookieData !== null);
+      assert.equal(cookieData.decision, "accepted");
+      assert.equal(cookieData.analyticsGranted, true);
+      assert.ok(mockGlobal.document.cookie.includes("solvex_privacy_consent_v1="));
+    });
+
+    it("restores affirmative consent from cookie storage when localStorage is empty", () => {
+      acceptAllConsent();
+      // Simulate localStorage clear / private mode sandbox
+      mockStorage.clear();
+
+      const restored = getStoredConsent();
+      assert.equal(restored.decision, "accepted");
+      assert.equal(restored.analyticsGranted, true);
       assert.equal(hasAnalyticsConsent(), true);
     });
 
@@ -291,7 +356,11 @@ describe("Privacy-First GA4 & Consent Architecture", () => {
   });
 
   describe("Scenario E: Immediate Withdrawal", () => {
-    it("immediately halts future tracking and sets Google disable flags", () => {
+    it("immediately halts future tracking, sets disable flags, and wipes GA cookies", () => {
+      // Simulate active GA cookies before withdrawal
+      mockGlobal.document.cookie = "_ga=GA1.2.123456789.1234567890; path=/";
+      mockGlobal.document.cookie = "_ga_ABC123XYZ9=GS1.1.1234.1.0.0.0; path=/";
+
       acceptAllConsent();
       initGoogleAnalytics(TEST_GA_ID);
       assert.equal(hasAnalyticsConsent(), true);
@@ -311,6 +380,10 @@ describe("Privacy-First GA4 & Consent Architecture", () => {
       assert.equal(mockGlobal.window[`ga-disable-${TEST_GA_ID}`], true);
       assert.ok(gtagUpdateCall);
       assert.equal((gtagUpdateCall as Record<string, unknown>).analytics_storage, "denied");
+
+      // Verify GA cookies were purged from cookie storage
+      assert.ok(!mockGlobal.document.cookie.includes("_ga="));
+      assert.ok(!mockGlobal.document.cookie.includes("_ga_ABC123XYZ9="));
 
       // Verify subsequent events are dropped immediately
       let eventDispatched = false;

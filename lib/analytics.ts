@@ -210,6 +210,36 @@ export function trackEvent(
 }
 
 /**
+ * Clear any Google Analytics cookies from document.cookie
+ */
+export function clearAnalyticsCookies(): void {
+  if (typeof document === "undefined" || !document.cookie) return;
+
+  try {
+    const cookies = document.cookie.split(";");
+    const domain = typeof window !== "undefined" ? window.location.hostname : "";
+
+    for (const c of cookies) {
+      const name = c.trim().split("=")[0];
+      if (
+        name === "_ga" ||
+        name.startsWith("_ga_") ||
+        name === "_gid" ||
+        name === "_gat" ||
+        name.startsWith("_gac_")
+      ) {
+        document.cookie = `${name}=; path=/; max-age=0; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax`;
+        if (domain) {
+          document.cookie = `${name}=; path=/; domain=.${domain}; max-age=0; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax`;
+        }
+      }
+    }
+  } catch {
+    // Fail safe
+  }
+}
+
+/**
  * Centralized Consent Withdrawal Operation
  * Immediately revokes analytics storage, engages Google opt-out, and clears tracking state.
  */
@@ -241,6 +271,9 @@ export function withdrawAnalyticsTracking(overrideId?: string): void {
       ad_personalization: "denied",
     });
   }
+
+  // 3. Clear existing analytics cookies from cookie storage
+  clearAnalyticsCookies();
 
   if (process.env.NODE_ENV !== "production") {
     console.info("[Analytics] Consent withdrawn. Google Analytics disabled and storage revoked.");
