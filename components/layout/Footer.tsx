@@ -46,11 +46,14 @@ export default function Footer() {
           }}
         />
 
+        {/* Translucent white overlay providing soft luminosity and contrast */}
+        <div className="absolute inset-0 bg-white/20 z-[1]" />
+
         {/* Protective Multi-Layer White Scrim across upper and middle areas ensuring 100% text and link legibility */}
-        <div className="absolute inset-x-0 top-0 h-[420px] sm:h-[460px] lg:h-[490px] bg-gradient-to-b from-white via-white/95 via-50% to-transparent z-[1]" />
+        <div className="absolute inset-x-0 top-0 h-[420px] sm:h-[460px] lg:h-[490px] bg-gradient-to-b from-white via-white/15 via-50% to-transparent z-[2]" />
 
         {/* Soft luminous radial glow under navigation columns for crystal-clear readability */}
-        <div className="absolute top-0 right-0 w-full lg:w-4/5 h-[420px] bg-gradient-to-b from-white/90 via-white/70 to-transparent blur-xl z-[1] pointer-events-none" />
+        <div className="absolute top-0 right-0 w-full lg:w-4/5 h-[420px] bg-gradient-to-b from-white/90 via-white/70 to-transparent blur-xl z-[2] pointer-events-none" />
 
         {/* Bottom Mist Gradient for crisp legal bar text visibility */}
         <div className="absolute bottom-0 inset-x-0 h-28 sm:h-32 bg-gradient-to-t from-white via-white/90 via-45% to-transparent z-[3]" />
@@ -194,13 +197,21 @@ export default function Footer() {
                   <span className="text-xs sm:text-[13px]">WhatsApp Corporate Desk</span>
                 </a>
 
-                {/* Email Link */}
+                {/* Email Direct Link */}
                 <a
                   href={`mailto:${t("footer.email")}`}
-                  className="inline-flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs sm:text-sm text-zinc-900 font-semibold hover:text-[#059669] hover:bg-white/80 transition-all duration-200 truncate w-fit border border-transparent hover:border-black/5"
+                  onClick={() =>
+                    trackEvent("cta_click", {
+                      cta_name: "email_inquiry",
+                      source: "footer",
+                    })
+                  }
+                  className="inline-flex items-center gap-2.5 px-3 py-2 rounded-xl bg-white/80 hover:bg-white text-zinc-950 font-bold hover:text-[#059669] border border-black/10 hover:border-[#059669]/40 shadow-xs hover:shadow-sm transition-all duration-200 cursor-pointer w-fit max-w-full"
                 >
-                  <Mail className="w-4 h-4 text-[#059669] shrink-0" />
-                  <span className="truncate">{t("footer.email")}</span>
+                  <div className="w-6 h-6 rounded-full bg-[#059669]/10 text-[#059669] flex items-center justify-center shrink-0">
+                    <Mail className="w-3.5 h-3.5" />
+                  </div>
+                  <span className="text-xs sm:text-[13px] tracking-tight truncate">{t("footer.email")}</span>
                 </a>
               </div>
             </div>
