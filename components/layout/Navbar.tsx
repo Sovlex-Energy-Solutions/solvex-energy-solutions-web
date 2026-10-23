@@ -9,9 +9,14 @@ import { useLanguage } from "@/context/LanguageContext";
 import { LanguageSwitcher } from "@/components/ui/language-switcher";
 import { trackEvent } from "@/lib/analytics";
 
+import { usePathname } from "next/navigation";
+
 export default function Navbar() {
   const { isRevealed } = useCinematicReveal();
   const { t } = useLanguage();
+  const pathname = usePathname();
+  const isAboutPage = pathname === "/about-us" || pathname === "/about";
+
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
@@ -105,14 +110,14 @@ export default function Navbar() {
   }, [mobileMenuOpen]);
 
   const navLinks = [
-    { href: "#about-us", label: t("navigation.about") },
-    { href: "#products-categories", label: t("navigation.products") },
-    { href: "#spgs-combos", label: t("navigation.combos") },
-    { href: "#solar-inverters", label: t("navigation.inverters") },
-    { href: "#solar-pcu", label: t("navigation.pcu") },
-    { href: "#solutions", label: t("navigation.solutions") },
-    { href: "#calculator", label: t("navigation.calculator") },
-    { href: "#faq", label: t("navigation.faq") },
+    { href: "/about-us", label: t("navigation.about"), isRoute: true },
+    { href: isAboutPage ? "/#products-categories" : "#products-categories", label: t("navigation.products") },
+    { href: isAboutPage ? "/#spgs-combos" : "#spgs-combos", label: t("navigation.combos") },
+    { href: isAboutPage ? "/#solar-inverters" : "#solar-inverters", label: t("navigation.inverters") },
+    { href: isAboutPage ? "/#solar-pcu" : "#solar-pcu", label: t("navigation.pcu") },
+    { href: isAboutPage ? "/#solutions" : "#solutions", label: t("navigation.solutions") },
+    { href: isAboutPage ? "/#calculator" : "#calculator", label: t("navigation.calculator") },
+    { href: isAboutPage ? "/#faq" : "#faq", label: t("navigation.faq") },
   ];
 
   return (
@@ -125,7 +130,7 @@ export default function Navbar() {
         className={`pointer-events-auto mx-auto transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
           scrolled
             ? "w-[94%] sm:w-[90%] max-w-5xl xl:max-w-6xl mt-3 sm:mt-4 rounded-full border border-black/10 bg-white/80 hover:bg-white/90 backdrop-blur-2xl backdrop-saturate-[180%] shadow-[0_20px_40px_-15px_rgba(0,0,0,0.12),inset_0_1px_1px_rgba(255,255,255,0.9)] px-5 sm:px-6 h-[58px] sm:h-[62px]"
-            : "w-full max-w-7xl mt-0 rounded-none border-b border-white/15 bg-transparent shadow-none px-6 lg:px-8 h-[72px]"
+            : "w-full max-w-7xl mt-0 rounded-none border-none bg-transparent shadow-none px-6 lg:px-8 h-[72px]"
         } flex items-center justify-between gap-4`}
       >
         {/* Brand Mark with Official Solvex Logo */}
@@ -133,7 +138,7 @@ export default function Navbar() {
           className={`flex items-center group shrink-0 transition-all duration-300 ${
             scrolled ? "gap-0" : "gap-2.5 sm:gap-3"
           }`}
-          href="#"
+          href="/"
           aria-label="Solvex Energy Solutions"
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -171,19 +176,29 @@ export default function Navbar() {
 
         {/* Desktop Navigation Links */}
         <nav className="hidden lg:flex items-center gap-5 xl:gap-6 shrink-0">
-          {navLinks.map((link) => (
-            <a
-              key={link.href}
-              className={`text-sm font-normal tracking-[-0.2px] whitespace-nowrap transition-colors ${
-                scrolled
-                  ? "text-[#71717A] hover:text-[#18181B]"
-                  : "text-white/80 hover:text-white"
-              }`}
-              href={link.href}
-            >
-              {link.label}
-            </a>
-          ))}
+          {navLinks.map((link) => {
+            const isActive = link.isRoute && isAboutPage;
+            return (
+              <Link
+                key={link.href}
+                className={`text-sm tracking-[-0.2px] whitespace-nowrap transition-all duration-200 relative ${
+                  isActive
+                    ? scrolled
+                      ? "text-[#059669] font-medium"
+                      : "text-emerald-300 font-medium"
+                    : scrolled
+                    ? "text-[#71717A] hover:text-[#18181B] font-normal"
+                    : "text-white/80 hover:text-white font-normal"
+                }`}
+                href={link.href}
+              >
+                <span>{link.label}</span>
+                {isActive && (
+                  <span className="absolute -bottom-1 left-0 right-0 h-0.5 rounded-full bg-emerald-400 animate-fadeIn" />
+                )}
+              </Link>
+            );
+          })}
         </nav>
 
         {/* Right CTAs */}
@@ -211,7 +226,7 @@ export default function Navbar() {
                 ? "bg-[#059669] text-white hover:bg-[#047857] shadow-xs"
                 : "bg-white text-[#18181B] hover:bg-neutral-100 shadow-sm"
             }`}
-            href="#partner-form"
+            href={isAboutPage ? "/#partner-form" : "#partner-form"}
             onClick={() =>
               trackEvent("cta_click", {
                 cta_name: "navbar_partner_button",
@@ -322,31 +337,40 @@ export default function Navbar() {
 
           {/* Navigation Links - clear, bold, high-contrast & visible in both scrolled and unscrolled states */}
           <nav className="flex flex-col gap-1 pt-1">
-            {navLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                onClick={() => setMobileMenuOpen(false)}
-                className={`px-3.5 py-2.5 rounded-xl text-sm font-medium tracking-[-0.2px] transition-all duration-200 flex items-center justify-between group ${
-                  scrolled
-                    ? "text-[#18181B] hover:text-[#059669] hover:bg-black/5 active:bg-black/10"
-                    : "text-white hover:text-emerald-300 hover:bg-white/10 active:bg-white/15"
-                }`}
-              >
-                <span>{link.label}</span>
-                <span
-                  className={`text-xs transition-transform duration-200 group-hover:translate-x-1 ${
-                    scrolled
-                      ? "text-zinc-400 group-hover:text-[#059669]"
-                      : "text-white/40 group-hover:text-emerald-300"
+            {navLinks.map((link) => {
+              const isActive = link.isRoute && isAboutPage;
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`px-3.5 py-2.5 rounded-xl text-sm font-medium tracking-[-0.2px] transition-all duration-200 flex items-center justify-between group ${
+                    isActive
+                      ? scrolled
+                        ? "text-[#059669] bg-emerald-50 font-semibold"
+                        : "text-emerald-300 bg-white/10 font-semibold"
+                      : scrolled
+                      ? "text-[#18181B] hover:text-[#059669] hover:bg-black/5 active:bg-black/10"
+                      : "text-white hover:text-emerald-300 hover:bg-white/10 active:bg-white/15"
                   }`}
                 >
-                  →
-                </span>
-              </a>
-            ))}
+                  <span>{link.label}</span>
+                  <span
+                    className={`text-xs transition-transform duration-200 group-hover:translate-x-1 ${
+                      isActive
+                        ? "text-[#059669]"
+                        : scrolled
+                        ? "text-zinc-400 group-hover:text-[#059669]"
+                        : "text-white/40 group-hover:text-emerald-300"
+                    }`}
+                  >
+                    →
+                  </span>
+                </Link>
+              );
+            })}
             <a
-              href="#partner-form"
+              href={isAboutPage ? "/#partner-form" : "#partner-form"}
               onClick={() => {
                 setMobileMenuOpen(false);
                 trackEvent("cta_click", {

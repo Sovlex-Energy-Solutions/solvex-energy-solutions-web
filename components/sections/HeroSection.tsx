@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import {
   ArrowRight,
   ShieldCheck,
@@ -9,6 +9,7 @@ import {
   Sun,
 } from "lucide-react";
 import gsap from "gsap";
+import { SplitText } from "gsap/SplitText";
 import { useCinematicReveal } from "@/components/ui/cinematic-load-reveal";
 import { useLanguage } from "@/context/LanguageContext";
 import FranchiseApplicationDialog from "@/components/forms/FranchiseApplicationDialog";
@@ -17,10 +18,57 @@ import { trackEvent } from "@/lib/analytics";
 
 import HeroMediaSlider from "@/components/ui/HeroMediaSlider";
 
+// Register GSAP SplitText plugin
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(SplitText);
+}
+
+/* ─── Slide Content Data ─────────────────────────────────────────────── */
+interface HeroSlideContent {
+  heading: string;
+  headingHi: string;
+  subheading: string;
+  subheadingHi: string;
+}
+
+const HERO_SLIDES: HeroSlideContent[] = [
+  {
+    heading: "Leading with Governance, Transparency & ESG Excellence",
+    headingHi: "शासन, पारदर्शिता और ESG उत्कृष्टता में अग्रणी",
+    subheading: "Setting gold standards in sustainability, compliance, and corporate ethics.",
+    subheadingHi: "पर्यावरण, अनुपालन और कॉर्पोरेट नैतिकता में उच्चतम मानक।",
+  },
+  {
+    heading: "Accelerating India's Clean Energy Future",
+    headingHi: "भारत के स्वच्छ ऊर्जा भविष्य में तेज़ी",
+    subheading: "Catalyzing India's rapid shift to clean, zero-carbon power.",
+    subheadingHi: "शून्य-कार्बन और स्वच्छ ऊर्जा की ओर भारत का तीव्र बदलाव।",
+  },
+  {
+    heading: "End-to-End Solutions for Utility-Scale Power",
+    headingHi: "यूटिलिटी-स्केल पावर के लिए संपूर्ण समाधान",
+    subheading: "Turnkey engineering, grid sync, and complete lifecycle execution.",
+    subheadingHi: "टर्नकी इंजीनियरिंग, ग्रिड सिंक्रोनाइज़ेशन और संपूर्ण क्रियान्वयन।",
+  },
+  {
+    heading: "100% Renewable Energy for C&I Enterprises",
+    headingHi: "C&I उद्यमों के लिए 100% नवीकरणीय ऊर्जा",
+    subheading: "Onsite solar, open access, and VPPAs for enterprise decarbonization.",
+    subheadingHi: "उद्योगों के लिए ऑनसाइट सोलर, ओपन एक्सेस और VPPA समाधान।",
+  },
+  {
+    heading: "Pan-India Reach, Multi-Technology Advantage",
+    headingHi: "अखिल भारतीय उपस्थिति, बहु-तकनीक लाभ",
+    subheading: "Integrated solar, wind, and battery storage across every terrain.",
+    subheadingHi: "हर भूभाग में सौर, पवन और बैटरी स्टोरेज का एकीकृत नेटवर्क।",
+  },
+];
+
 export default function HeroSection() {
   const { isRevealed } = useCinematicReveal();
   const { isHindi } = useLanguage();
   const [isFranchiseOpen, setIsFranchiseOpen] = useState(false);
+  const [activeSlide, setActiveSlide] = useState(0);
 
   const heroRef = useRef<HTMLElement>(null);
   const sliderMediaRef = useRef<HTMLDivElement>(null);
@@ -30,7 +78,18 @@ export default function HeroSection() {
   const actionsRef = useRef<HTMLDivElement>(null);
   const trustRef = useRef<HTMLDivElement>(null);
   const hasAnimatedRef = useRef(false);
+  const headlineSplitRef = useRef<SplitText | null>(null);
+  const subheadSplitRef = useRef<SplitText | null>(null);
+  const textAnimTimelineRef = useRef<gsap.core.Timeline | null>(null);
+  const isFirstSlideRef = useRef(true);
+  const prevSlideRef = useRef(0);
 
+  // Callback for slide changes from the media slider
+  const handleSlideChange = useCallback((index: number) => {
+    setActiveSlide(index);
+  }, []);
+
+  // Initial reveal animation (runs once when cinematic reveal completes)
   useEffect(() => {
     if (!isRevealed) {
       hasAnimatedRef.current = false;
@@ -74,17 +133,15 @@ export default function HeroSection() {
         );
       }
 
-      // 2. Typography & action buttons with coordinated stagger
-      const leftElements = [
+      // 2. Static elements stagger in
+      const staticElements = [
         statusChipRef.current,
-        headlineRef.current,
-        subheadRef.current,
         actionsRef.current,
         trustRef.current,
       ].filter(Boolean);
 
       gsap.fromTo(
-        leftElements,
+        staticElements,
         { opacity: 0, y: 20 },
         {
           opacity: 1,
@@ -95,10 +152,196 @@ export default function HeroSection() {
           clearProps: "willChange",
         }
       );
+
+      // 3. First slide text: character-by-character reveal animation
+      animateTextIn(true);
     }, heroRef);
 
     return () => ctx.revert();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isRevealed]);
+
+  // Animate text on slide change (after first reveal)
+  useEffect(() => {
+    if (!isRevealed || !hasAnimatedRef.current) return;
+    // Skip re-animation on the initial mount (handled by reveal animation)
+    if (isFirstSlideRef.current) {
+      isFirstSlideRef.current = false;
+      prevSlideRef.current = activeSlide;
+      return;
+    }
+
+    // Don't re-animate if same slide
+    if (prevSlideRef.current === activeSlide) return;
+    prevSlideRef.current = activeSlide;
+
+    // Reduced motion check
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      updateTextContent();
+      return;
+    }
+
+    animateTextOut(() => {
+      updateTextContent();
+      animateTextIn(false);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeSlide]);
+
+  // Handle language change — update text + re-animate
+  useEffect(() => {
+    if (!isRevealed || !hasAnimatedRef.current) return;
+    updateTextContent();
+    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      animateTextIn(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isHindi]);
+
+  /** Update the DOM text content of headline and subhead to match current slide */
+  function updateTextContent() {
+    const slide = HERO_SLIDES[activeSlide] || HERO_SLIDES[0];
+    const headlineEl = headlineRef.current;
+    const subheadEl = subheadRef.current;
+    if (headlineEl) headlineEl.textContent = isHindi ? slide.headingHi : slide.heading;
+    if (subheadEl) subheadEl.textContent = isHindi ? slide.subheadingHi : slide.subheading;
+  }
+
+  /** Animate existing text out (upward fade) before swapping content */
+  function animateTextOut(onComplete: () => void) {
+    // Kill any running animation
+    if (textAnimTimelineRef.current) {
+      textAnimTimelineRef.current.kill();
+    }
+
+    const headlineEl = headlineRef.current;
+    const subheadEl = subheadRef.current;
+    if (!headlineEl || !subheadEl) {
+      onComplete();
+      return;
+    }
+
+    // Revert previous SplitText before creating new ones for the exit animation
+    if (headlineSplitRef.current) {
+      headlineSplitRef.current.revert();
+      headlineSplitRef.current = null;
+    }
+    if (subheadSplitRef.current) {
+      subheadSplitRef.current.revert();
+      subheadSplitRef.current = null;
+    }
+
+    const tl = gsap.timeline({
+      onComplete: () => {
+        onComplete();
+      },
+    });
+
+    tl.to([headlineEl, subheadEl], {
+      opacity: 0,
+      y: -20,
+      duration: 0.3,
+      ease: "power2.in",
+      stagger: 0.05,
+    });
+
+    textAnimTimelineRef.current = tl;
+  }
+
+  /**
+   * GSAP SplitText character-by-character animation
+   * Heading and subheading chars sweep up from below with staggered easing
+   */
+  function animateTextIn(isInitial: boolean) {
+    // Kill any running text animation
+    if (textAnimTimelineRef.current) {
+      textAnimTimelineRef.current.kill();
+    }
+
+    // Revert previous SplitText instances to restore clean DOM
+    if (headlineSplitRef.current) {
+      headlineSplitRef.current.revert();
+      headlineSplitRef.current = null;
+    }
+    if (subheadSplitRef.current) {
+      subheadSplitRef.current.revert();
+      subheadSplitRef.current = null;
+    }
+
+    const headlineEl = headlineRef.current;
+    const subheadEl = subheadRef.current;
+    if (!headlineEl || !subheadEl) return;
+
+    // Reset position and make visible so SplitText can measure
+    gsap.set([headlineEl, subheadEl], { opacity: 1, y: 0 });
+
+    // Create SplitText instances — split into words then chars for smoother flow
+    headlineSplitRef.current = new SplitText(headlineEl, {
+      type: "chars,words",
+    });
+    subheadSplitRef.current = new SplitText(subheadEl, {
+      type: "chars,words",
+    });
+
+    const headlineChars = headlineSplitRef.current.chars;
+    const subheadChars = subheadSplitRef.current.chars;
+
+    // Set initial state for characters — translate from below with subtle 3D rotation
+    gsap.set(headlineChars, {
+      opacity: 0,
+      y: 45,
+      rotateX: -25,
+      transformOrigin: "center bottom",
+    });
+    gsap.set(subheadChars, {
+      opacity: 0,
+      y: 30,
+      rotateX: -15,
+      transformOrigin: "center bottom",
+    });
+
+    // Build the timeline
+    const tl = gsap.timeline({
+      defaults: {
+        ease: "power3.out",
+      },
+    });
+
+    // Heading chars sweep up from bottom
+    tl.to(headlineChars, {
+      opacity: 1,
+      y: 0,
+      rotateX: 0,
+      duration: isInitial ? 0.65 : 0.55,
+      stagger: {
+        each: 0.02,
+        from: "start",
+      },
+    });
+
+    // Subheading chars sweep up (overlapping start for fluidity)
+    tl.to(
+      subheadChars,
+      {
+        opacity: 1,
+        y: 0,
+        rotateX: 0,
+        duration: isInitial ? 0.5 : 0.4,
+        stagger: {
+          each: 0.008,
+          from: "start",
+        },
+      },
+      isInitial ? "-=0.35" : "-=0.3"
+    );
+
+    textAnimTimelineRef.current = tl;
+  }
+
+  // Get current slide content for initial render
+  const currentSlide = HERO_SLIDES[activeSlide] || HERO_SLIDES[0];
+  const heading = isHindi ? currentSlide.headingHi : currentSlide.heading;
+  const subheading = isHindi ? currentSlide.subheadingHi : currentSlide.subheading;
 
   return (
     <section
@@ -107,7 +350,10 @@ export default function HeroSection() {
       id="hero"
     >
       {/* Dynamic Background Media Slider with Cross-Fade & Calibrated Scrim */}
-      <HeroMediaSlider mediaContainerRef={sliderMediaRef} />
+      <HeroMediaSlider
+        mediaContainerRef={sliderMediaRef}
+        onSlideChange={handleSlideChange}
+      />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10 w-full">
         {/* Editorial Typography & Action */}
@@ -123,32 +369,25 @@ export default function HeroSection() {
             <span>{isHindi ? "राष्ट्रीय क्लीन एनर्जी अग्रणी // पीएम सूर्य घर प्रमाणित" : "National Clean Energy Pioneer // PM Surya Ghar Certified"}</span>
           </div>
 
-          {/* Editorial Headline Display */}
+          {/* Dynamic Headline Display — animated per-character by GSAP SplitText */}
           <h1
             ref={headlineRef}
             className="headline-display text-4xl sm:text-5xl lg:text-[62px] font-normal tracking-[-1.2px] text-white leading-[1.08] will-change-[transform,opacity]"
+            style={{ perspective: "600px" }}
           >
-            {isHindi ? (
-              <>
-                भारत के विकेंद्रीकृत <br className="hidden sm:inline" />
-                सोलर बदलाव का नेतृत्व
-              </>
-            ) : (
-              <>Powering India’s Next Generation of Solar Enterprises</>
-            )}
+            {heading}
           </h1>
 
-          {/* Subhead */}
+          {/* Dynamic Subhead — animated per-character by GSAP SplitText */}
           <p
             ref={subheadRef}
             className="body-lg text-base lg:text-lg max-w-2xl font-normal text-white/95 leading-relaxed tracking-[-0.2px] will-change-[transform,opacity]"
+            style={{ perspective: "400px" }}
           >
-            {isHindi
-              ? "टियर-1 बाइफेशियल फोटोवोल्टाइक हार्डवेयर, स्मार्ट एमपीपीटी इन्वर्टर, सुगम डिस्कॉम नेट-मीटरिंग और ₹78,000 त्वरित डीबीटी सब्सिडी के साथ अपने उच्च-मार्जिन सोलर व्यवसाय का विस्तार करें।"
-              : "Scale a high-yield clean tech franchise with factory-direct ALMM Tier-1 hardware, precision rooftop EPC engineering, seamless DISCOM net-metering, and expedited ₹78,000 DBT subsidy disbursals."}
+            {subheading}
           </p>
 
-          {/* Pill Action Buttons */}
+          {/* Pill Action Buttons — static across all slides */}
           <div
             ref={actionsRef}
             className="flex flex-wrap items-center gap-3 sm:gap-4 pt-2 will-change-[transform,opacity]"
@@ -200,7 +439,7 @@ export default function HeroSection() {
             </a>
           </div>
 
-          {/* Trust Highlights Deck */}
+          {/* Trust Highlights Deck — static across all slides */}
           <div
             ref={trustRef}
             className="pt-8 border-t border-white/25 flex flex-wrap items-center gap-6 sm:gap-8 text-white text-xs font-normal tracking-[-0.1px] will-change-[transform,opacity]"

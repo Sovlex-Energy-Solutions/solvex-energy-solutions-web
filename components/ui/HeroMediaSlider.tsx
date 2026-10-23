@@ -18,111 +18,68 @@ export interface MediaSlide {
 
 export const HERO_MEDIA_SLIDES: MediaSlide[] = [
   {
-    id: "india-grid-video",
-    type: "video",
-    src: "/media/optimized/india_solar_network_cinematic.mp4",
-    poster: "/media/optimized/india_solar_grid.webp",
-    tag: "National Grid",
-    tagHi: "राष्ट्रीय ग्रिड",
-    caption: "Pan-India Decentralized Solar Network",
-    captionHi: "अखिल भारतीय विकेंद्रीकृत सोलर नेटवर्क",
-    duration: 8000,
-  },
-  {
-    id: "bifacial-hardware-image",
+    id: "esg-governance-image",
     type: "image",
-    src: "/media/optimized/bifacial_hardware_showcase.webp",
-    poster: "/media/optimized/bifacial_hardware_showcase.webp",
-    tag: "Tier-1 ALMM",
-    tagHi: "टियर-1 ALMM",
-    caption: "High-Efficiency Bifacial PV Modules",
-    captionHi: "उच्च-दक्षता बाइफेशियल पीवी मॉड्यूल",
+    src: "/media/hero/slide1_esg_governance.jpg",
+    poster: "/media/hero/slide1_esg_governance.jpg",
+    tag: "ESG Leadership",
+    tagHi: "ESG नेतृत्व",
+    caption: "Corporate Governance & ESG Standards",
+    captionHi: "कॉर्पोरेट गवर्नेंस और ESG मानक",
     duration: 7500,
   },
   {
-    id: "renewable-hub-video",
-    type: "video",
-    src: "/media/optimized/renewable_energy_hub_cinematic.mp4",
-    poster: "/media/optimized/clean_energy_wind_hub.webp",
-    tag: "Hybrid Infrastructure",
-    tagHi: "हाइब्रिड इन्फ्रास्ट्रक्चर",
-    caption: "Integrated Solar & Clean Tech Ecosystem",
-    captionHi: "एकीकृत सोलर व क्लीन टेक तंत्र",
-    duration: 8000,
-  },
-  {
-    id: "rooftop-engineering-image",
+    id: "energy-transition-image",
     type: "image",
-    src: "/media/optimized/rooftop_solar_engineering.webp",
-    poster: "/media/optimized/rooftop_solar_engineering.webp",
-    tag: "PM Surya Ghar",
-    tagHi: "पीएम सूर्य घर",
-    caption: "Precision Rooftop EPC Engineering",
-    captionHi: "सटीक रूफटॉप ईपीसी इंजीनियरिंग",
+    src: "/media/hero/slide2_energy_transition.jpg",
+    poster: "/media/hero/slide2_energy_transition.jpg",
+    tag: "Energy Transition",
+    tagHi: "ऊर्जा संक्रमण",
+    caption: "Accelerating Clean Energy Transition",
+    captionHi: "स्वच्छ ऊर्जा संक्रमण में तेज़ी",
     duration: 7500,
   },
   {
-    id: "rooftop-generation-video",
-    type: "video",
-    src: "/media/optimized/rooftop_solar_generation_cinematic.mp4",
-    poster: "/media/optimized/rooftop_solar_engineering.webp",
-    tag: "Turnkey EPC",
-    tagHi: "टर्नकी ईपीसी",
-    caption: "Residential & Commercial Net Metering",
-    captionHi: "आवासीय व वाणिज्यिक नेट-मीटरिंग",
-    duration: 8000,
-  },
-  {
-    id: "wind-solar-hub-image",
+    id: "utility-solutions-image",
     type: "image",
-    src: "/media/optimized/clean_energy_wind_hub.webp",
-    poster: "/media/optimized/clean_energy_wind_hub.webp",
-    tag: "Clean Energy",
-    tagHi: "स्वच्छ ऊर्जा",
-    caption: "Sustainable Zero-Emission Horizon",
-    captionHi: "शून्य-उत्सर्जन स्वच्छ भविष्य",
+    src: "/media/hero/slide3_utility_solutions.jpg",
+    poster: "/media/hero/slide3_utility_solutions.jpg",
+    tag: "Utility Solutions",
+    tagHi: "यूटिलिटी समाधान",
+    caption: "Comprehensive Utility Power Solutions",
+    captionHi: "व्यापक यूटिलिटी पावर समाधान",
     duration: 7500,
   },
   {
-    id: "solar-architecture-video",
-    type: "video",
-    src: "/media/optimized/solar_panels_architecture_cinematic.mp4",
-    poster: "/media/optimized/bifacial_hardware_showcase.webp",
-    tag: "PV Architecture",
-    tagHi: "पीवी वास्तुकला",
-    caption: "Next-Gen Photovoltaic Module Engineering",
-    captionHi: "अगली पीढ़ी के फोटोवोल्टाइक मॉड्यूल",
-    duration: 8000,
-  },
-  {
-    id: "india-solar-map-image",
+    id: "ci-enterprises-image",
     type: "image",
-    src: "/media/optimized/india_solar_grid.webp",
-    poster: "/media/optimized/india_solar_grid.webp",
-    tag: "Subsidies & Scale",
-    tagHi: "सब्सिडी व विस्तार",
-    caption: "Empowering Solar Entrepreneurs Across India",
-    captionHi: "देशभर के सोलर उद्यमियों का सशक्तिकरण",
+    src: "/media/hero/slide4_ci_enterprises.jpg",
+    poster: "/media/hero/slide4_ci_enterprises.jpg",
+    tag: "C&I Renewables",
+    tagHi: "C&I नवीकरणीय",
+    caption: "100% RE for Commercial & Industrial Enterprises",
+    captionHi: "C&I उद्यमों के लिए 100% नवीकरणीय ऊर्जा",
     duration: 7500,
   },
   {
-    id: "energy-sparks-video",
-    type: "video",
-    src: "/media/optimized/energy_activation_sparks_16x9.mp4",
-    poster: "/media/optimized/energy_activation_sparks.webp",
-    tag: "Instant Energization",
-    tagHi: "त्वरित ऊर्जाकरण",
-    caption: "Seamless DISCOM Synchronization & DBT Disbursal",
-    captionHi: "सुगम डिस्कॉम नेट-मीटरिंग व डीबीटी अंतरण",
+    id: "hybrid-renewable-image",
+    type: "image",
+    src: "/media/hero/slide5_hybrid_renewable.jpg",
+    poster: "/media/hero/slide5_hybrid_renewable.jpg",
+    tag: "Multi-Tech Synergy",
+    tagHi: "मल्टी-टेक तालमेल",
+    caption: "Solar, Wind & Storage Hybrid Infrastructure",
+    captionHi: "सोलर, पवन और स्टोरेज हाइब्रिड इन्फ्रास्ट्रक्चर",
     duration: 7500,
   },
 ];
 
 export interface HeroMediaSliderProps {
   mediaContainerRef?: React.RefObject<HTMLDivElement | null>;
+  onSlideChange?: (index: number) => void;
 }
 
-export default function HeroMediaSlider({ mediaContainerRef }: HeroMediaSliderProps = {}) {
+export default function HeroMediaSlider({ mediaContainerRef, onSlideChange }: HeroMediaSliderProps = {}) {
   const { isHindi } = useLanguage();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
@@ -136,6 +93,11 @@ export default function HeroMediaSlider({ mediaContainerRef }: HeroMediaSliderPr
 
   const totalSlides = HERO_MEDIA_SLIDES.length;
   const currentSlide = HERO_MEDIA_SLIDES[currentIndex];
+
+  // Notify parent of slide changes
+  useEffect(() => {
+    onSlideChange?.(currentIndex);
+  }, [currentIndex, onSlideChange]);
 
   // Helper to go to next slide
   const goToNext = useCallback(() => {
@@ -283,13 +245,18 @@ export default function HeroMediaSlider({ mediaContainerRef }: HeroMediaSliderPr
         })}
       </div>
 
-      {/* 2. Calibrated Overlay Gradients (Protects text contrast on left, keeps right vivid) */}
-      {/* Horizontal Scrim: Dark on left for text legibility, transparent on right for media vibrancy */}
+      {/* 2. Calibrated Balanced Overlay Gradients (Crisp text contrast on left, vibrant images on right) */}
+      {/* Subtle Base Tint: Keeps rich image colors visible without glare */}
+      <div
+        className="absolute inset-0 z-10 pointer-events-none bg-black/18"
+      />
+
+      {/* Horizontal Scrim: Focused legibility on left text zone, opening up cleanly to show imagery on the right */}
       <div
         className="absolute inset-0 z-10 pointer-events-none"
         style={{
           background:
-            "linear-gradient(90deg, rgba(7, 12, 22, 0.74) 0%, rgba(7, 12, 22, 0.52) 38%, rgba(7, 12, 22, 0.20) 70%, rgba(7, 12, 22, 0.04) 100%)",
+            "linear-gradient(90deg, rgba(6, 11, 20, 0.82) 0%, rgba(6, 11, 20, 0.62) 42%, rgba(6, 11, 20, 0.26) 72%, rgba(6, 11, 20, 0.08) 100%)",
         }}
       />
 
@@ -298,7 +265,7 @@ export default function HeroMediaSlider({ mediaContainerRef }: HeroMediaSliderPr
         className="absolute inset-x-0 top-0 h-32 z-10 pointer-events-none"
         style={{
           background:
-            "linear-gradient(180deg, rgba(6, 11, 20, 0.55) 0%, rgba(6, 11, 20, 0.15) 60%, transparent 100%)",
+            "linear-gradient(180deg, rgba(5, 10, 18, 0.60) 0%, rgba(5, 10, 18, 0.18) 60%, transparent 100%)",
         }}
       />
 
@@ -307,16 +274,16 @@ export default function HeroMediaSlider({ mediaContainerRef }: HeroMediaSliderPr
         className="absolute inset-x-0 bottom-0 h-28 z-10 pointer-events-none"
         style={{
           background:
-            "linear-gradient(0deg, rgba(7, 12, 22, 0.40) 0%, transparent 100%)",
+            "linear-gradient(0deg, rgba(6, 11, 20, 0.50) 0%, transparent 100%)",
         }}
       />
 
-      {/* Subtle Ambient Emerald Accent in top-left brand corner */}
+      {/* Subtle Ambient Emerald Brand Glow in top-left */}
       <div
-        className="absolute top-0 left-0 w-96 h-96 z-10 pointer-events-none opacity-30"
+        className="absolute top-0 left-0 w-96 h-96 z-10 pointer-events-none opacity-20"
         style={{
           background:
-            "radial-gradient(circle at 20% 20%, rgba(16, 185, 129, 0.18) 0%, transparent 70%)",
+            "radial-gradient(circle at 20% 20%, rgba(16, 185, 129, 0.20) 0%, transparent 70%)",
         }}
       />
 
