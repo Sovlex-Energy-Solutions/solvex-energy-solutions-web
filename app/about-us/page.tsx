@@ -3,20 +3,20 @@ import { SITE_CONFIG } from "@/config/site";
 import AboutPageClient from "@/components/about/AboutPageClient";
 
 export const metadata: Metadata = {
-  title: "About Us | Leading Clean Energy Infrastructure & Tier-1 Solar Engineering",
+  title: "About Us | India's Complete Clean Energy Platform - Solvex Energy",
   description:
-    "Learn about Solvex Energy Solutions Private Limited. Headquartered in Surat, Gujarat with 1+ GW manufacturing pipeline, ALMM Tier-1 bifacial modules, smart rMPPT inverters, and nationwide PM Surya Ghar EPC execution.",
+    "Learn about Solvex Energy: India's premier renewable energy platform delivering gigawatt-scale zero-carbon architectures. 6.3 GWp operating fleet, 20 GW 2030 target, ~$1B institutional equity, and national transmission across 23 states.",
   keywords: [
     "About Solvex Energy",
-    "Solvex Energy Solutions Private Limited",
-    "Solar manufacturer Gujarat",
-    "Surat solar company",
-    "Tier-1 ALMM solar panels",
-    "PM Surya Ghar partner",
-    "Solar EPC company India",
-    "Clean energy infrastructure India",
-    "Commercial rooftop solar",
-    "Solar franchise opportunity",
+    "India Complete Renewable Platform",
+    "Operating Clean Assets 6.3 GWp",
+    "Decarbonization Target 20 GW",
+    "Utility-Scale Solar India",
+    "Hybrid Wind Solar BESS",
+    "C&I Renewable Power India",
+    "Institutional Green Energy Equity",
+    "Clean Tech Surat Gujarat",
+    "National Power Grid Interconnection",
   ],
   alternates: {
     canonical: `${SITE_CONFIG.url}/about-us`,
@@ -32,23 +32,23 @@ export const metadata: Metadata = {
     alternateLocale: ["hi_IN"],
     url: `${SITE_CONFIG.url}/about-us`,
     siteName: SITE_CONFIG.name,
-    title: "About Solvex Energy Solutions | Tier-1 Clean Tech Infrastructure",
+    title: "About Solvex Energy | India's First Complete Renewable Platform",
     description:
-      "Bridging institutional photovoltaic manufacturing with agile on-ground EPC execution across India. Headquartered in Surat, Gujarat.",
+      "Delivering gigawatt-scale zero-carbon power architectures for sovereign grids and corporate leaders. 6.3 GWp operating clean assets, 20 GW 2030 target, and presence across 23 states.",
     images: [
       {
         url: `${SITE_CONFIG.url}/images/about/about_hero_headquarters.jpg`,
         width: 1200,
         height: 630,
-        alt: "Solvex Energy Solutions Corporate Headquarters & Engineering Center",
+        alt: "Solvex Energy - India's Complete Renewable Platform",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "About Solvex Energy Solutions | Tier-1 Clean Tech Infrastructure",
+    title: "About Solvex Energy | India's First Complete Renewable Platform",
     description:
-      "Bridging institutional photovoltaic manufacturing with agile on-ground EPC execution across India. Headquartered in Surat, Gujarat.",
+      "Delivering gigawatt-scale zero-carbon power architectures for sovereign grids and corporate leaders. 6.3 GWp operating fleet and 20 GW 2030 target.",
     images: [`${SITE_CONFIG.url}/images/about/about_hero_headquarters.jpg`],
   },
 };
@@ -59,16 +59,17 @@ export default function AboutUsPage() {
     "@type": "AboutPage",
     name: "About Solvex Energy Solutions",
     description:
-      "Corporate profile, manufacturing infrastructure, and mission of Solvex Energy Solutions Private Limited.",
+      "Corporate profile, audited operating capacity, decarbonization targets, and nationwide transmission network of Solvex Energy.",
     url: `${SITE_CONFIG.url}/about-us`,
     mainEntity: {
       "@type": "Organization",
       name: SITE_CONFIG.legalName,
-      alternateName: SITE_CONFIG.name,
+      alternateName: "Solvex Energy",
       url: SITE_CONFIG.url,
       logo: `${SITE_CONFIG.url}/logo.png`,
+      foundingDate: "2016",
       description:
-        "Manufacturer of Tier-1 ALMM bifacial solar arrays, smart rMPPT hybrid inverters, and industrial PCUs.",
+        "India's complete renewable energy platform with 6.3 GWp operating clean assets across utility solar, hybrid wind, and BESS.",
       telephone: SITE_CONFIG.phone,
       email: SITE_CONFIG.email,
       address: {
@@ -83,12 +84,17 @@ export default function AboutUsPage() {
         "@type": "Place",
         name: "Surat, Gujarat, India",
       },
+      areaServed: {
+        "@type": "Country",
+        name: "India",
+      },
       knowsAbout: [
-        "Photovoltaic Solar Manufacturing",
-        "PM Surya Ghar Muft Bijli Yojana",
-        "Utility Solar EPC",
-        "rMPPT Inverters",
-        "Hybrid Renewable Energy",
+        "Utility-Scale Solar Power (4.1 GWp)",
+        "Hybrid Wind Power (1.8 GWp)",
+        "Battery Energy Storage Systems (BESS)",
+        "Inter-State Transmission Network (23 States)",
+        "C&I Power Off-Take",
+        "Build-Own-Operate (BOO) Infrastructure",
       ],
     },
   };

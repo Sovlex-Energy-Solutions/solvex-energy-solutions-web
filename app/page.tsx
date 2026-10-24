@@ -6,6 +6,7 @@ import TopSellingCombosSection from "@/components/sections/TopSellingCombosSecti
 import TopSellingInvertersSection from "@/components/sections/TopSellingInvertersSection";
 import TopSellingPCUSection from "@/components/sections/TopSellingPCUSection";
 import AboutUsSection from "@/components/sections/AboutUsSection";
+import RenewablePlatformDashboard from "@/components/about/RenewablePlatformDashboard";
 import MissionPillarsSection from "@/components/sections/MissionPillarsSection";
 import SolutionsSection from "@/components/sections/SolutionsSection";
 import PartnershipSection from "@/components/sections/PartnershipSection";
@@ -27,18 +28,18 @@ export default function Home() {
         <main id="main-content" tabIndex={-1} className="flex-1 flex flex-col relative w-full overflow-hidden outline-none">
           <HeroSection /> 
           {/* <HeroSlider /> */}
-          <AboutUsSection />
+          <RenewablePlatformDashboard />
           <ProductCategoriesSection />
           <TopSellingCombosSection />
           <TopSellingInvertersSection />
           <TopSellingPCUSection />
-          <MissionPillarsSection />
-          <SolutionsSection />
-          <PartnershipSection />
+          {/* <MissionPillarsSection /> */}
+          {/* <SolutionsSection /> */}
+          {/* <PartnershipSection /> */}
           <WhyChooseSection />
           <ProjectsSection />
           <PartnersAndCalculatorSection />
-          <NewsSection />
+          {/* <NewsSection /> */}
           <FaqSection />
           <ContactSection />
         </main>
