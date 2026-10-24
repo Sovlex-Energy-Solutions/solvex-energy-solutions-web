@@ -6,6 +6,9 @@ import { Zap, ArrowRight, Sparkles, MessageSquare } from "lucide-react";
 import { MotionReveal, MotionStagger, MotionItem } from "@/components/ui/motion-reveal";
 import { SlidingTabs } from "@/components/ui/sliding-tabs";
 import { useLanguage } from "@/context/LanguageContext";
+import { WordStaggerHeading } from "@/components/ui/word-stagger-heading";
+import { SubheadingReveal } from "@/components/ui/subheading-reveal";
+import { CardFadeReveal } from "@/components/ui/card-fade-reveal";
 import { trackEvent } from "@/lib/analytics";
 import { openProductEnquiryDialog } from "@/components/forms/ProductEnquiryDialog";
 import { rawCombos, type RawComboItem } from "@/data/products/combos";
@@ -71,14 +74,20 @@ export default function TopSellingCombosSection() {
               <Zap className="w-3.5 h-3.5 text-white" />
               <span>{isHindi ? "एकीकृत जेनरेशन किट्स" : "Integrated Generation Kits"}</span>
             </div>
-            <h2 className="headline-md text-3xl lg:text-4xl font-normal tracking-[-1.08px] text-[#18181B]">
+            <WordStaggerHeading
+              as="h2"
+              className="headline-md text-3xl lg:text-4xl font-normal tracking-[-1.08px] text-[#18181B]"
+            >
               {isHindi ? "उच्च उत्पादन वाले सोलर फोटोवोल्टाइक जेनरेशन पैकेज" : "High-Yield Solar Photovoltaic Generating Packages"}
-            </h2>
-            <p className="body-md text-base text-[#71717A] font-normal leading-relaxed tracking-[-0.2px]">
+            </WordStaggerHeading>
+            <SubheadingReveal
+              className="body-md text-base text-[#71717A] font-normal leading-relaxed tracking-[-0.2px]"
+              delay={0.16}
+            >
               {isHindi
                 ? "गारंटीड डिस्कॉम अनुपालन, पीएम सूर्य घर डीबीटी के त्वरित निपटान और अधिकतम किलोवाट-घंटे उत्पादन हेतु तैयार प्री-कमीशन्ड रूफटॉप किट्स।"
                 : "Pre-commissioned rooftop generation suites engineered for guaranteed DISCOM compliance, rapid PM Surya Ghar DBT settlement, and maximum kilowatt-hour yield per square meter."}
-            </p>
+            </SubheadingReveal>
           </div>
 
           {/* Filter Tabs with Smooth Sliding Active Pill Indicator */}
@@ -96,10 +105,11 @@ export default function TopSellingCombosSection() {
         </MotionReveal>
 
         {/* 4 Combo Packages Grid */}
-        <MotionStagger className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
-          {filteredCombos.map((combo) => (
-            <MotionItem
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
+          {filteredCombos.map((combo, idx) => (
+            <CardFadeReveal
               key={combo.id}
+              index={idx}
               className="card-superpower project-card p-0 rounded-lg flex flex-col justify-between overflow-hidden bg-white hover:border-black/30 transition-all shadow-xs group"
             >
               <div className="flex flex-col">
@@ -177,12 +187,12 @@ export default function TopSellingCombosSection() {
                   <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1.5 transition-transform duration-200" />
                 </button>
               </div>
-            </MotionItem>
+            </CardFadeReveal>
           ))}
-        </MotionStagger>
+        </div>
 
-        {/* Custom Capacity Banner */}
-        <MotionReveal className="rounded-lg border border-black/10 bg-[#FAFAFA] p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-xs">
+        {/* Custom Capacity Banner Card */}
+        <CardFadeReveal delay={0.2} className="rounded-lg border border-black/10 bg-[#FAFAFA] p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-xs">
           <div className="flex items-center gap-4">
             <div className="w-10 h-10 rounded-full bg-zinc-200 flex items-center justify-center shrink-0 text-[#18181B]">
               <Sparkles className="w-4 h-4" />
@@ -236,7 +246,7 @@ export default function TopSellingCombosSection() {
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>
-        </MotionReveal>
+        </CardFadeReveal>
       </div>
     </section>
   );

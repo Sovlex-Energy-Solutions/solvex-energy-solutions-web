@@ -3,6 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
+import { CardFadeReveal } from "@/components/ui/card-fade-reveal";
 import type { PCUProduct } from "@/data/products/pcus";
 
 interface PCUCardProps {
@@ -13,7 +14,7 @@ interface PCUCardProps {
 
 export function PCUCard({ pcu, onOpenModal, isHindi = false }: PCUCardProps) {
   return (
-    <div
+    <CardFadeReveal
       onClick={onOpenModal}
       className={`card-superpower project-card bg-white h-full flex flex-col justify-between overflow-hidden group cursor-pointer transition-all duration-300 hover:border-black/30 p-0 shadow-xs ${
         pcu.isPopular ? "border-primary/40 ring-1 ring-primary/20" : ""
@@ -66,6 +67,6 @@ export function PCUCard({ pcu, onOpenModal, isHindi = false }: PCUCardProps) {
           <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
         </div>
       </div>
-    </div>
+    </CardFadeReveal>
   );
 }

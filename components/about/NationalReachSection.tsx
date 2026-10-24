@@ -9,8 +9,11 @@ import {
   ArrowRight,
   ShieldAlert,
 } from "lucide-react";
-import { MotionReveal, MotionStagger, MotionItem } from "@/components/ui/motion-reveal";
+import { MotionReveal } from "@/components/ui/motion-reveal";
+import { CardFadeReveal } from "@/components/ui/card-fade-reveal";
 import { useLanguage } from "@/context/LanguageContext";
+import { WordStaggerHeading } from "@/components/ui/word-stagger-heading";
+import { SubheadingReveal } from "@/components/ui/subheading-reveal";
 
 export default function NationalReachSection() {
   const { isHindi } = useLanguage();
@@ -64,24 +67,31 @@ export default function NationalReachSection() {
               <MapPin className="w-3.5 h-3.5" />
               <span>{isHindi ? "अखिल भारतीय उपस्थिति" : "Pan-India Reach"}</span>
             </div>
-            <h2 className="headline-md text-3xl sm:text-4xl font-normal tracking-[-1.08px] text-[#18181B]">
+            <WordStaggerHeading
+              as="h2"
+              className="headline-md text-3xl sm:text-4xl font-normal tracking-[-1.08px] text-[#18181B]"
+            >
               {isHindi
                 ? "देश के हर कोने में तकनीकी उत्कृष्टता और त्वरित सेवा"
                 : "A Nationally Distributed Network Backed by On-Ground Engineers"}
-            </h2>
+            </WordStaggerHeading>
           </div>
-          <p className="body-md text-base text-[#71717A] max-w-md font-normal leading-relaxed tracking-[-0.2px]">
+          <SubheadingReveal
+            className="body-md text-base text-[#71717A] max-w-md font-normal leading-relaxed tracking-[-0.2px]"
+            delay={0.16}
+          >
             {isHindi
               ? "सूरत स्थित मुख्यालय से लेकर राजस्थान, महाराष्ट्र, मध्य प्रदेश और उत्तर प्रदेश तक, हमारी टीमें स्थानीय स्तर पर तैनात हैं।"
               : "From our Surat headquarters to regional hubs across key states, Solvex ensures reliable hardware supply and prompt engineering support."}
-          </p>
+          </SubheadingReveal>
         </MotionReveal>
 
         {/* Regional Hubs Bento Grid */}
-        <MotionStagger className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {hubs.map((hub, idx) => (
-            <MotionItem
+            <CardFadeReveal
               key={idx}
+              index={idx}
               className="p-6 rounded-2xl border border-black/10 bg-[#FAFAFA] flex flex-col justify-between gap-6 hover:border-emerald-500/40 hover:bg-white hover:shadow-md transition-all duration-300 group"
             >
               <div className="flex flex-col gap-3">
@@ -114,12 +124,12 @@ export default function NationalReachSection() {
                 <span>Active Network</span>
                 <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               </div>
-            </MotionItem>
+            </CardFadeReveal>
           ))}
-        </MotionStagger>
+        </div>
 
         {/* Solar Care 360 Feature Callout */}
-        <MotionReveal className="rounded-2xl p-6 sm:p-8 bg-[#0B0F17] text-white flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl relative overflow-hidden">
+        <CardFadeReveal className="rounded-2xl p-6 sm:p-8 bg-[#0B0F17] text-white flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl relative overflow-hidden">
           <div className="absolute right-0 top-0 bottom-0 w-96 bg-gradient-to-l from-emerald-500/15 to-transparent pointer-events-none" />
 
           <div className="flex flex-col gap-2 max-w-2xl relative z-10">
@@ -148,7 +158,7 @@ export default function NationalReachSection() {
               <span>+91 91251 27755</span>
             </a>
           </div>
-        </MotionReveal>
+        </CardFadeReveal>
       </div>
     </section>
   );

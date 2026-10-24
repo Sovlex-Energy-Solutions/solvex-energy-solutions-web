@@ -11,7 +11,10 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { MotionReveal } from "@/components/ui/motion-reveal";
+import { CardFadeReveal } from "@/components/ui/card-fade-reveal";
 import { useLanguage } from "@/context/LanguageContext";
+import { WordStaggerHeading } from "@/components/ui/word-stagger-heading";
+import { SubheadingReveal } from "@/components/ui/subheading-reveal";
 import { trackEvent } from "@/lib/analytics";
 import { SITE_CONFIG } from "@/config/site";
 
@@ -20,24 +23,32 @@ export function ContactInfoCard() {
 
   return (
     <div className="lg:col-span-5">
-      <MotionReveal className="flex flex-col gap-6">
-        <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-6">
+        <MotionReveal className="flex flex-col gap-3">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary text-white text-xs font-normal tracking-[-0.1px] w-fit">
             <Send className="w-3.5 h-3.5 text-white" />
             <span>{t("contact.badge", "[ 11 // CORPORATE DESK & ALLOCATION ]")}</span>
           </div>
-          <h2 className="headline-md text-3xl lg:text-4xl font-normal tracking-[-1.08px] text-[#18181B]">
+          <WordStaggerHeading
+            as="h2"
+            className="headline-md text-3xl lg:text-4xl font-normal tracking-[-1.08px] text-[#18181B]"
+          >
             {isHindi ? "सीधे हमारे एक्सपर्ट्स से संपर्क करें" : "Connect with Solvex Energy Desk"}
-          </h2>
-          <p className="body-md text-base text-[#71717A] font-normal leading-relaxed tracking-[-0.2px]">
+          </WordStaggerHeading>
+          <SubheadingReveal
+            className="body-md text-base text-[#71717A] font-normal leading-relaxed tracking-[-0.2px]"
+            delay={0.16}
+          >
             {isHindi
               ? "चाहे आप सोलर सिस्टम उत्पाद खरीद रहे हों या अपने जिले में फ्रैंचाइज़ी डीलरशिप ले रहे हों, हमारे विशेषज्ञ तुरंत सहायता के लिए उपलब्ध हैं।"
               : "Whether you require Tier-1 solar equipment and turnkey PM Surya Ghar installation or district franchise territory allocation, our corporate desk is at your disposal."}
-          </p>
-        </div>
+          </SubheadingReveal>
+        </MotionReveal>
 
         {/* Working Direct Phone Call Card */}
-        <a
+        <CardFadeReveal
+          as="a"
+          index={0}
           href={`tel:${SITE_CONFIG.phone}`}
           onClick={() =>
             trackEvent("cta_click", {
@@ -70,10 +81,12 @@ export function ContactInfoCard() {
           <div className="w-8 h-8 rounded-full border border-black/10 flex items-center justify-center group-hover:bg-[#059669] group-hover:text-white transition-all shrink-0">
             <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
           </div>
-        </a>
+        </CardFadeReveal>
 
         {/* Working Direct WhatsApp Card */}
-        <a
+        <CardFadeReveal
+          as="a"
+          index={1}
           href={`https://wa.me/${SITE_CONFIG.whatsappNumber}?text=${encodeURIComponent(
             "Hello Solvex Energy! I would like to inquire about solar systems, subsidy assistance, and equipment allocation."
           )}`}
@@ -112,10 +125,10 @@ export function ContactInfoCard() {
           <div className="w-8 h-8 rounded-full border border-black/10 flex items-center justify-center group-hover:bg-[#25D366] group-hover:text-white transition-all shrink-0">
             <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
           </div>
-        </a>
+        </CardFadeReveal>
 
         {/* Corporate Desk Info Card */}
-        <div className="card-superpower p-6 flex flex-col gap-5 bg-white shadow-xs">
+        <CardFadeReveal index={2} className="card-superpower p-6 flex flex-col gap-5 bg-white shadow-xs">
           {/* Address */}
           <div className="flex items-start gap-4">
             <div className="w-10 h-10 rounded-full border border-black/10 bg-black/5 text-[#18181B] flex items-center justify-center shrink-0">
@@ -166,8 +179,8 @@ export function ContactInfoCard() {
               </span>
             </div>
           </div>
-        </div>
-      </MotionReveal>
+        </CardFadeReveal>
+      </div>
     </div>
   );
 }

@@ -2,7 +2,10 @@
 
 import Image from "next/image";
 import { Users, Store, Building2, Share2, CreditCard, Check } from "lucide-react";
-import { MotionReveal, MotionStagger, MotionItem } from "@/components/ui/motion-reveal";
+import { MotionReveal } from "@/components/ui/motion-reveal";
+import { CardFadeReveal } from "@/components/ui/card-fade-reveal";
+import { WordStaggerHeading } from "@/components/ui/word-stagger-heading";
+import { SubheadingReveal } from "@/components/ui/subheading-reveal";
 import { useLanguage } from "@/context/LanguageContext";
 
 export default function PartnershipSection() {
@@ -38,19 +41,19 @@ export default function PartnershipSection() {
               <Users className="w-3.5 h-3.5 text-white" />
               <span>{t("partnership.badge", "COMMERCIAL ALLIANCE MATRIX")}</span>
             </div>
-            <h2 className="headline-md text-3xl lg:text-4xl font-normal tracking-[-1.08px] text-[#18181B]">
+            <WordStaggerHeading as="h2" className="headline-md text-3xl lg:text-4xl font-normal tracking-[-1.08px] text-[#18181B]">
               {t("partnership.title", "Establish Your Regional Energy Franchise")}
-            </h2>
-            <p className="body-md text-base text-[#71717A] font-normal leading-relaxed tracking-[-0.2px]">
+            </WordStaggerHeading>
+            <SubheadingReveal className="body-md text-base text-[#71717A] font-normal leading-relaxed tracking-[-0.2px]" delay={0.16}>
               {t("partnership.description", "Select an operational tier structured for high equity yield: from exclusive district distribution to channel consultancy and storefront merchant monetization.")}
-            </p>
+            </SubheadingReveal>
           </div>
         </MotionReveal>
 
         {/* 4 Tiers Desktop Grid - Superpower Cards 8px */}
-        <MotionStagger className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
           {/* Tier 1: Distributor Partner */}
-          <MotionItem className="h-full">
+          <CardFadeReveal index={0} className="h-full">
             <div className="card-superpower h-full p-6 sm:p-8 flex flex-col justify-between group transition-all duration-300 hover:border-black/30 shadow-xs">
               <div className="flex flex-col gap-4">
                 <div className="flex items-center justify-between">
@@ -83,10 +86,10 @@ export default function PartnershipSection() {
                 {t("partnership.tier1.cta", "EXPLORE DISTRICT MODEL")}
               </a>
             </div>
-          </MotionItem>
+          </CardFadeReveal>
 
           {/* Tier 2: Master Distributor (Featured Highlight) */}
-          <MotionItem className="h-full">
+          <CardFadeReveal index={1} className="h-full">
             <div className="card-superpower h-full p-6 sm:p-8 flex flex-col justify-between border-primary/40 ring-1 ring-primary/20 relative group transition-all duration-300 hover:border-primary shadow-xs">
               <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-0.5 rounded-full bg-primary text-white font-sans text-[10px] font-normal uppercase tracking-wider shadow-xs">
                 {t("partnership.tier2.badge", "FLAGSHIP ALLIANCE")}
@@ -122,10 +125,10 @@ export default function PartnershipSection() {
                 {t("partnership.tier2.cta", "SUBMIT ZONAL CREDENTIALS")}
               </a>
             </div>
-          </MotionItem>
+          </CardFadeReveal>
 
           {/* Tier 3: Channel Partner */}
-          <MotionItem className="h-full">
+          <CardFadeReveal index={2} className="h-full">
             <div className="card-superpower h-full p-6 sm:p-8 flex flex-col justify-between group transition-all duration-300 hover:border-black/30 shadow-xs">
               <div className="flex flex-col gap-4">
                 <div className="flex items-center justify-between">
@@ -158,10 +161,10 @@ export default function PartnershipSection() {
                 {t("partnership.tier3.cta", "ENROLL AS CONSULTANT")}
               </a>
             </div>
-          </MotionItem>
+          </CardFadeReveal>
 
           {/* Tier 4: Merchant Partner */}
-          <MotionItem className="h-full">
+          <CardFadeReveal index={3} className="h-full">
             <div className="card-superpower h-full p-6 sm:p-8 flex flex-col justify-between group transition-all duration-300 hover:border-black/30 shadow-xs">
               <div className="flex flex-col gap-4">
                 <div className="flex items-center justify-between">
@@ -194,8 +197,8 @@ export default function PartnershipSection() {
                 {t("partnership.tier4.cta", "ACTIVATE STOREFRONT")}
               </a>
             </div>
-          </MotionItem>
-        </MotionStagger>
+          </CardFadeReveal>
+        </div>
       </div>
     </section>
   );

@@ -1,7 +1,10 @@
 "use client";
 
 import { ArrowRight, Newspaper } from "lucide-react";
-import { MotionReveal, MotionStagger, MotionItem } from "@/components/ui/motion-reveal";
+import { MotionReveal } from "@/components/ui/motion-reveal";
+import { CardFadeReveal } from "@/components/ui/card-fade-reveal";
+import { WordStaggerHeading } from "@/components/ui/word-stagger-heading";
+import { SubheadingReveal } from "@/components/ui/subheading-reveal";
 import { useLanguage } from "@/context/LanguageContext";
 
 export default function NewsSection() {
@@ -45,12 +48,12 @@ export default function NewsSection() {
                 <Newspaper className="w-3.5 h-3.5 text-white" />
                 <span>{t("news.badge", "STATUTORY & REGULATORY INTELLIGENCE")}</span>
               </div>
-              <h2 className="headline-md text-3xl lg:text-4xl font-normal tracking-[-1.08px] text-[#18181B]">
+              <WordStaggerHeading as="h2" className="headline-md text-3xl lg:text-4xl font-normal tracking-[-1.08px] text-[#18181B]">
                 {t("news.title", "Clean Energy Directives & Policy Bulletins")}
-              </h2>
-              <p className="body-md text-base text-[#71717A] font-normal leading-relaxed tracking-[-0.2px]">
+              </WordStaggerHeading>
+              <SubheadingReveal className="body-md text-base text-[#71717A] font-normal leading-relaxed tracking-[-0.2px]" delay={0.16}>
                 {t("news.description", "Curated briefings on central MNRE notifications, DISCOM net-metering amendments, and macro renewable capital subsidies.")}
-              </p>
+              </SubheadingReveal>
             </div>
 
             <a
@@ -64,44 +67,45 @@ export default function NewsSection() {
         </MotionReveal>
 
         {/* News Cards Grid - Superpower Cards 8px */}
-        <MotionStagger className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {newsItems.map((news, i) => (
-            <MotionItem key={i} className="h-full">
-              <article
-                className="card-superpower h-full p-6 sm:p-8 flex flex-col justify-between gap-6 group hover:border-black/30 transition-all duration-300 shadow-xs"
-              >
-                <div className="flex flex-col gap-4">
-                  <div className="flex items-center justify-between pb-3 border-b border-black/10 font-sans text-xs">
-                    <span className="font-normal text-white bg-primary px-3 py-1 rounded-full text-[11px]">
-                      {news.category}
-                    </span>
-                    <span className="text-[#71717A] text-[11px]">{news.readTime}</span>
-                  </div>
-
-                  <div className="flex flex-col gap-2">
-                    <span className="font-sans text-[11px] uppercase tracking-wider text-[#71717A]">
-                      {t("news.tagLabel", "TAG:")} {news.tag}
-                    </span>
-                    <h3 className="text-lg font-normal text-[#18181B] group-hover:text-black transition-colors tracking-[-0.4px]">
-                      {news.title}
-                    </h3>
-                    <p className="body-sm text-xs text-[#71717A] leading-relaxed">
-                      {news.desc}
-                    </p>
-                  </div>
+            <CardFadeReveal
+              as="article"
+              key={i}
+              index={i}
+              className="card-superpower h-full p-6 sm:p-8 flex flex-col justify-between gap-6 group hover:border-black/30 transition-all duration-300 shadow-xs"
+            >
+              <div className="flex flex-col gap-4">
+                <div className="flex items-center justify-between pb-3 border-b border-black/10 font-sans text-xs">
+                  <span className="font-normal text-white bg-primary px-3 py-1 rounded-full text-[11px]">
+                    {news.category}
+                  </span>
+                  <span className="text-[#71717A] text-[11px]">{news.readTime}</span>
                 </div>
 
-                <a
-                  href={news.slug}
-                  className="inline-flex items-center justify-between font-sans text-xs uppercase tracking-wider text-[#18181B] hover:text-primary pt-4 border-t border-black/10 transition-all font-normal"
-                >
-                  <span>{t("news.readDispatch", "Review Full Directive")}</span>
-                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-                </a>
-              </article>
-            </MotionItem>
+                <div className="flex flex-col gap-2">
+                  <span className="font-sans text-[11px] uppercase tracking-wider text-[#71717A]">
+                    {t("news.tagLabel", "TAG:")} {news.tag}
+                  </span>
+                  <h3 className="text-lg font-normal text-[#18181B] group-hover:text-black transition-colors tracking-[-0.4px]">
+                    {news.title}
+                  </h3>
+                  <p className="body-sm text-xs text-[#71717A] leading-relaxed">
+                    {news.desc}
+                  </p>
+                </div>
+              </div>
+
+              <a
+                href={news.slug}
+                className="inline-flex items-center justify-between font-sans text-xs uppercase tracking-wider text-[#18181B] hover:text-primary pt-4 border-t border-black/10 transition-all font-normal"
+              >
+                <span>{t("news.readDispatch", "Review Full Directive")}</span>
+                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+              </a>
+            </CardFadeReveal>
           ))}
-        </MotionStagger>
+        </div>
       </div>
     </section>
   );

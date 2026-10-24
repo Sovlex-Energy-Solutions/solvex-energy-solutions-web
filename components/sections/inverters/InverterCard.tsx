@@ -3,6 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
+import { CardFadeReveal } from "@/components/ui/card-fade-reveal";
 import type { InverterProduct } from "@/data/products/inverters";
 
 interface InverterCardProps {
@@ -17,7 +18,7 @@ export function InverterCard({
   isHindi = false,
 }: InverterCardProps) {
   return (
-    <div
+    <CardFadeReveal
       onClick={onOpenModal}
       className={`card-superpower project-card bg-white flex flex-col justify-between overflow-hidden h-full group cursor-pointer transition-all duration-300 hover:border-black/30 p-0 shadow-xs ${
         item.isPopular ? "border-primary/40 ring-1 ring-primary/20" : ""
@@ -70,6 +71,6 @@ export function InverterCard({
           <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1.5 transition-transform duration-200" />
         </div>
       </div>
-    </div>
+    </CardFadeReveal>
   );
 }

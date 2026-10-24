@@ -8,8 +8,11 @@ import {
   FileBadge,
   BadgeCheck,
 } from "lucide-react";
-import { MotionReveal, MotionStagger, MotionItem } from "@/components/ui/motion-reveal";
+import { MotionReveal } from "@/components/ui/motion-reveal";
+import { CardFadeReveal } from "@/components/ui/card-fade-reveal";
 import { useLanguage } from "@/context/LanguageContext";
+import { WordStaggerHeading } from "@/components/ui/word-stagger-heading";
+import { SubheadingReveal } from "@/components/ui/subheading-reveal";
 
 export default function CertificationsSection() {
   const { isHindi } = useLanguage();
@@ -80,25 +83,32 @@ export default function CertificationsSection() {
             <Award className="w-3.5 h-3.5 text-white" />
             <span>{isHindi ? "वैधानिक अनुपालन एवं प्रमाणन" : "Statutory Accreditations"}</span>
           </div>
-          <h2 className="headline-md text-3xl sm:text-4xl font-normal tracking-[-1.08px] text-[#18181B]">
+          <WordStaggerHeading
+            as="h2"
+            className="headline-md text-3xl sm:text-4xl font-normal tracking-[-1.08px] text-[#18181B]"
+          >
             {isHindi
               ? "भारत सरकार और अंतरराष्ट्रीय प्रमाणनों द्वारा समर्थित"
               : "Backed by Government of India & Global Engineering Standards"}
-          </h2>
-          <p className="body-md text-base text-[#71717A] font-normal leading-relaxed tracking-[-0.2px]">
+          </WordStaggerHeading>
+          <SubheadingReveal
+            className="body-md text-base text-[#71717A] font-normal leading-relaxed tracking-[-0.2px]"
+            delay={0.16}
+          >
             {isHindi
               ? "हमारा प्रत्येक मॉड्यूल और इन्वर्टर देश के सख्त नियामक मानकों और डिस्कॉम सुरक्षा प्रोटोकॉल का पूर्णतः पालन करता है।"
               : "Every Solvex product meets stringent statutory requirements to guarantee swift grid connectivity and maximum safety."}
-          </p>
+          </SubheadingReveal>
         </MotionReveal>
 
         {/* 6 Certification Cards Grid */}
-        <MotionStagger className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {certifications.map((item, idx) => {
             const Icon = item.Icon;
             return (
-              <MotionItem
+              <CardFadeReveal
                 key={idx}
+                index={idx}
                 className="p-6 rounded-2xl border border-black/10 bg-white flex flex-col justify-between gap-5 shadow-xs hover:shadow-md hover:border-emerald-500/40 transition-all duration-300 group"
               >
                 <div className="flex flex-col gap-3">
@@ -131,10 +141,10 @@ export default function CertificationsSection() {
                   </span>
                   <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
                 </div>
-              </MotionItem>
+              </CardFadeReveal>
             );
           })}
-        </MotionStagger>
+        </div>
       </div>
     </section>
   );

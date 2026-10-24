@@ -3,6 +3,8 @@
 import { ArrowRight, ShieldCheck, Sun, CheckCircle } from "lucide-react";
 import { MotionReveal } from "@/components/ui/motion-reveal";
 import { useLanguage } from "@/context/LanguageContext";
+import { WordStaggerHeading } from "@/components/ui/word-stagger-heading";
+import { SubheadingReveal } from "@/components/ui/subheading-reveal";
 import { openProductEnquiryDialog } from "@/components/forms/ProductEnquiryDialog";
 import { trackEvent } from "@/lib/analytics";
 
@@ -28,17 +30,23 @@ export default function AboutCtaSection({ onApplyFranchise }: AboutCtaSectionPro
                 <span>{isHindi ? "भारत की क्लीन एनर्जी क्रांति से जुड़ें" : "Join India's Solar Revolution"}</span>
               </div>
 
-              <h2 className="headline-display text-3xl sm:text-4xl lg:text-5xl font-normal text-white tracking-tight leading-tight">
+              <WordStaggerHeading
+                as="h2"
+                className="headline-display text-3xl sm:text-4xl lg:text-5xl font-normal text-white tracking-tight leading-tight"
+              >
                 {isHindi
                   ? "अपने क्षेत्र में एक लाभदायक क्लीन टेक उद्यम का निर्माण करें"
                   : "Build a High-Yield Clean Tech Enterprise in Your Territory"}
-              </h2>
+              </WordStaggerHeading>
 
-              <p className="body-lg text-sm sm:text-base text-zinc-300 leading-relaxed font-normal">
+              <SubheadingReveal
+                className="body-lg text-sm sm:text-base text-zinc-300 leading-relaxed font-normal"
+                delay={0.16}
+              >
                 {isHindi
                   ? "सीधे फैक्टरी मूल्य पर ALMM टियर-1 हार्डवेयर, पीएम सूर्य घर सब्सिडी पाइपलाइन और संस्थागत इंजीनियरिंग मार्गदर्शन के साथ Solvex परिवार का हिस्सा बनें।"
                   : "Whether you are a solar contractor, regional distributor, or corporate enterprise seeking 100% renewable power, Solvex delivers certified hardware, turnkey engineering, and margin security."}
-              </p>
+              </SubheadingReveal>
 
               {/* Trust Strip */}
               <div className="flex flex-wrap items-center gap-4 pt-2 text-xs text-zinc-300 font-normal">

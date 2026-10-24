@@ -6,6 +6,9 @@ import { ArrowRight, Sparkles, Truck, CreditCard, Headphones, ShieldCheck } from
 import { MotionReveal, MotionStagger, MotionItem } from "@/components/ui/motion-reveal";
 import { SlidingTabs } from "@/components/ui/sliding-tabs";
 import { useLanguage } from "@/context/LanguageContext";
+import { WordStaggerHeading } from "@/components/ui/word-stagger-heading";
+import { SubheadingReveal } from "@/components/ui/subheading-reveal";
+import { CardFadeReveal } from "@/components/ui/card-fade-reveal";
 import { trackEvent } from "@/lib/analytics";
 import { openProductEnquiryDialog } from "@/components/forms/ProductEnquiryDialog";
 import { rawCategories, type RawCategoryItem } from "@/data/products/categories";
@@ -97,14 +100,20 @@ export default function ProductCategoriesSection() {
               <Sparkles className="w-3.5 h-3.5 text-white" />
               <span>{isHindi ? "हार्डवेयर आर्किटेक्चर" : "Hardware Architecture"}</span>
             </div>
-            <h2 className="headline-md text-3xl lg:text-4xl font-normal tracking-[-1.08px] text-[#18181B]">
+            <WordStaggerHeading
+              as="h2"
+              className="headline-md text-3xl lg:text-4xl font-normal tracking-[-1.08px] text-[#18181B]"
+            >
               {isHindi ? "इंजीनियर्ड क्लीन पावर एवं स्टोरेज इकोसिस्टम" : "Engineered Clean Power & Storage Ecosystem"}
-            </h2>
-            <p className="body-md text-base text-[#71717A] font-normal leading-relaxed tracking-[-0.2px]">
+            </WordStaggerHeading>
+            <SubheadingReveal
+              className="body-md text-base text-[#71717A] font-normal leading-relaxed tracking-[-0.2px]"
+              delay={0.16}
+            >
               {isHindi
                 ? "भारतीय मौसम के अनुकूल निर्मित, कड़े ALMM मानकों से प्रमाणित और अधिकतम किलोवाट-घंटे उत्पादन हेतु तैयार टिकाऊ सोलर हार्डवेयर।"
                 : "High-durability solar hardware manufactured for tropical thermal conditions, certified under rigorous ALMM standards, and fine-tuned for optimal kWh generation."}
-            </p>
+            </SubheadingReveal>
           </div>
 
           {/* Filter Tabs with Smooth Sliding Active Pill Indicator */}
@@ -122,10 +131,11 @@ export default function ProductCategoriesSection() {
         </MotionReveal>
 
         {/* Categories 6-Card Responsive Grid */}
-        <MotionStagger className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredCategories.map((item) => (
-            <MotionItem
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredCategories.map((item, idx) => (
+            <CardFadeReveal
               key={item.id}
+              index={idx}
               className="card-superpower project-card p-0 rounded-lg flex flex-col justify-between group overflow-hidden bg-white hover:border-black/30 transition-all shadow-xs"
             >
               <div>
@@ -191,12 +201,12 @@ export default function ProductCategoriesSection() {
                   <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1.5 transition-transform duration-200" />
                 </button>
               </div>
-            </MotionItem>
+            </CardFadeReveal>
           ))}
-        </MotionStagger>
+        </div>
 
         {/* Trust Badges Strip */}
-        <MotionStagger className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 pt-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 pt-4">
           {trustBadges.map((badge, idx) => {
             const Icon = badge.icon;
             const content = (
@@ -221,7 +231,7 @@ export default function ProductCategoriesSection() {
             );
 
             return (
-              <MotionItem key={idx}>
+              <CardFadeReveal key={idx} index={idx} className="h-full">
                 {badge.href ? (
                   <a
                     href={badge.href}
@@ -240,10 +250,10 @@ export default function ProductCategoriesSection() {
                     {content}
                   </div>
                 )}
-              </MotionItem>
+              </CardFadeReveal>
             );
           })}
-        </MotionStagger>
+        </div>
       </div>
     </section>
   );

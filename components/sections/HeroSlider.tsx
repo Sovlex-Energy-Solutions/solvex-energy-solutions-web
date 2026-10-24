@@ -20,6 +20,7 @@ import {
 import { MotionReveal } from "@/components/ui/motion-reveal";
 import { SlidingTabs } from "@/components/ui/sliding-tabs";
 import { useLanguage } from "@/context/LanguageContext";
+import { WordStaggerHeading } from "@/components/ui/word-stagger-heading";
 
 interface SlideItem {
   id: number;
@@ -35,114 +36,100 @@ interface SlideItem {
 const rawSlides = [
   {
     id: 1,
-    tabLabelEn: "GW Capacity",
-    tabLabelHi: "GW क्षमता",
-    categoryEn: "CAPACITY EXPANSION",
-    categoryHi: "क्षमता विस्तार",
-    titleEn: "Industrial-Grade Photovoltaic Production Lines",
-    titleHi: "औद्योगिक-ग्रेड फोटोवोल्टाइक उत्पादन लाइनें",
-    subtitleEn: "Scaling domestic clean energy capacity to supply high-efficiency ALMM modules across western India.",
-    subtitleHi: "उच्च दक्षता वाले ALMM मॉड्यूल की आपूर्ति हेतु स्वच्छ ऊर्जा विनिर्माण क्षमता का विस्तार।",
-    src: "/images/slider/slide1_1gw_inauguration.jpeg",
-    alt: "Industrial Solar Cell & Module Manufacturing Plant",
-    Icon: Factory,
+    tabLabelEn: "Solar Future",
+    tabLabelHi: "सौर भविष्य",
+    categoryEn: "CLEAN ENERGY VISION",
+    categoryHi: "स्वच्छ ऊर्जा संकल्प",
+    titleEn: "Advancing India's Solar Future",
+    titleHi: "भारत के सौर भविष्य को नई दिशा",
+    subtitleEn: "Engineering, advanced manufacturing, and high-efficiency solar solutions for a cleaner, greener nation.",
+    subtitleHi: "स्वच्छ और हरित भारत के लिए उन्नत इंजीनियरिंग, विनिर्माण और उच्च दक्षता वाले सौर समाधान।",
+    src: "/slider/file_0000000062848210a19efbcfcc5a7cfb.webp",
+    alt: "Advancing India's Solar Future - Solvex Energy",
+    Icon: Zap,
   },
   {
     id: 2,
-    tabLabelEn: "Thermal Endurance",
-    tabLabelHi: "थर्मल सहनशीलता",
-    categoryEn: "CLIMATE RESILIENCE",
-    categoryHi: "जलवायु लचीलापन",
-    titleEn: "Tested for Extreme Heat & Continuous High-Yield Output",
-    titleHi: "अत्यधिक गर्मी में निरंतर उच्च-उत्पादन हेतु परीक्षित",
-    subtitleEn: "Proprietary anti-PID coatings and low thermal coefficients sustaining maximum output through 48°C+ peaks.",
-    subtitleHi: "एंटी-PID कोटिंग्स और कम तापीय गुणांक 48°C+ में भी अधिकतम बिजली उत्पादन बनाए रखते हैं।",
-    src: "/images/slider/slide2_player_banner.jpg",
-    alt: "High-Efficiency Solar Performance Campaign",
-    Icon: Trophy,
+    tabLabelEn: "Manufacturing",
+    tabLabelHi: "विनिर्माण क्षमता",
+    categoryEn: "CAPACITY EXPANSION",
+    categoryHi: "क्षमता विस्तार",
+    titleEn: "Industrial-Scale Manufacturing Capabilities",
+    titleHi: "औद्योगिक-स्तरीय विनिर्माण क्षमताएं",
+    subtitleEn: "High-density solar panels, lithium-ion storage, tubular batteries, and smart digital inverters.",
+    subtitleHi: "उच्च दक्षता सोलर पैनल, लिथियम-आयन बैटरी, ट्यूबलर बैटरी और डिजिटल सोलर इनवर्टर।",
+    src: "/slider/solvex_energy_manufacturing_capabilities_slider_4k.webp",
+    alt: "Solvex Energy Manufacturing Capabilities",
+    Icon: Factory,
   },
   {
     id: 3,
-    tabLabelEn: "Rooftop Standard",
-    tabLabelHi: "रूफटॉप मानक",
-    categoryEn: "ENGINEERING RIGOR",
-    categoryHi: "इंजीनियरिंग उत्कृष्टता",
-    titleEn: "Turnkey Grid-Synchronized Rooftop Solar Architecture",
-    titleHi: "टर्नकी ग्रिड-सिंक्रोनाइज़्ड रूफटॉप सोलर आर्किटेक्चर",
-    subtitleEn: "Delivering engineered on-grid and hybrid installations with verified DISCOM net-metering synchronization.",
-    subtitleHi: "प्रमाणित डिस्कॉम नेट-मीटरिंग के साथ ऑन-ग्रिड और हाइब्रिड रूफटॉप इंस्टॉलेशन।",
-    src: "/images/slider/slide3_trusted_brand.jpg",
-    alt: "Trusted Rooftop Solar Architecture",
+    tabLabelEn: "Trust & Quality",
+    tabLabelHi: "विश्वसनीय गुणवत्ता",
+    categoryEn: "ENGINEERED FOR TRUST",
+    categoryHi: "विश्वास और अखंडता",
+    titleEn: "Powering Confidence: A Name You Can Trust",
+    titleHi: "आत्मविश्वास को शक्ति: एक विश्वसनीय नाम",
+    subtitleEn: "Commitment to uncompromising quality, built for long-term performance and brighter tomorrows.",
+    subtitleHi: "उच्च गुणवत्ता और दीर्घकालिक प्रदर्शन का अटूट संकल्प, जो कल को उज्ज्वल बनाए।",
+    src: "/slider/solvex_energy_trust_slider_2560x1016-1.webp",
+    alt: "Powering Confidence - A Name You Can Trust - Solvex Energy",
     Icon: ShieldCheck,
   },
   {
     id: 4,
-    tabLabelEn: "PM Surya Ghar",
-    tabLabelHi: "पीएम सूर्य घर",
-    categoryEn: "DIRECT SUBSIDY PIPELINE",
-    categoryHi: "प्रत्यक्ष सब्सिडी पाइपलाइन",
-    titleEn: "Direct Central Subsidy Clearance Without Administrative Delay",
-    titleHi: "बिना किसी प्रशासनिक देरी के सीधी केंद्रीय सब्सिडी",
-    subtitleEn: "Streamlined documentation and DISCOM liaison securing up to ₹78,000 direct bank transfers for consumer rooftops.",
-    subtitleHi: "पारदर्शी प्रलेखन और डिस्कॉम समन्वय से ₹78,000 तक का सीधा बैंक ट्रांसफर।",
-    src: "/images/slider/slide4_anil_kapoor_subsidy.jpg",
-    alt: "PM Surya Ghar Subsidy Fast-Track Execution",
-    Icon: Zap,
-  },
-  {
-    id: 5,
-    tabLabelEn: "Unified Hardware",
-    tabLabelHi: "एकीकृत हार्डवेयर",
+    tabLabelEn: "Complete Solutions",
+    tabLabelHi: "सम्पूर्ण समाधान",
     categoryEn: "SYSTEM HARMONY",
     categoryHi: "सिस्टम समन्वय",
-    titleEn: "A Fully Harmonized Solar Ecosystem Under One Roof",
-    titleHi: "एक ही छत के नीचे पूर्ण सौर ऊर्जा समाधान",
-    subtitleEn: "From high-density TOPCon PV panels to hybrid digital MPPT inverters and heavy-duty tubular battery banks.",
-    subtitleHi: "हाई-डेंसिटी TOPCon सोलर पैनल से लेकर स्मार्ट हाइब्रिड इन्वर्टर और बैटरियों तक।",
-    src: "/images/slider/slide5_solar_solutions.jpg",
-    alt: "Complete Clean Energy Equipment Portfolio",
+    titleEn: "One-Stop Solar Solutions Across India",
+    titleHi: "भारत भर में वन-स्टॉप सौर समाधान",
+    subtitleEn: "Turnkey on-grid, off-grid, and hybrid solar systems engineered for homes and businesses.",
+    subtitleHi: "घरों और व्यवसायों के लिए टर्नकी ऑन-ग्रिड, ऑफ-ग्रिड और हाइब्रिड सौर प्रणालियां।",
+    src: "/slider/solvex_energy_one_stop_solar_solutions_2560x1016.webp",
+    alt: "One-Stop Solar Solutions - Solvex Energy",
     Icon: Layers,
   },
   {
+    id: 5,
+    tabLabelEn: "Home Solar",
+    tabLabelHi: "घरेलू सोलर",
+    categoryEn: "RESIDENTIAL SOLAR",
+    categoryHi: "आवासीय सौर ऊर्जा",
+    titleEn: "Solarise Your Home Like a Pro",
+    titleHi: "अपने घर को बनाएं सौर ऊर्जा से समृद्ध",
+    subtitleEn: "Integrated home solar packages designed for lower electricity bills, reliability, and clean power.",
+    subtitleHi: "कम बिजली बिल, विश्वसनीयता और स्वच्छ ऊर्जा के लिए संपूर्ण घरेलू सौर समाधान।",
+    src: "/slider/solvex_energy_complete_product_portfolio_slider_2560x1016.webp",
+    alt: "Solarise Your Home Like a Pro - Complete Product Portfolio",
+    Icon: Trophy,
+  },
+  {
     id: 6,
-    tabLabelEn: "Solar Care 360",
-    tabLabelHi: "सोलर केयर 360",
-    categoryEn: "ON-GROUND DISPATCH",
-    categoryHi: "ऑन-ग्राउंड फील्ड सहायता",
-    titleEn: "Dedicated Regional Engineers & Rapid Field Support",
-    titleHi: "समर्पित क्षेत्रीय इंजीनियर्स एवं त्वरित फील्ड सहायता",
-    subtitleEn: "Field-deployed service units guaranteeing rapid on-site troubleshooting and continuous yield monitoring.",
-    subtitleHi: "त्वरित ऑन-साइट समस्या समाधान और निरंतर उत्पादन निगरानी सुनिश्चित करने वाला नेटवर्क।",
-    src: "/images/slider/slide6_solar_care.jpg",
-    alt: "Solar Care 360 Regional Technical Network",
+    tabLabelEn: "Solar Advisory",
+    tabLabelHi: "सोलर मार्गदर्शन",
+    categoryEn: "PM SURYA GHAR & SUBSIDY",
+    categoryHi: "पीएम सूर्य घर एवं सब्सिडी",
+    titleEn: "Confused About Solar? We Make It Simple",
+    titleHi: "सोलर को लेकर उलझन? हम बनाते हैं इसे आसान",
+    subtitleEn: "Overcome high bills, power cuts, and subsidy doubts with expert guidance and seamless execution.",
+    subtitleHi: "विशेषज्ञ मार्गदर्शन और पारदर्शी सब्सिडी प्रक्रिया से बिजली बिल और पावर कट से राहत पाएं।",
+    src: "/slider/solvex_energy_solar_confusion_slider_2560x1016.webp",
+    alt: "Confused About Solar? Let Solvex Energy Make It Simple",
     Icon: Wrench,
   },
   {
     id: 7,
-    tabLabelEn: "Robotic Assembly",
-    tabLabelHi: "रोबोटिक असेंबली",
-    categoryEn: "INDUSTRY 4.0 PRECISION",
-    categoryHi: "इंडस्ट्री 4.0 परिशुद्धता",
-    titleEn: "Automated Stringing, Soldering & Multi-Stage EL Diagnostics",
-    titleHi: "स्वचालित स्ट्रिंगिंग, सोल्डरिंग व मल्टी-स्टेज ईएल परीक्षण",
-    subtitleEn: "Zero micro-crack tolerance achieved through robotic assembly and rigorous multi-stage electroluminescence scanning.",
-    subtitleHi: "रोबोटिक असेंबली और बहु-स्तरीय स्कैनिंग द्वारा शून्य माइक्रो-क्रैक सहनशीलता।",
-    src: "/images/slider/slide7_manufacturing.jpg",
-    alt: "Precision Solar Module Manufacturing Facility",
-    Icon: Cpu,
-  },
-  {
-    id: 8,
     tabLabelEn: "Applied R&D",
     tabLabelHi: "अनुप्रयुक्त आरएंडडी",
     categoryEn: "CLEANTECH INNOVATION",
     categoryHi: "क्लीनटेक नवाचार",
-    titleEn: "Pioneering Next-Generation Photovoltaic & Inverter Tech",
-    titleHi: "आधुनिक फोटोवोल्टाइक व इन्वर्टर तकनीक का विकास",
-    subtitleEn: "Dedicated solar technologists advancing cell conversion rates, thermal dissipation, and MPPT response times.",
-    subtitleHi: "सेल रूपांतरण दर, हीट डिसिपेशन और एमपीपीटी रिस्पॉन्स में निरंतर तकनीकी प्रगति।",
-    src: "/images/slider/slide8_rd.jpg",
-    alt: "Solar Technology Research and Development Lab",
+    titleEn: "Innovative R&D: Engineering Reliable Solutions",
+    titleHi: "नवाचारी आरएंडडी: अधिक विश्वसनीय समाधानों का निर्माण",
+    subtitleEn: "Rigorous product testing, reliability engineering, continuous refinement, and field validation.",
+    subtitleHi: "कठोर उत्पाद परीक्षण, विश्वसनीयता इंजीनियरिंग, निरंतर सुधार और फील्ड प्रदर्शन।",
+    src: "/slider/file_0000000061b88210ba864a51e48cb771.webp",
+    alt: "Innovative R&D - Engineering More Reliable Solar Solutions",
     Icon: FlaskConical,
   },
 ];
@@ -260,9 +247,12 @@ export default function HeroSlider() {
                 <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
                 <span>{isHindi ? "राष्ट्रीय इन्फ्रास्ट्रक्चर एवं क्षमता" : "National Infrastructure & Scale"}</span>
               </div>
-              <h2 className="headline-md text-2xl sm:text-3xl lg:text-[31px] font-normal tracking-[-1.08px] text-[#18181B]">
+              <WordStaggerHeading
+                as="h2"
+                className="headline-md text-2xl sm:text-3xl lg:text-[31px] font-normal tracking-[-1.08px] text-[#18181B]"
+              >
                 {isHindi ? "भारत भर में नए क्लीन एनर्जी मानक स्थापित करना" : "Setting New Clean Energy Benchmarks Across India"}
-              </h2>
+              </WordStaggerHeading>
             </div>
 
             {/* Quick Controls Bar: Counter, Play/Pause, Prev/Next */}
@@ -317,38 +307,16 @@ export default function HeroSlider() {
                     alt={slide.alt}
                     loading={index === 0 ? "eager" : "lazy"}
                     decoding="async"
-                    width={1600}
-                    height={680}
+                    width={2560}
+                    height={1016}
                     className="w-full h-full object-cover object-center transform transition-transform duration-1000 ease-out group-hover:scale-[1.01]"
                   />
 
-                  {/* Atmospheric Vignette Overlay per DESIGN.md */}
-                  <div
-                    className="absolute inset-0 pointer-events-none"
-                    style={{
-                      background:
-                        "linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.1) 50%, rgba(0, 0, 0, 0.3) 100%)",
-                    }}
-                  />
-
-                  {/* Top-Left Category Badge */}
-                  <div className="absolute top-4 left-4 z-10 pointer-events-none">
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/20 bg-black/80 backdrop-blur-md text-white text-xs font-normal tracking-[-0.1px]">
-                      <span className="w-1.5 h-1.5 rounded-full bg-white shadow-xs" />
-                      <span>{slide.category}</span>
-                    </div>
-                  </div>
-
-                  {/* Bottom Text Pill (8px radius per DESIGN.md card spec) */}
-                  <div className="absolute bottom-4 left-4 right-4 sm:bottom-6 sm:left-6 z-10 pointer-events-none">
-                    <div className="max-w-2xl p-5 sm:p-6 rounded-lg border border-white/20 bg-black/80 backdrop-blur-md text-white flex flex-col gap-2 shadow-lg">
-                      <h3 className="text-xl sm:text-2xl font-normal text-white line-clamp-1 tracking-[-0.5px]">
-                        {slide.title}
-                      </h3>
-                      <p className="text-xs sm:text-sm font-normal line-clamp-2 leading-relaxed text-zinc-300 tracking-[-0.1px]">
-                        {slide.subtitle}
-                      </p>
-                    </div>
+                  {/* Accessible Screen Reader Information */}
+                  <div className="sr-only">
+                    <span>{slide.category}</span>
+                    <h3>{slide.title}</h3>
+                    <p>{slide.subtitle}</p>
                   </div>
                 </div>
               ))}

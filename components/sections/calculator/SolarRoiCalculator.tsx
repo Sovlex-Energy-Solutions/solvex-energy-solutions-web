@@ -7,6 +7,9 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { MotionReveal } from "@/components/ui/motion-reveal";
 import { useLanguage } from "@/context/LanguageContext";
+import { WordStaggerHeading } from "@/components/ui/word-stagger-heading";
+import { SubheadingReveal } from "@/components/ui/subheading-reveal";
+import { CardFadeReveal } from "@/components/ui/card-fade-reveal";
 
 export function SolarRoiCalculator() {
   const { t } = useLanguage();
@@ -42,22 +45,27 @@ export function SolarRoiCalculator() {
   };
 
   return (
-    <MotionReveal>
-      <div className="card-superpower rounded-lg p-8 lg:p-10 flex flex-col gap-6 relative shadow-xs border-black/10 bg-[#FAFAFA]">
+    <CardFadeReveal delay={0.15} className="card-superpower rounded-lg p-8 lg:p-10 flex flex-col gap-6 relative shadow-xs border-black/10 bg-[#FAFAFA]">
         <div className="flex flex-col gap-3">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary text-white text-xs font-normal tracking-[-0.1px] w-fit">
             <Calculator className="w-3.5 h-3.5 text-white" />
             <span>{t("calculator.badge", "PHOTOVOLTAIC AUDIT CORE")}</span>
           </div>
-          <h2 className="headline-sm text-2xl font-normal tracking-[-0.8px] text-[#18181B]">
+          <WordStaggerHeading
+            as="h2"
+            className="headline-sm text-2xl font-normal tracking-[-0.8px] text-[#18181B]"
+          >
             {t("calculator.title", "Rooftop Generation & Financial Simulator")}
-          </h2>
-          <p className="body-sm text-sm text-[#71717A]">
+          </WordStaggerHeading>
+          <SubheadingReveal
+            className="body-sm text-sm text-[#71717A]"
+            delay={0.16}
+          >
             {t(
               "calculator.description",
               "Calculate shadow-free kilowatt capacity, anticipated tariff savings, and lifecycle carbon offset tailored to regional irradiance indices."
             )}
-          </p>
+          </SubheadingReveal>
         </div>
 
         {/* Input form */}
@@ -124,7 +132,6 @@ export function SolarRoiCalculator() {
             )}
           </span>
         </div>
-      </div>
-    </MotionReveal>
+    </CardFadeReveal>
   );
 }

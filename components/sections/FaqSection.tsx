@@ -4,6 +4,9 @@ import { useState } from "react";
 import { HelpCircle, ChevronDown, Phone, MessageSquare } from "lucide-react";
 import { MotionReveal, MotionStagger, MotionItem } from "@/components/ui/motion-reveal";
 import { useLanguage } from "@/context/LanguageContext";
+import { WordStaggerHeading } from "@/components/ui/word-stagger-heading";
+import { SubheadingReveal } from "@/components/ui/subheading-reveal";
+import { CardFadeReveal } from "@/components/ui/card-fade-reveal";
 import { trackEvent } from "@/lib/analytics";
 
 export default function FaqSection() {
@@ -52,21 +55,28 @@ export default function FaqSection() {
             <HelpCircle className="w-3.5 h-3.5 text-white" />
             <span>{t("faq.badge", "OPERATIONAL INTELLIGENCE & FAQ")}</span>
           </div>
-          <h2 className="headline-md text-3xl lg:text-4xl font-normal tracking-[-1.08px] text-[#18181B]">
+          <WordStaggerHeading
+            as="h2"
+            className="headline-md text-3xl lg:text-4xl font-normal tracking-[-1.08px] text-[#18181B]"
+          >
             {t("faq.title", "Operational Briefings & Partner Inquiries")}
-          </h2>
-          <p className="body-md text-base text-[#71717A] max-w-xl leading-relaxed tracking-[-0.2px]">
+          </WordStaggerHeading>
+          <SubheadingReveal
+            className="body-md text-base text-[#71717A] max-w-xl leading-relaxed tracking-[-0.2px]"
+            delay={0.16}
+          >
             {t("faq.description", "Critical answers regarding territory jurisdiction, capital expenditure, DISCOM net-metering approvals, and technical service protocols.")}
-          </p>
+          </SubheadingReveal>
         </MotionReveal>
 
         {/* Accordion List */}
-        <MotionStagger stagger={0.04} className="flex flex-col gap-3">
+        <div className="flex flex-col gap-3">
           {faqs.map((faq, idx) => {
             const isOpen = openIndex === idx;
             return (
-              <MotionItem
+              <CardFadeReveal
                 key={idx}
+                index={idx}
                 className={`rounded-lg border p-6 transition-colors duration-200 cursor-pointer shadow-xs ${
                   isOpen ? "border-primary/40 bg-[#FAFAFA]" : "border-black/10 bg-white hover:border-black/20"
                 }`}
@@ -105,13 +115,13 @@ export default function FaqSection() {
                     </div>
                   </div>
                 </div>
-              </MotionItem>
+              </CardFadeReveal>
             );
           })}
-        </MotionStagger>
+        </div>
 
-        {/* Unresolved Questions Advisory Banner */}
-        <MotionReveal className="rounded-2xl border border-black/10 bg-[#FAFAFA] p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xs">
+        {/* Unresolved Questions Advisory Banner Card */}
+        <CardFadeReveal delay={0.2} className="rounded-2xl border border-black/10 bg-[#FAFAFA] p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xs">
           <div className="flex flex-col gap-1.5 text-center md:text-left">
             <span className="text-[11px] font-semibold text-primary uppercase tracking-wider">
               {isHindi ? "सीधी तकनीकी सहायता" : "Direct Technical & Commercial Desk"}
@@ -157,7 +167,7 @@ export default function FaqSection() {
               <span>{isHindi ? "व्हाट्सएप पर पूछें" : "Chat on WhatsApp"}</span>
             </a>
           </div>
-        </MotionReveal>
+        </CardFadeReveal>
       </div>
     </section>
   );

@@ -12,6 +12,9 @@ import {
 import { MotionReveal, MotionStagger, MotionItem } from "@/components/ui/motion-reveal";
 import { SlidingTabs } from "@/components/ui/sliding-tabs";
 import { useLanguage } from "@/context/LanguageContext";
+import { WordStaggerHeading } from "@/components/ui/word-stagger-heading";
+import { SubheadingReveal } from "@/components/ui/subheading-reveal";
+import { CardFadeReveal } from "@/components/ui/card-fade-reveal";
 import { pcuProducts, type PCUProduct } from "@/data/products/pcus";
 import { PCUCard } from "./pcu/PCUCard";
 import { PCUComparisonMatrix } from "./pcu/PCUComparisonMatrix";
@@ -41,12 +44,18 @@ export default function TopSellingPCUSection() {
                 <Cpu className="w-3.5 h-3.5 text-white" />
                 <span>{t("pcu.badge", "INDUSTRIAL & INSTITUTIONAL CORES")}</span>
               </div>
-              <h2 className="headline-md text-3xl lg:text-4xl font-normal tracking-[-1.08px] text-[#18181B]">
+              <WordStaggerHeading
+                as="h2"
+                className="headline-md text-3xl lg:text-4xl font-normal tracking-[-1.08px] text-[#18181B]"
+              >
                 {t("pcu.title", "Commercial Power Conditioning Units (PCU)")}
-              </h2>
-              <p className="body-md text-base text-[#71717A] font-normal leading-relaxed tracking-[-0.2px]">
+              </WordStaggerHeading>
+              <SubheadingReveal
+                className="body-md text-base text-[#71717A] font-normal leading-relaxed tracking-[-0.2px]"
+                delay={0.16}
+              >
                 {t("pcu.description", "Galvanically-isolated, heavy-copper MPPT power conditioning architectures engineered for medical campuses, data nodes, and three-phase commercial estates.")}
-              </p>
+              </SubheadingReveal>
             </div>
 
             {/* Action Row: Filters + Compare Button */}
@@ -101,8 +110,8 @@ export default function TopSellingPCUSection() {
           />
         )}
 
-        {/* Institutional Application Trust Badges */}
-        <MotionStagger className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-6 rounded-lg border border-black/10 bg-[#FAFAFA] shadow-xs">
+        {/* Institutional Application Trust Badges Card */}
+        <CardFadeReveal delay={0.15} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-6 rounded-lg border border-black/10 bg-[#FAFAFA] shadow-xs">
           <MotionItem className="flex items-start gap-3">
             <div className="w-9 h-9 rounded-full border border-black/10 bg-black/5 flex items-center justify-center shrink-0 text-[#18181B]">
               <Building2 className="w-4 h-4" />
@@ -158,7 +167,7 @@ export default function TopSellingPCUSection() {
               </p>
             </div>
           </MotionItem>
-        </MotionStagger>
+        </CardFadeReveal>
       </div>
 
       {/* Quick Specs Interactive Modal */}

@@ -27,7 +27,7 @@ export default function Home() {
         <Navbar />
         <main id="main-content" tabIndex={-1} className="flex-1 flex flex-col relative w-full overflow-hidden outline-none">
           <HeroSection /> 
-          {/* <HeroSlider /> */}
+          <HeroSlider />
           <RenewablePlatformDashboard />
           <ProductCategoriesSection />
           <TopSellingCombosSection />

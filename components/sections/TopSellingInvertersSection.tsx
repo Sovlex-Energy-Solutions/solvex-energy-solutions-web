@@ -17,6 +17,8 @@ import {
 import { MotionReveal, MotionStagger, MotionItem } from "@/components/ui/motion-reveal";
 import { SlidingTabs } from "@/components/ui/sliding-tabs";
 import { useLanguage } from "@/context/LanguageContext";
+import { WordStaggerHeading } from "@/components/ui/word-stagger-heading";
+import { SubheadingReveal } from "@/components/ui/subheading-reveal";
 import { inverters, type InverterProduct } from "@/data/products/inverters";
 import { InverterCard } from "./inverters/InverterCard";
 import { InverterModal } from "./inverters/InverterModal";
@@ -115,14 +117,20 @@ export default function TopSellingInvertersSection() {
               <Cpu className="w-3.5 h-3.5 text-white" />
               <span>{isHindi ? "उन्नत इन्वर्जन आर्किटेक्चर" : "Advanced Inversion Architecture"}</span>
             </div>
-            <h2 className="headline-md text-3xl lg:text-4xl font-normal tracking-[-1.08px] text-[#18181B]">
+            <WordStaggerHeading
+              as="h2"
+              className="headline-md text-3xl lg:text-4xl font-normal tracking-[-1.08px] text-[#18181B]"
+            >
               {isHindi ? "उच्च प्रदर्शन वाले सोलर हाइब्रिड एवं ग्रिड इन्वर्टर" : "High-Performance Solar Hybrid & Grid Inverters"}
-            </h2>
-            <p className="body-md text-base text-[#71717A] font-normal leading-relaxed tracking-[-0.2px]">
+            </WordStaggerHeading>
+            <SubheadingReveal
+              className="body-md text-base text-[#71717A] font-normal leading-relaxed tracking-[-0.2px]"
+              delay={0.16}
+            >
               {isHindi
                 ? "माइक्रोप्रोसेसर-नियंत्रित प्योर साइन वेव इन्वर्टर, जिसमें तीव्र एमपीपीटी ट्रैकिंग, स्मार्ट मल्टी-केमिस्ट्री बैटरी कंडीशनिंग और इंडस्ट्रियल-ग्रेड सर्ज सुरक्षा शामिल है।"
                 : "Microprocessor-governed pure sine wave inverters featuring rapid MPPT tracking, smart multi-chemistry battery conditioning, and industrial-grade surge protection."}
-            </p>
+            </SubheadingReveal>
           </div>
 
           {/* Action Row: Filters + View Mode Toggle + Carousel Controls */}

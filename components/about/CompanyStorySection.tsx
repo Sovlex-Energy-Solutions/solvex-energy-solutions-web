@@ -9,7 +9,10 @@ import {
   Layers,
 } from "lucide-react";
 import { MotionReveal, MotionStagger, MotionItem } from "@/components/ui/motion-reveal";
+import { CardFadeReveal } from "@/components/ui/card-fade-reveal";
 import { useLanguage } from "@/context/LanguageContext";
+import { WordStaggerHeading } from "@/components/ui/word-stagger-heading";
+import { SubheadingReveal } from "@/components/ui/subheading-reveal";
 
 export default function CompanyStorySection() {
   const { isHindi } = useLanguage();
@@ -62,27 +65,33 @@ export default function CompanyStorySection() {
               <Compass className="w-3.5 h-3.5" />
               <span>{isHindi ? "हमारी कहानी और दृष्टिकोण" : "Our Genesis & Trajectory"}</span>
             </div>
-            <h2 className="headline-md text-3xl sm:text-4xl font-normal tracking-[-1.08px] text-[#18181B]">
+            <WordStaggerHeading
+              as="h2"
+              className="headline-md text-3xl sm:text-4xl font-normal tracking-[-1.08px] text-[#18181B]"
+            >
               {isHindi
                 ? "गुजरात के विनिर्माण हब से अखिल भारतीय क्लीन एनर्जी क्रांति तक"
                 : "From Gujarat’s Industrial Heartland to a Pan-India Clean Energy Force"}
-            </h2>
+            </WordStaggerHeading>
           </div>
-          <p className="body-md text-base text-[#71717A] max-w-md font-normal leading-relaxed tracking-[-0.2px]">
+          <SubheadingReveal
+            className="body-md text-base text-[#71717A] max-w-md font-normal leading-relaxed tracking-[-0.2px]"
+            delay={0.16}
+          >
             {isHindi
               ? "Solvex की स्थापना एक स्पष्ट उद्देश्य के साथ हुई: आयातित व असंबद्ध हार्डवेयर के स्थान पर भारत की जलवायु के अनुरूप प्रमाणित, विश्वसनीय और अत्यधिक टिकाऊ सोलर अवसंरचना प्रदान करना।"
               : "Solvex was born with a singular objective: replace disjointed clean tech supply chains with indigenously engineered, climate-hardened solar hardware backed by airtight compliance."}
-          </p>
+          </SubheadingReveal>
         </MotionReveal>
 
         {/* Narrative Split: Visual Gallery + Detailed Story */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
           {/* Left: Dual Visual Showcase Card */}
-          <MotionReveal className="lg:col-span-6 flex flex-col gap-5">
+          <CardFadeReveal className="lg:col-span-6 flex flex-col gap-5">
             <div className="relative rounded-2xl overflow-hidden border border-black/10 shadow-md group">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/images/slider/slide1_1gw_inauguration.jpeg"
+                src="/slider/file_0000000062848210a19efbcfcc5a7cfb.webp"
                 alt="Solvex 1 GW Manufacturing Inauguration"
                 className="w-full h-72 sm:h-80 object-cover object-center transform transition-transform duration-700 ease-out group-hover:scale-[1.02]"
               />
@@ -102,7 +111,7 @@ export default function CompanyStorySection() {
               <div className="rounded-xl overflow-hidden border border-black/10 relative group">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src="/images/slider/slide7_manufacturing.jpg"
+                  src="/slider/solvex_energy_manufacturing_capabilities_slider_4k.webp"
                   alt="Precision Robotic Assembly"
                   className="w-full h-36 object-cover object-center transform transition-transform duration-500 group-hover:scale-105"
                 />
@@ -125,7 +134,7 @@ export default function CompanyStorySection() {
                 </span>
               </div>
             </div>
-          </MotionReveal>
+          </CardFadeReveal>
 
           {/* Right: Editorial Narrative + Credo */}
           <div className="lg:col-span-6 flex flex-col gap-6">
@@ -193,10 +202,11 @@ export default function CompanyStorySection() {
             </h3>
           </MotionReveal>
 
-          <MotionStagger className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
             {milestones.map((m, idx) => (
-              <MotionItem
+              <CardFadeReveal
                 key={idx}
+                index={idx}
                 className="p-5 rounded-2xl border border-black/10 bg-[#FAFAFA] flex flex-col gap-3 hover:border-emerald-500/40 hover:bg-white hover:shadow-sm transition-all duration-300"
               >
                 <div className="flex items-center justify-between border-b border-black/5 pb-2.5">
@@ -207,9 +217,9 @@ export default function CompanyStorySection() {
                 </div>
                 <h4 className="text-sm font-medium text-[#18181B] tracking-tight">{m.title}</h4>
                 <p className="text-xs text-[#71717A] leading-relaxed font-normal">{m.desc}</p>
-              </MotionItem>
+              </CardFadeReveal>
             ))}
-          </MotionStagger>
+          </div>
         </div>
       </div>
     </section>

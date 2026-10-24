@@ -1,7 +1,10 @@
 "use client";
 
 import { Leaf, Lightbulb, Scale, Headphones } from "lucide-react";
-import { MotionReveal, MotionStagger, MotionItem } from "@/components/ui/motion-reveal";
+import { MotionReveal } from "@/components/ui/motion-reveal";
+import { CardFadeReveal } from "@/components/ui/card-fade-reveal";
+import { WordStaggerHeading } from "@/components/ui/word-stagger-heading";
+import { SubheadingReveal } from "@/components/ui/subheading-reveal";
 import { useLanguage } from "@/context/LanguageContext";
 
 export default function MissionPillarsSection() {
@@ -64,21 +67,21 @@ export default function MissionPillarsSection() {
               <Leaf className="w-3.5 h-3.5 text-white" />
               <span>{t("pillars.badge", "FOUNDATIONAL MANDATE")}</span>
             </div>
-            <h2 className="headline-md text-3xl lg:text-4xl font-normal tracking-[-1.08px] text-[#18181B]">
+            <WordStaggerHeading as="h2" className="headline-md text-3xl lg:text-4xl font-normal tracking-[-1.08px] text-[#18181B]">
               {t("pillars.title", "Core Tenets of Our Energy Transformation")}
-            </h2>
-            <p className="body-md text-base text-[#71717A] font-normal leading-relaxed tracking-[-0.2px]">
+            </WordStaggerHeading>
+            <SubheadingReveal className="body-md text-base text-[#71717A] font-normal leading-relaxed tracking-[-0.2px]" delay={0.16}>
               {t("pillars.description", "Architecting resilient, commercially-viable solar infrastructure across India's industrial and domestic sectors, accelerating decentralized power sovereignty through local franchise enterprise.")}
-            </p>
+            </SubheadingReveal>
           </div>
         </MotionReveal>
 
         {/* 4 Pillars Grid - Superpower Cards 8px */}
-        <MotionStagger className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 pt-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 pt-2">
           {pillars.map((pillar, idx) => {
             const Icon = pillar.Icon;
             return (
-              <MotionItem key={idx}>
+              <CardFadeReveal key={idx} index={idx} className="h-full">
                 <div
                   className="card-superpower p-6 sm:p-8 flex flex-col items-center text-center gap-4 group transition-all duration-300 hover:border-black/30 shadow-xs h-full"
                 >
@@ -98,10 +101,10 @@ export default function MissionPillarsSection() {
                     </p>
                   </div>
                 </div>
-              </MotionItem>
+              </CardFadeReveal>
             );
           })}
-        </MotionStagger>
+        </div>
       </div>
     </section>
   );

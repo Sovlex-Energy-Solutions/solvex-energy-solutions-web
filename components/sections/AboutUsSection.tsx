@@ -8,8 +8,11 @@ import {
   MapPin,
   CheckCircle2,
 } from "lucide-react";
-import { MotionReveal, MotionStagger, MotionItem } from "@/components/ui/motion-reveal";
+import { MotionReveal } from "@/components/ui/motion-reveal";
+import { CardFadeReveal } from "@/components/ui/card-fade-reveal";
 import { useLanguage } from "@/context/LanguageContext";
+import { WordStaggerHeading } from "@/components/ui/word-stagger-heading";
+import { SubheadingReveal } from "@/components/ui/subheading-reveal";
 
 export default function AboutUsSection() {
   const { isHindi } = useLanguage();
@@ -49,18 +52,24 @@ export default function AboutUsSection() {
               <Building className="w-3.5 h-3.5 text-white" />
               <span>{isHindi ? "कॉर्पोरेट प्रोफाइल // गुजरात संचालन" : "Corporate Profile // Gujarat Operations"}</span>
             </div>
-            <h2 className="headline-md text-3xl lg:text-4xl font-normal tracking-[-1.08px] text-[#18181B]">
+            <WordStaggerHeading
+              as="h2"
+              className="headline-md text-3xl lg:text-4xl font-normal tracking-[-1.08px] text-[#18181B]"
+            >
               {isHindi ? "विकेंद्रीकृत सोलर पावर द्वारा स्वच्छ तकनीक का लोकतंत्रीकरण" : "Democratizing Clean Tech Through Decentralized Solar Power"}
-            </h2>
-            <p className="body-lg text-base lg:text-lg font-normal text-[#71717A] leading-relaxed tracking-[-0.2px]">
+            </WordStaggerHeading>
+            <SubheadingReveal
+              className="body-lg text-base lg:text-lg font-normal text-[#71717A] leading-relaxed tracking-[-0.2px]"
+              delay={0.16}
+            >
               {isHindi
                 ? "सूरत, गुजरात में मुख्यालय वाली Solvex Energy Solutions Pvt Ltd विशाल फोटोवोल्टाइक विनिर्माण और स्थानीय व्यावसायिक निष्पादन के बीच की दूरी को पाटती है। हम महत्वाकांक्षी उद्यमियों, ठेकेदारों और क्षेत्रीय वितरकों को संस्थागत इंजीनियरिंग स्वीकृति, वैधानिक अनुमतियों और सीधी सब्सिडी प्रक्रिया के साथ यूटिलिटी-ग्रेड रूफटॉप सोलर लगाने में सक्षम बनाते हैं।"
                 : "Headquartered in Surat, Gujarat, Solvex Energy Solutions Pvt Ltd bridges the gap between massive photovoltaic manufacturing and local commercial execution. We empower ambitious entrepreneurs, contractors, and regional distributors to deploy utility-grade rooftop solar arrays backed by institutional engineering stamps, statutory clearances, and direct subsidy pipelines."}
-            </p>
+            </SubheadingReveal>
           </div>
 
           {/* Featured Photo Card */}
-          <div className="project-card w-full lg:w-[420px] rounded-lg border border-black/10 bg-white shrink-0 overflow-hidden shadow-sm group">
+          <CardFadeReveal className="project-card w-full lg:w-[420px] rounded-lg border border-black/10 bg-white shrink-0 overflow-hidden shadow-sm group">
             <div className="project-card__media w-full h-48 relative overflow-hidden bg-zinc-100">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
@@ -84,13 +93,13 @@ export default function AboutUsSection() {
                   : "Precision shadow analysis, structural validation stamps, and synchronized bi-directional grid clearance."}
               </p>
             </div>
-          </div>
+          </CardFadeReveal>
         </MotionReveal>
 
         {/* Bento Grid of Key Credentials */}
-        <MotionStagger className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* Card: Mission */}
-          <MotionItem className="card-superpower flex flex-col gap-3">
+          <CardFadeReveal index={0} className="card-superpower flex flex-col gap-3">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-full bg-zinc-100 text-[#18181B] flex items-center justify-center shrink-0">
                 <Rocket className="w-4 h-4" />
@@ -104,10 +113,10 @@ export default function AboutUsSection() {
                 ? "क्षेत्रीय व्यापार मालिकों को औद्योगिक-ग्रेड तकनीकी क्षमता से लैस करना ताकि हर छत एक स्वायत्त आय और स्वच्छ बिजली उत्पादक बन सके।"
                 : "Equipping regional business owners with industrial-grade technical capability so every rooftop becomes an autonomous income and clean power generator."}
             </p>
-          </MotionItem>
+          </CardFadeReveal>
 
           {/* Card: What We Do */}
-          <MotionItem className="card-superpower flex flex-col gap-3">
+          <CardFadeReveal index={1} className="card-superpower flex flex-col gap-3">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-full bg-zinc-100 text-[#18181B] flex items-center justify-center shrink-0">
                 <Network className="w-4 h-4" />
@@ -121,10 +130,10 @@ export default function AboutUsSection() {
                 ? "सीधी फैक्ट्री आपूर्ति, सटीक 3D CAD रूफ लेआउट मॉडलिंग, प्रमाणित बैलेंस-ऑफ-सिस्टम और प्रत्यक्ष पीएम सूर्य घर डीबीटी समन्वय।"
                 : "Factory supply distribution, precision 3D CAD roof layout modeling, certified safety balance-of-systems, and direct PM Surya Ghar DBT subsidy liasoning."}
             </p>
-          </MotionItem>
+          </CardFadeReveal>
 
           {/* Card: Registration */}
-          <MotionItem className="card-superpower flex flex-col gap-3">
+          <CardFadeReveal index={2} className="card-superpower flex flex-col gap-3">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-full bg-zinc-100 p-1.5 flex items-center justify-center shrink-0 border border-black/5 shadow-xs">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -142,10 +151,10 @@ export default function AboutUsSection() {
                 CIN: U35105GJ2024PTC150137 &bull; {isHindi ? "MNRE सूचीबद्ध भागीदार" : "MNRE Enlisted Partner"}
               </p>
             </div>
-          </MotionItem>
+          </CardFadeReveal>
 
           {/* Card: Where We Operate */}
-          <MotionItem className="card-superpower flex flex-col gap-3 lg:col-span-2">
+          <CardFadeReveal index={3} className="card-superpower flex flex-col gap-3 lg:col-span-2">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-full bg-zinc-100 text-[#18181B] flex items-center justify-center shrink-0">
                 <MapPin className="w-4 h-4" />
@@ -159,10 +168,10 @@ export default function AboutUsSection() {
                 ? "गुजरात, महाराष्ट्र, राजस्थान, उत्तर प्रदेश और मध्य प्रदेश में संचालित उच्च-उत्पादन वाले कमर्शियल, कृषि और आवासीय रूफटॉप एरे।"
                 : "High-yield commercial, agricultural, and residential rooftop arrays operational across Gujarat, Maharashtra, Rajasthan, Uttar Pradesh, and Madhya Pradesh, backed by localized technical support cells."}
             </p>
-          </MotionItem>
+          </CardFadeReveal>
 
           {/* Card: Partner Model */}
-          <MotionItem className="card-superpower flex flex-col gap-3">
+          <CardFadeReveal index={4} className="card-superpower flex flex-col gap-3">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-full bg-zinc-100 text-[#18181B] flex items-center justify-center shrink-0">
                 <CheckCircle2 className="w-4 h-4" />
@@ -176,8 +185,8 @@ export default function AboutUsSection() {
                 ? "पूर्व तकनीकी अनुभव की आवश्यकता नहीं। Solvex संपूर्ण तकनीकी उत्तरदायित्व वहन करता है—सिविल इंजीनियरिंग, डिस्कॉम इंटरकनेक्शन और सरकारी सब्सिडी क्लीयरेंस।"
                 : "No previous renewable engineering experience needed. Solvex absorbs the technical liability—civil engineering stamps, DISCOM interconnection, and government subsidy clearance."}
             </p>
-          </MotionItem>
-        </MotionStagger>
+          </CardFadeReveal>
+        </div>
       </div>
     </section>
   );

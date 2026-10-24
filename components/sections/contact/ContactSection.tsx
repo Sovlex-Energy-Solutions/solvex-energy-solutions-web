@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { ShoppingBag, Briefcase } from "lucide-react";
-import { MotionReveal } from "@/components/ui/motion-reveal";
+import { CardFadeReveal } from "@/components/ui/card-fade-reveal";
 import { useLanguage } from "@/context/LanguageContext";
 import { ContactInfoCard } from "./ContactInfoCard";
 import { BuyerEnquiryForm } from "./BuyerEnquiryForm";
@@ -23,7 +23,7 @@ export function ContactSection() {
 
           {/* Right Column: Interactive Dual Tab Form */}
           <div className="lg:col-span-7">
-            <MotionReveal delay={0.15}>
+            <CardFadeReveal delay={0.15}>
               <div className="card-superpower p-6 sm:p-8 bg-white shadow-sm flex flex-col gap-6">
                 {/* Tab Switcher */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-black/10">
@@ -65,7 +65,7 @@ export function ContactSection() {
                 {/* Tab 2: Partner Enquiry Form */}
                 {activeTab === "partner" && <PartnerEnquiryForm />}
               </div>
-            </MotionReveal>
+            </CardFadeReveal>
           </div>
         </div>
       </div>

@@ -11,6 +11,9 @@ import {
 } from "lucide-react";
 import { MotionReveal, MotionStagger, MotionItem } from "@/components/ui/motion-reveal";
 import { useLanguage } from "@/context/LanguageContext";
+import { WordStaggerHeading } from "@/components/ui/word-stagger-heading";
+import { SubheadingReveal } from "@/components/ui/subheading-reveal";
+import { CardFadeReveal } from "@/components/ui/card-fade-reveal";
 
 export default function WhyChooseSection() {
   const { t } = useLanguage();
@@ -77,24 +80,31 @@ export default function WhyChooseSection() {
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary text-white text-xs font-normal tracking-[-0.1px] w-fit">
               <span>{t("whyChoose.badge", "STRATEGIC COMPETITIVE ADVANTAGE")}</span>
             </div>
-            <h2 className="headline-md text-3xl lg:text-4xl font-normal tracking-[-1.08px] text-[#18181B]">
+            <WordStaggerHeading
+              as="h2"
+              className="headline-md text-3xl lg:text-4xl font-normal tracking-[-1.08px] text-[#18181B]"
+            >
               {t("whyChoose.title", "Why Leading Clean Tech Partners Choose Solvex")}
-            </h2>
-            <p className="body-md text-base text-[#71717A] font-normal leading-relaxed tracking-[-0.2px]">
+            </WordStaggerHeading>
+            <SubheadingReveal
+              className="body-md text-base text-[#71717A] font-normal leading-relaxed tracking-[-0.2px]"
+              delay={0.16}
+            >
               {t("whyChoose.description", "We eliminate regional execution bottlenecks by pairing direct Tier-1 supply lines with precision civil-electrical engineering, statutory subsidy clearance, and dedicated field service infrastructure.")}
-            </p>
+            </SubheadingReveal>
           </div>
         </MotionReveal>
 
         {/* 6 Cards Grid - Superpower Cards 8px */}
-        <MotionStagger className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {items.map((item, i) => {
             const Icon = item.Icon;
             return (
-              <MotionItem key={i}>
-                <div
-                  className="card-superpower p-6 sm:p-8 flex items-start gap-4 group transition-all duration-300 hover:border-black/30 shadow-xs h-full"
-                >
+              <CardFadeReveal
+                key={i}
+                index={i}
+                className="card-superpower p-6 sm:p-8 flex items-start gap-4 group transition-all duration-300 hover:border-black/30 shadow-xs h-full"
+              >
                   <div
                     className="w-11 h-11 rounded-full border border-black/10 bg-black/5 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform duration-300 text-[#18181B]"
                   >
@@ -104,11 +114,10 @@ export default function WhyChooseSection() {
                     <h3 className="text-base font-normal text-[#18181B] tracking-[-0.3px]">{item.title}</h3>
                     <p className="body-sm text-xs leading-relaxed text-[#71717A]">{item.desc}</p>
                   </div>
-                </div>
-              </MotionItem>
+              </CardFadeReveal>
             );
           })}
-        </MotionStagger>
+        </div>
       </div>
     </section>
   );

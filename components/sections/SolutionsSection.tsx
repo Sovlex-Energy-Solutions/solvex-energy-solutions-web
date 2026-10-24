@@ -1,7 +1,10 @@
 "use client";
 
 import { Sun, Wind, BatteryCharging, Layers, ArrowRight, Phone, MessageSquare } from "lucide-react";
-import { MotionReveal, MotionStagger, MotionItem } from "@/components/ui/motion-reveal";
+import { MotionReveal } from "@/components/ui/motion-reveal";
+import { CardFadeReveal } from "@/components/ui/card-fade-reveal";
+import { WordStaggerHeading } from "@/components/ui/word-stagger-heading";
+import { SubheadingReveal } from "@/components/ui/subheading-reveal";
 import { useLanguage } from "@/context/LanguageContext";
 import { trackEvent } from "@/lib/analytics";
 
@@ -65,12 +68,12 @@ export default function SolutionsSection() {
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary text-white text-xs font-normal tracking-[-0.1px] w-fit">
                 <span>{t("solutions.badge", "TURNKEY GENERATION ECOSYSTEM")}</span>
               </div>
-              <h2 className="headline-md text-3xl lg:text-4xl font-normal tracking-[-1.08px] text-[#18181B]">
+              <WordStaggerHeading as="h2" className="headline-md text-3xl lg:text-4xl font-normal tracking-[-1.08px] text-[#18181B]">
                 {t("solutions.title", "Integrated Clean Energy Architectures")}
-              </h2>
-              <p className="body-md text-base text-[#71717A] font-normal leading-relaxed tracking-[-0.2px]">
+              </WordStaggerHeading>
+              <SubheadingReveal className="body-md text-base text-[#71717A] font-normal leading-relaxed tracking-[-0.2px]" delay={0.16}>
                 {t("solutions.description", "From shadow simulation and DISCOM bi-directional approval to precision EPC commissioning and continuous cloud generation telemetry.")}
-              </p>
+              </SubheadingReveal>
             </div>
             <a
               className="group btn-secondary h-[46px] px-6 rounded-full text-xs font-normal text-[#18181B] flex items-center gap-2 shadow-xs cursor-pointer"
@@ -83,11 +86,11 @@ export default function SolutionsSection() {
         </MotionReveal>
 
         {/* 4 Solutions Desktop Grid - Superpower Cards 8px */}
-        <MotionStagger className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {solutions.map((sol, i) => {
             const Icon = sol.Icon;
             return (
-              <MotionItem key={i}>
+              <CardFadeReveal key={i} index={i} className="h-full">
                 <div
                   className="card-superpower p-6 sm:p-8 flex flex-col gap-6 group transition-all duration-300 hover:border-black/30 shadow-xs h-full"
                 >
@@ -101,13 +104,13 @@ export default function SolutionsSection() {
                     <p className="body-sm text-xs leading-relaxed text-[#71717A]">{sol.desc}</p>
                   </div>
                 </div>
-              </MotionItem>
+              </CardFadeReveal>
             );
           })}
-        </MotionStagger>
+        </div>
 
         {/* EPC Technical Consultation Bar */}
-        <MotionReveal className="rounded-2xl border border-black/10 bg-gradient-to-r from-zinc-50 via-white to-zinc-50 p-6 sm:p-8 flex flex-col lg:flex-row items-center justify-between gap-6 shadow-xs">
+        <CardFadeReveal className="rounded-2xl border border-black/10 bg-gradient-to-r from-zinc-50 via-white to-zinc-50 p-6 sm:p-8 flex flex-col lg:flex-row items-center justify-between gap-6 shadow-xs">
           <div className="flex flex-col gap-1 text-center lg:text-left">
             <span className="text-[11px] font-semibold text-primary uppercase tracking-wider">
               {t("solutions.banner_badge", "Commercial & Industrial EPC Advisory")}
@@ -151,7 +154,7 @@ export default function SolutionsSection() {
               <span>{t("solutions.chat_whatsapp", "WhatsApp EPC Desk")}</span>
             </a>
           </div>
-        </MotionReveal>
+        </CardFadeReveal>
       </div>
     </section>
   );

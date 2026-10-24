@@ -3,6 +3,9 @@
 import { Sun, ArrowRight } from "lucide-react";
 import { MotionReveal, MotionStagger, MotionItem } from "@/components/ui/motion-reveal";
 import { useLanguage } from "@/context/LanguageContext";
+import { WordStaggerHeading } from "@/components/ui/word-stagger-heading";
+import { SubheadingReveal } from "@/components/ui/subheading-reveal";
+import { CardFadeReveal } from "@/components/ui/card-fade-reveal";
 
 export default function ProjectsSection() {
   const { t } = useLanguage();
@@ -48,12 +51,18 @@ export default function ProjectsSection() {
                 <Sun className="w-3.5 h-3.5 text-white" />
                 <span>{t("projects.badge", "COMMISSIONED INFRASTRUCTURE")}</span>
               </div>
-              <h2 className="headline-md text-3xl lg:text-4xl font-normal tracking-[-1.08px] text-[#18181B]">
+              <WordStaggerHeading
+                as="h2"
+                className="headline-md text-3xl lg:text-4xl font-normal tracking-[-1.08px] text-[#18181B]"
+              >
                 {t("projects.title", "Flagship Utility & Commercial Deployments")}
-              </h2>
-              <p className="body-md text-base text-[#71717A] font-normal leading-relaxed tracking-[-0.2px]">
+              </WordStaggerHeading>
+              <SubheadingReveal
+                className="body-md text-base text-[#71717A] font-normal leading-relaxed tracking-[-0.2px]"
+                delay={0.16}
+              >
                 {t("projects.description", "Representative showcase of megawatt-scale solar parks, institutional microgrids, and captive industrial rooftop arrays engineered and commissioned across regional corridors.")}
-              </p>
+              </SubheadingReveal>
             </div>
             <a
               className="group btn-secondary h-[46px] px-6 rounded-full text-xs font-normal text-[#18181B] flex items-center gap-2 shadow-xs cursor-pointer"
@@ -66,12 +75,13 @@ export default function ProjectsSection() {
         </MotionReveal>
 
         {/* 4-Card Desktop Deck - Superpower Cards with Stagger & Image Zoom */}
-        <MotionStagger className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {projects.map((proj, idx) => (
-            <MotionItem key={idx} className="h-full">
-              <div
-                className="card-superpower project-card h-full p-0 overflow-hidden flex flex-col justify-between group transition-all duration-300 hover:border-black/30 shadow-xs"
-              >
+            <CardFadeReveal
+              key={idx}
+              index={idx}
+              className="card-superpower project-card h-full p-0 overflow-hidden flex flex-col justify-between group transition-all duration-300 hover:border-black/30 shadow-xs"
+            >
                 <div>
                   <div className="project-card__media w-full h-52 relative overflow-hidden bg-[#FAFAFA] border-b border-black/10">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -102,10 +112,9 @@ export default function ProjectsSection() {
                     <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                   </a>
                 </div>
-              </div>
-            </MotionItem>
+            </CardFadeReveal>
           ))}
-        </MotionStagger>
+        </div>
       </div>
     </section>
   );
