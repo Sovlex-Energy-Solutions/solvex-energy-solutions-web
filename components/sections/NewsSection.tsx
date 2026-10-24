@@ -1,6 +1,7 @@
 "use client";
 
 import { ArrowRight, Newspaper } from "lucide-react";
+import Image from "next/image";
 import { MotionReveal } from "@/components/ui/motion-reveal";
 import { CardFadeReveal } from "@/components/ui/card-fade-reveal";
 import { WordStaggerHeading } from "@/components/ui/word-stagger-heading";
@@ -39,7 +40,28 @@ export default function NewsSection() {
 
   return (
     <section className="relative w-full py-20 lg:py-28 bg-gradient-to-b from-white via-[#FAFAFA] to-white overflow-hidden" id="news">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col gap-12">
+      {/* Background Hardware Engineering Image & Gradient Overlays */}
+      <div
+        className="absolute inset-0 pointer-events-none select-none z-0 overflow-hidden"
+        style={{
+          maskImage: "linear-gradient(to bottom, transparent 0%, black 18%, black 82%, transparent 100%)",
+          WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 18%, black 82%, transparent 100%)",
+        }}
+      >
+        <Image
+          src="/media/optimized/bifacial_hardware_showcase.webp"
+          alt=""
+          aria-hidden="true"
+          fill
+          className="object-cover opacity-50 sm:opacity-60"
+        />
+        {/* Soft edge blend gradients with feathered margins */}
+        <div className="absolute inset-x-0 top-0 h-44 bg-gradient-to-b from-white via-[#FAFAFA]/60 to-transparent z-[1]" />
+        <div className="absolute inset-0 bg-[#FAFAFA]/30 z-[2]" />
+        <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-white via-[#FAFAFA]/60 to-transparent z-[3]" />
+      </div>
+
+      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 flex flex-col gap-12">
         {/* Section Header */}
         <MotionReveal>
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 pb-6 border-b border-black/10">

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useCallback, useEffect, useState } from "react";
+import Image from "next/image";
 import Autoplay from "embla-carousel-autoplay";
 import useEmblaCarousel from "embla-carousel-react";
 import {
@@ -84,7 +85,7 @@ export default function TopSellingInvertersSection() {
 
   return (
     <section className="relative w-full py-20 lg:py-28 bg-gradient-to-b from-white via-[#F4F6F9] to-white overflow-hidden" id="solar-inverters">
-      {/* Cinematic Background Media & Multi-Stop Gradient Overlays */}
+      {/* Background Engineering Image & Gradient Overlays */}
       <div
         className="absolute inset-0 pointer-events-none select-none z-0 overflow-hidden"
         style={{
@@ -92,17 +93,13 @@ export default function TopSellingInvertersSection() {
           WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 18%, black 82%, transparent 100%)",
         }}
       >
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="metadata"
-          poster="/media/optimized/energy_activation_sparks.webp"
-          className="w-full h-full object-cover opacity-45 sm:opacity-55"
-        >
-          <source src="/media/optimized/energy_activation_sparks_16x9.mp4" type="video/mp4" />
-        </video>
+        <Image
+          src="/media/optimized/rooftop_solar_engineering.webp"
+          alt=""
+          aria-hidden="true"
+          fill
+          className="object-cover opacity-50 sm:opacity-60"
+        />
         {/* Soft edge blend gradients with feathered margins */}
         <div className="absolute inset-x-0 top-0 h-44 bg-gradient-to-b from-white via-[#F4F6F9]/60 to-transparent z-[1]" />
         <div className="absolute inset-0 bg-[#F4F6F9]/30 z-[2]" />

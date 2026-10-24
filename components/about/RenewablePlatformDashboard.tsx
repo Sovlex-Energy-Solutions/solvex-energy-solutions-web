@@ -33,9 +33,34 @@ export default function RenewablePlatformDashboard({
     <section
       id="scale-and-impact"
       aria-label="Scale and Impact Dashboard"
-      className={`py-12 sm:py-16 bg-white text-zinc-900 relative ${className}`}
+      className={`py-12 sm:py-16 bg-white text-zinc-900 relative overflow-hidden ${className}`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Background Cinematic Video & Multi-Stop Gradient Overlays */}
+      <div
+        className="absolute inset-0 pointer-events-none select-none z-0 overflow-hidden"
+        style={{
+          maskImage: "linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)",
+          WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)",
+        }}
+      >
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="metadata"
+          poster="/media/optimized/india_solar_grid.webp"
+          className="w-full h-full object-cover opacity-50 sm:opacity-60"
+        >
+          <source src="/media/optimized/india_solar_network_cinematic.mp4" type="video/mp4" />
+        </video>
+        {/* Soft edge blend gradients with feathered margins */}
+        <div className="absolute inset-x-0 top-0 h-44 bg-gradient-to-b from-white via-white/80 to-transparent z-[1]" />
+        <div className="absolute inset-0 bg-white/40 z-[2]" />
+        <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-white via-white/80 to-transparent z-[3]" />
+      </div>
+
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Content Container */}
         <div className="relative">
           {/* Top Header Row */}

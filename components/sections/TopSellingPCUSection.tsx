@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import {
   Zap,
   ShieldCheck,
@@ -35,7 +36,28 @@ export default function TopSellingPCUSection() {
 
   return (
     <section className="relative w-full py-20 lg:py-28 bg-[#FFFFFF] border-t border-black/10 overflow-hidden" id="solar-pcu">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col gap-12">
+      {/* Cinematic Background Media & Multi-Stop Gradient Overlays */}
+      <div
+        className="absolute inset-0 pointer-events-none select-none z-0 overflow-hidden"
+        style={{
+          maskImage: "linear-gradient(to bottom, transparent 0%, black 18%, black 82%, transparent 100%)",
+          WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 18%, black 82%, transparent 100%)",
+        }}
+      >
+        <Image
+          src="/media/optimized/bifacial_hardware_showcase.webp"
+          alt=""
+          aria-hidden="true"
+          fill
+          className="object-cover opacity-50 sm:opacity-60"
+        />
+        {/* Soft edge blend gradients with feathered margins */}
+        <div className="absolute inset-x-0 top-0 h-44 bg-gradient-to-b from-white via-white/80 to-transparent z-[1]" />
+        <div className="absolute inset-0 bg-white/40 z-[2]" />
+        <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-white via-white/80 to-transparent z-[3]" />
+      </div>
+
+      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 flex flex-col gap-12">
         {/* Section Header */}
         <MotionReveal>
           <div className="flex flex-col xl:flex-row xl:items-end justify-between gap-6 lg:gap-8 pb-2">
