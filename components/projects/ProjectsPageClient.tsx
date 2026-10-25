@@ -4,7 +4,6 @@ import React, { useState, useMemo } from "react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { CookieConsentBanner, LegalModal } from "@/components/ui/consent-and-legal-modals";
-import { CinematicRevealProvider } from "@/components/ui/cinematic-load-reveal";
 import ProjectsHero from "./ProjectsHero";
 import ProjectsFilterBar from "./ProjectsFilterBar";
 import ProjectCard from "./ProjectCard";
@@ -82,8 +81,7 @@ export default function ProjectsPageClient() {
   };
 
   return (
-    <CinematicRevealProvider>
-      <div className="min-h-screen flex flex-col bg-white text-[#18181B] font-sans antialiased selection:bg-[#059669] selection:text-white">
+    <div className="min-h-screen flex flex-col bg-white text-[#18181B] font-sans antialiased selection:bg-[#059669] selection:text-white">
         {/* Floating Navbar */}
         <Navbar />
 
@@ -187,6 +185,5 @@ export default function ProjectsPageClient() {
         <CookieConsentBanner />
         <LegalModal />
       </div>
-    </CinematicRevealProvider>
   );
 }
