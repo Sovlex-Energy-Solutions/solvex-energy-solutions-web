@@ -5,15 +5,11 @@ import Image from "next/image";
 import Autoplay from "embla-carousel-autoplay";
 import useEmblaCarousel from "embla-carousel-react";
 import {
-  BatteryCharging,
   ChevronLeft,
   ChevronRight,
   Cpu,
-  Layers,
   LayoutGrid,
-  ShieldCheck,
   SlidersHorizontal,
-  Zap,
 } from "lucide-react";
 import { MotionReveal, MotionStagger, MotionItem } from "@/components/ui/motion-reveal";
 import { SlidingTabs } from "@/components/ui/sliding-tabs";
@@ -247,73 +243,6 @@ export default function TopSellingInvertersSection() {
             ))}
           </div>
         )}
-
-        {/* Tech Highlights Footer Bar */}
-        <MotionReveal className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-6 rounded-lg border border-black/10 bg-white shadow-xs">
-          <div className="flex items-start gap-3">
-            <div className="w-9 h-9 rounded-full border border-black/10 bg-black/5 flex items-center justify-center shrink-0 text-[#18181B]">
-              <Zap className="w-4 h-4" />
-            </div>
-            <div>
-              <p className="font-sans text-xs font-normal text-[#18181B] tracking-[-0.1px]">
-                {isHindi ? "डायनामिक rMPPT निष्कर्षण" : "DYNAMIC rMPPT EXTRACTION"}
-              </p>
-              <p className="body-sm text-xs text-[#71717A] mt-0.5">
-                {isHindi
-                  ? "सुबह, शाम और बादलों के मौसम में 30% तक अतिरिक्त सौर ऊर्जा उत्पादन"
-                  : "Recovers up to 30% additional harvest under diffuse dawn, dusk, and overcast skies"}
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-start gap-3">
-            <div className="w-9 h-9 rounded-full border border-black/10 bg-black/5 flex items-center justify-center shrink-0 text-[#18181B]">
-              <BatteryCharging className="w-4 h-4" />
-            </div>
-            <div>
-              <p className="font-sans text-xs font-normal text-[#18181B] tracking-[-0.1px]">
-                {isHindi ? "सार्वभौमिक स्टोरेज अनुकूलता" : "UNIVERSAL STORAGE COMPATIBILITY"}
-              </p>
-              <p className="body-sm text-xs text-[#71717A] mt-0.5">
-                {isHindi
-                  ? "C10 टॉल ट्यूबलर, VRLA/SMF और मॉड्यूलर LiFePO4 सभी के लिए पूरी तरह अनुकूल"
-                  : "Fully certified for C10 Tall Tubular, VRLA/SMF, and modular LiFePO4 packs"}
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-start gap-3">
-            <div className="w-9 h-9 rounded-full border border-black/10 bg-black/5 flex items-center justify-center shrink-0 text-[#18181B]">
-              <ShieldCheck className="w-4 h-4" />
-            </div>
-            <div>
-              <p className="font-sans text-xs font-normal text-[#18181B] tracking-[-0.1px]">
-                {isHindi ? "प्रत्यक्ष फील्ड सुरक्षा" : "DIRECT FIELD ASSURANCE"}
-              </p>
-              <p className="body-sm text-xs text-[#71717A] mt-0.5">
-                {isHindi
-                  ? "क्षेत्रीय सर्विस डिपो द्वारा समर्थित त्वरित 48-घंटे का एसएलए समाधान"
-                  : "Rapid SLA doorstep technical resolution backed by regional service depots"}
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-start gap-3">
-            <div className="w-9 h-9 rounded-full border border-black/10 bg-black/5 flex items-center justify-center shrink-0 text-[#18181B]">
-              <Layers className="w-4 h-4" />
-            </div>
-            <div>
-              <p className="font-sans text-xs font-normal text-[#18181B] tracking-[-0.1px]">
-                {isHindi ? "परिशुद्ध साइन वेव आउटपुट" : "PRECISION SINE WAVE PURITY"}
-              </p>
-              <p className="body-sm text-xs text-[#71717A] mt-0.5">
-                {isHindi
-                  ? "संवेदनशील रेफ्रिजरेटर, चिकित्सा उपकरण और कंप्यूटरों की पूर्ण सुरक्षा"
-                  : "Shields sensitive refrigeration compressors, audio gear, and mission-critical computers"}
-              </p>
-            </div>
-          </div>
-        </MotionReveal>
       </div>
 
       {/* Quick Specs Interactive Modal */}

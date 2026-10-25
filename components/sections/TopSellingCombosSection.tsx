@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react";
 import Image from "next/image";
-import { Zap, ArrowRight, Sparkles, MessageSquare } from "lucide-react";
+import { Zap, ArrowRight } from "lucide-react";
 import { MotionReveal, MotionStagger, MotionItem } from "@/components/ui/motion-reveal";
 import { SlidingTabs } from "@/components/ui/sliding-tabs";
 import { useLanguage } from "@/context/LanguageContext";
@@ -165,63 +165,6 @@ export default function TopSellingCombosSection() {
             </CardFadeReveal>
           ))}
         </div>
-
-        {/* Custom Capacity Banner Card */}
-        <CardFadeReveal delay={0.2} className="rounded-lg border border-black/10 bg-[#FAFAFA] p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-xs">
-          <div className="flex items-center gap-4">
-            <div className="w-10 h-10 rounded-full bg-zinc-200 flex items-center justify-center shrink-0 text-[#18181B]">
-              <Sparkles className="w-4 h-4" />
-            </div>
-            <div>
-              <p className="text-base font-normal text-[#18181B] tracking-[-0.2px]">
-                {isHindi ? "15 kW से 500 kW+ तक की इंजीनियर्ड क्षमता की आवश्यकता है?" : "Require Engineered Capacities from 15 kW to 500 kW+?"}
-              </p>
-              <p className="text-xs sm:text-sm font-normal text-[#71717A] mt-1 leading-relaxed">
-                {isHindi
-                  ? "Solvex के तकनीकी विशेषज्ञ 3D शैडो सिमुलेशन, स्ट्रक्चरल लोड लोड-टेस्ट और संपूर्ण डिस्कॉम सिंक्रोनाइज़ेशन रिपोर्ट तैयार करते हैं।"
-                  : "Solvex technical auditors conduct 3D shading simulations, structural load stress tests, and end-to-end DISCOM synchronization reports."}
-              </p>
-            </div>
-          </div>
-          <div className="flex flex-wrap items-center gap-3 shrink-0">
-            <a
-              href={`https://wa.me/919125127755?text=${encodeURIComponent(
-                "Hello Solvex team, I am planning a commercial/industrial solar project (15kW to 500kW+). Please share feasibility parameters and connect me with your EPC desk."
-              )}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => {
-                trackEvent("cta_click", {
-                  cta_name: "whatsapp_commercial_combos",
-                  source: "combos_custom_banner",
-                  capacity: "15-500kW",
-                });
-              }}
-              className="h-[50px] px-5 rounded-full border border-[#25D366]/40 bg-[#25D366]/10 text-emerald-800 hover:bg-[#25D366]/20 text-xs sm:text-sm font-medium inline-flex items-center gap-2 transition-all shadow-xs cursor-pointer active:scale-95"
-            >
-              <MessageSquare className="w-4 h-4 text-[#25D366]" />
-              <span>{isHindi ? "EPC व्हाट्सएप डेस्क" : "EPC WhatsApp Desk"}</span>
-            </a>
-            <button
-              type="button"
-              onClick={() => {
-                trackEvent("cta_click", {
-                  cta_name: "commission_feasibility_audit",
-                  source: "combos_custom_banner",
-                  capacity: "15-500kW",
-                });
-                openProductEnquiryDialog({
-                  product: "Commercial 15kW - 500kW+ Engineered Array & Feasibility",
-                  capacity: "25",
-                });
-              }}
-              className="h-[50px] px-6 rounded-full border border-black/15 bg-white text-[#18181B] hover:bg-zinc-100 text-xs sm:text-sm font-normal tracking-[-0.2px] inline-flex items-center gap-2 shrink-0 transition-all shadow-xs cursor-pointer active:scale-95"
-            >
-              <span>{isHindi ? "तकनीकी व्यवहार्यता ऑडिट" : "Commission Feasibility Audit"}</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
-          </div>
-        </CardFadeReveal>
       </div>
     </section>
   );

@@ -23,6 +23,24 @@ const CinematicRevealContext = createContext<CinematicRevealContextType>({
   replay: () => {},
 });
 
+const STORAGE_KEY = "solvex_cinematic_reveal_completed";
+let hasCinematicRevealedGlobally = false;
+
+const checkAlreadyCompleted = () => {
+  if (hasCinematicRevealedGlobally) return true;
+  if (typeof window !== "undefined") {
+    try {
+      if (sessionStorage.getItem(STORAGE_KEY) === "true") {
+        hasCinematicRevealedGlobally = true;
+        return true;
+      }
+    } catch {
+      return false;
+    }
+  }
+  return false;
+};
+
 export const useCinematicReveal = () => useContext(CinematicRevealContext);
 
 export function CinematicRevealProvider({
@@ -30,8 +48,8 @@ export function CinematicRevealProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [isRevealed, setIsRevealed] = useState(false);
-  const [isComplete, setIsComplete] = useState(false);
+  const [isRevealed, setIsRevealed] = useState(() => checkAlreadyCompleted());
+  const [isComplete, setIsComplete] = useState(() => checkAlreadyCompleted());
 
   const overlayRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
@@ -76,6 +94,13 @@ export function CinematicRevealProvider({
       typeof window !== "undefined" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches
     ) {
+      hasCinematicRevealedGlobally = true;
+      if (typeof window !== "undefined") {
+        try {
+          sessionStorage.setItem(STORAGE_KEY, "true");
+          document.documentElement.classList.add("cinematic-completed");
+        } catch {}
+      }
       setIsRevealed(true);
       setIsComplete(true);
       restoreScroll();
@@ -94,6 +119,13 @@ export function CinematicRevealProvider({
 
     // Safety fallback: ensure page is unblocked after 3.2s under any edge case
     fallbackTimerRef.current = setTimeout(() => {
+      hasCinematicRevealedGlobally = true;
+      if (typeof window !== "undefined") {
+        try {
+          sessionStorage.setItem(STORAGE_KEY, "true");
+          document.documentElement.classList.add("cinematic-completed");
+        } catch {}
+      }
       setIsRevealed(true);
       setIsComplete(true);
       restoreScroll();
@@ -109,6 +141,13 @@ export function CinematicRevealProvider({
           if (fallbackTimerRef.current) {
             clearTimeout(fallbackTimerRef.current);
             fallbackTimerRef.current = null;
+          }
+          hasCinematicRevealedGlobally = true;
+          if (typeof window !== "undefined") {
+            try {
+              sessionStorage.setItem(STORAGE_KEY, "true");
+              document.documentElement.classList.add("cinematic-completed");
+            } catch {}
           }
           setIsComplete(true);
           restoreScroll();
@@ -231,6 +270,13 @@ export function CinematicRevealProvider({
       // 5. Trigger Hero & Navbar Entrance right as the curtain begins lifting (at 1.25s)
       tl.call(
         () => {
+          hasCinematicRevealedGlobally = true;
+          if (typeof window !== "undefined") {
+            try {
+              sessionStorage.setItem(STORAGE_KEY, "true");
+              document.documentElement.classList.add("cinematic-completed");
+            } catch {}
+          }
           setIsRevealed(true);
         },
         undefined,
@@ -255,13 +301,32 @@ export function CinematicRevealProvider({
     activeCtxRef.current = ctx;
   }, [lockScroll, restoreScroll]);
 
-  // Initial Load Trigger (Plays on every page load/refresh)
+  // Initial Load Trigger (Plays ONLY ONCE when site is loaded in session, never on subsequent route changes)
   useEffect(() => {
+    // If already revealed during this session or in global memory, skip sequence
+    if (checkAlreadyCompleted()) {
+      setIsRevealed(true);
+      setIsComplete(true);
+      restoreScroll();
+      if (overlayRef.current) {
+        overlayRef.current.style.display = "none";
+        overlayRef.current.style.pointerEvents = "none";
+      }
+      return;
+    }
+
     const prefersReduced =
       typeof window !== "undefined" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     if (prefersReduced) {
+      hasCinematicRevealedGlobally = true;
+      if (typeof window !== "undefined") {
+        try {
+          sessionStorage.setItem(STORAGE_KEY, "true");
+          document.documentElement.classList.add("cinematic-completed");
+        } catch {}
+      }
       const timer = setTimeout(() => {
         setIsRevealed(true);
         setIsComplete(true);
@@ -294,8 +359,12 @@ export function CinematicRevealProvider({
   const replay = useCallback(() => {
     if (typeof window !== "undefined") {
       window.scrollTo({ top: 0, behavior: "instant" });
+      try {
+        sessionStorage.removeItem(STORAGE_KEY);
+        document.documentElement.classList.remove("cinematic-completed");
+      } catch {}
     }
-
+    hasCinematicRevealedGlobally = false;
     playSequence();
   }, [playSequence]);
 

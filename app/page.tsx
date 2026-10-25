@@ -17,37 +17,34 @@ import NewsSection from "@/components/sections/NewsSection";
 import FaqSection from "@/components/sections/FaqSection";
 import ContactSection from "@/components/sections/ContactSection";
 import Footer from "@/components/layout/Footer";
-import { CinematicRevealProvider } from "@/components/ui/cinematic-load-reveal";
 import { CookieConsentBanner, LegalModal } from "@/components/ui/consent-and-legal-modals";
 
 export default function Home() {
   return (
-    <CinematicRevealProvider>
-      <div className="min-h-screen flex flex-col bg-[#FFFFFF] text-[#18181B] font-sans antialiased selection:bg-primary selection:text-white">
-        <Navbar />
-        <main id="main-content" tabIndex={-1} className="flex-1 flex flex-col relative w-full overflow-hidden outline-none">
-          <HeroSection /> 
-          <HeroSlider />
-          <RenewablePlatformDashboard />
-          <ProductCategoriesSection />
-          <TopSellingCombosSection />
-          <TopSellingInvertersSection />
-          <TopSellingPCUSection />
-          {/* <MissionPillarsSection /> */}
-          {/* <SolutionsSection /> */}
-          {/* <PartnershipSection /> */}
-          <WhyChooseSection />
-          <ProjectsSection />
-          <PartnersAndCalculatorSection />
-          {/* <NewsSection /> */}
-          <FaqSection />
-          <ContactSection />
-        </main>
-        <Footer />
-        {/* Global Consent & Legal Compliance Modals (DPDP Act 2023 & Enterprise TOS) */}
-        <CookieConsentBanner />
-        <LegalModal />
-      </div>
-    </CinematicRevealProvider>
+    <div className="min-h-screen flex flex-col bg-[#FFFFFF] text-[#18181B] font-sans antialiased selection:bg-primary selection:text-white">
+      <Navbar />
+      <main id="main-content" tabIndex={-1} className="flex-1 flex flex-col relative w-full overflow-hidden outline-none">
+        <HeroSection /> 
+        <HeroSlider />
+        <RenewablePlatformDashboard />
+        <ProductCategoriesSection />
+        <TopSellingCombosSection />
+        <TopSellingInvertersSection />
+        <TopSellingPCUSection />
+        {/* <MissionPillarsSection /> */}
+        {/* <SolutionsSection /> */}
+        {/* <PartnershipSection /> */}
+        <WhyChooseSection />
+        <ProjectsSection />
+        <PartnersAndCalculatorSection />
+        {/* <NewsSection /> */}
+        <FaqSection />
+        <ContactSection />
+      </main>
+      <Footer />
+      {/* Global Consent & Legal Compliance Modals (DPDP Act 2023 & Enterprise TOS) */}
+      <CookieConsentBanner />
+      <LegalModal />
+    </div>
   );
 }

@@ -3,19 +3,14 @@
 import { useState } from "react";
 import Image from "next/image";
 import {
-  Zap,
-  ShieldCheck,
   Cpu,
-  Layers,
   TableProperties,
-  Building2,
 } from "lucide-react";
 import { MotionReveal, MotionStagger, MotionItem } from "@/components/ui/motion-reveal";
 import { SlidingTabs } from "@/components/ui/sliding-tabs";
 import { useLanguage } from "@/context/LanguageContext";
 import { WordStaggerHeading } from "@/components/ui/word-stagger-heading";
 import { SubheadingReveal } from "@/components/ui/subheading-reveal";
-import { CardFadeReveal } from "@/components/ui/card-fade-reveal";
 import { pcuProducts, type PCUProduct } from "@/data/products/pcus";
 import { PCUCard } from "./pcu/PCUCard";
 import { PCUComparisonMatrix } from "./pcu/PCUComparisonMatrix";
@@ -131,65 +126,6 @@ export default function TopSellingPCUSection() {
             t={t}
           />
         )}
-
-        {/* Institutional Application Trust Badges Card */}
-        <CardFadeReveal delay={0.15} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-6 rounded-lg border border-black/10 bg-[#FAFAFA] shadow-xs">
-          <MotionItem className="flex items-start gap-3">
-            <div className="w-9 h-9 rounded-full border border-black/10 bg-black/5 flex items-center justify-center shrink-0 text-[#18181B]">
-              <Building2 className="w-4 h-4" />
-            </div>
-            <div>
-              <p className="font-sans text-xs font-normal text-[#18181B] tracking-[-0.1px]">
-                {t("pcu.badges.medical", "HEALTHCARE & CRITICAL LABS")}
-              </p>
-              <p className="body-sm text-xs text-[#71717A] mt-0.5">
-                {t("pcu.badges.medicalDesc", "Zero-break transfer protecting diagnostic machinery, cold storage, and surgical lighting")}
-              </p>
-            </div>
-          </MotionItem>
-
-          <MotionItem className="flex items-start gap-3">
-            <div className="w-9 h-9 rounded-full border border-black/10 bg-black/5 flex items-center justify-center shrink-0 text-[#18181B]">
-              <Zap className="w-4 h-4" />
-            </div>
-            <div>
-              <p className="font-sans text-xs font-normal text-[#18181B] tracking-[-0.1px]">
-                {t("pcu.badges.dsp", "DUAL-PROCESSOR BRAIN")}
-              </p>
-              <p className="body-sm text-xs text-[#71717A] mt-0.5">
-                {t("pcu.badges.dspDesc", "Samples PV irradiance, battery health, and utility fluctuations at microsecond fidelity")}
-              </p>
-            </div>
-          </MotionItem>
-
-          <MotionItem className="flex items-start gap-3">
-            <div className="w-9 h-9 rounded-full border border-black/10 bg-black/5 flex items-center justify-center shrink-0 text-[#18181B]">
-              <ShieldCheck className="w-4 h-4" />
-            </div>
-            <div>
-              <p className="font-sans text-xs font-normal text-[#18181B] tracking-[-0.1px]">
-                {t("pcu.badges.galvanic", "COPPER GALVANIC BARRIER")}
-              </p>
-              <p className="body-sm text-xs text-[#71717A] mt-0.5">
-                {t("pcu.badges.galvanicDesc", "Heavy pure copper transformer safeguards sensitive electronics from surges and lightning spikes")}
-              </p>
-            </div>
-          </MotionItem>
-
-          <MotionItem className="flex items-start gap-3">
-            <div className="w-9 h-9 rounded-full border border-black/10 bg-black/5 flex items-center justify-center shrink-0 text-[#18181B]">
-              <Layers className="w-4 h-4" />
-            </div>
-            <div>
-              <p className="font-sans text-xs font-normal text-[#18181B] tracking-[-0.1px]">
-                {t("pcu.badges.inrush", "300% INRUSH OVERHEAD")}
-              </p>
-              <p className="body-sm text-xs text-[#71717A] mt-0.5">
-                {t("pcu.badges.inrushDesc", "Effortlessly fires up inductive chiller compressors, vacuum pumps, and heavy motors")}
-              </p>
-            </div>
-          </MotionItem>
-        </CardFadeReveal>
       </div>
 
       {/* Quick Specs Interactive Modal */}

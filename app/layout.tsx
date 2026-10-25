@@ -7,6 +7,7 @@ import ProductEnquiryDialog from "@/components/forms/ProductEnquiryDialog";
 import GoogleAnalyticsLoader from "@/components/analytics/GoogleAnalyticsLoader";
 import { siteMetadata, viewport as siteViewport } from "@/config/metadata";
 import { siteJsonLd } from "@/config/jsonld";
+import { CinematicRevealProvider } from "@/components/ui/cinematic-load-reveal";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -45,6 +46,14 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(siteJsonLd) }}
         />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{if(sessionStorage.getItem('solvex_cinematic_reveal_completed')==='true'){document.documentElement.classList.add('cinematic-completed');}}catch(e){}`,
+          }}
+        />
+        <style>{`
+          .cinematic-completed #solvex-cinematic-preloader { display: none !important; }
+        `}</style>
         <noscript>
           <style>{`
             #solvex-cinematic-preloader { display: none !important; }
@@ -57,13 +66,15 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         <LanguageProvider>
-          {children}
-          {/* Privacy-First Google Analytics 4 Loader (Basic Consent Mode: Blocks all tags until consent) */}
-          <GoogleAnalyticsLoader />
-          {/* Global Quick Contact Speed Dial (Working Call & WhatsApp) */}
-          <QuickContactWidget />
-          {/* Global Product & Subsidy Enquiry Dialog */}
-          <ProductEnquiryDialog />
+          <CinematicRevealProvider>
+            {children}
+            {/* Privacy-First Google Analytics 4 Loader (Basic Consent Mode: Blocks all tags until consent) */}
+            <GoogleAnalyticsLoader />
+            {/* Global Quick Contact Speed Dial (Working Call & WhatsApp) */}
+            <QuickContactWidget />
+            {/* Global Product & Subsidy Enquiry Dialog */}
+            <ProductEnquiryDialog />
+          </CinematicRevealProvider>
         </LanguageProvider>
       </body>
     </html>
