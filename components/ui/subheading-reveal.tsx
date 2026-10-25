@@ -1,7 +1,7 @@
 "use client";
 
-import React from "react";
-import { motion, useReducedMotion } from "motion/react";
+import React, { useRef } from "react";
+import { motion, useReducedMotion, useInView } from "motion/react";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -35,6 +35,11 @@ export function SubheadingReveal({
   id,
 }: SubheadingRevealProps) {
   const shouldReduceMotion = useReducedMotion();
+  const ref = useRef<HTMLParagraphElement>(null);
+  const isInView = useInView(ref, {
+    once,
+    margin: viewportMargin as NonNullable<Parameters<typeof useInView>[1]>["margin"],
+  });
 
   // Pick the appropriate motion HTML element
   const MotionComponent = motion[Tag as keyof typeof motion] as typeof motion.p;
@@ -49,14 +54,14 @@ export function SubheadingReveal({
 
   return (
     <MotionComponent
+      ref={ref}
       id={id}
       className={cn("will-change-transform", className)}
-      initial={{ opacity: 0, y: yOffset }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once, margin: viewportMargin }}
+      initial={isInView ? false : { opacity: 0, y: yOffset }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: yOffset }}
       transition={{
         duration,
-        delay,
+        delay: isInView ? 0 : delay,
         ease: [0.21, 0.47, 0.32, 0.98],
       }}
     >
