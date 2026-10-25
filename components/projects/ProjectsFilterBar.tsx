@@ -52,12 +52,14 @@ export default function ProjectsFilterBar({
     onSearchChange("");
   };
 
-  const categories: Array<{ id: "all" | ProjectCategory; label: string; labelHi: string; count: number }> = [
+  type CategoryFilterItem = { id: "all" | ProjectCategory; label: string; labelHi: string; count: number };
+  const allCategories: CategoryFilterItem[] = [
     { id: "all", label: "All Projects", labelHi: "सभी परियोजनाएं", count: categoryCounts.all },
-    { id: "utility", label: "Utility-Scale", labelHi: "यूटिलिटी-स्केल", count: categoryCounts.utility },
-    { id: "ci-open-access", label: "C&I Open Access", labelHi: "सी एंड आई ओपन एक्सेस", count: categoryCounts["ci-open-access"] },
-    { id: "distributed-rooftop", label: "Distributed Rooftop", labelHi: "डिस्ट्रिब्यूटेड रूफटॉप", count: categoryCounts["distributed-rooftop"] },
+    { id: "utility", label: "Utility", labelHi: "यूटिलिटी", count: categoryCounts.utility },
+    { id: "ci-open-access", label: "C&I - Open Access", labelHi: "सी एंड आई - ओपन एक्सेस", count: categoryCounts["ci-open-access"] },
+    { id: "distributed-rooftop", label: "Distributed Generation", labelHi: "डिस्ट्रिब्यूटेड जेनरेशन", count: categoryCounts["distributed-rooftop"] },
   ];
+  const categories = allCategories.filter((cat) => cat.id === "all" || cat.count > 0);
 
   const regions: Array<"all" | ProjectRegion> = ["all", "North", "West", "South", "East"];
 

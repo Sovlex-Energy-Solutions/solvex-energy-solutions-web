@@ -9,9 +9,10 @@ import ProjectsHero from "./ProjectsHero";
 import ProjectsFilterBar from "./ProjectsFilterBar";
 import ProjectCard from "./ProjectCard";
 import ProjectDetailModal from "./ProjectDetailModal";
-import ProjectsRegionalBreakdown from "./ProjectsRegionalBreakdown";
-import ProjectsEngineeringStandards from "./ProjectsEngineeringStandards";
 import ProjectsCtaSection from "./ProjectsCtaSection";
+import { WordStaggerHeading } from "@/components/ui/word-stagger-heading";
+import { SubheadingReveal } from "@/components/ui/subheading-reveal";
+import { CardFadeReveal } from "@/components/ui/card-fade-reveal";
 import {
   PROJECTS_DATA,
   ProjectItem,
@@ -93,6 +94,25 @@ export default function ProjectsPageClient() {
           {/* Projects Catalog Grid Section */}
           <section className="w-full py-12 sm:py-16 bg-white relative">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+              {/* Catalog Section Header */}
+              <div className="flex flex-col gap-2">
+                <WordStaggerHeading
+                  as="h2"
+                  className="text-2xl sm:text-3xl lg:text-4xl font-normal text-zinc-900 tracking-tight"
+                >
+                  {isHindi ? "परियोजना पोर्टफोलियो कैटलॉग" : "Project Portfolio Catalog"}
+                </WordStaggerHeading>
+                <SubheadingReveal
+                  as="p"
+                  className="text-xs sm:text-sm text-zinc-600 max-w-2xl font-normal leading-relaxed"
+                  delay={0.12}
+                >
+                  {isHindi
+                    ? "भारत भर में चालू और सक्रिय यूटिलिटी, ओपन एक्सेस और कैप्टिव सौर ऊर्जा परियोजनाओं का विवरण।"
+                    : "Explore operational and commissioned clean power installations delivered across key industrial and utility grid corridors."}
+                </SubheadingReveal>
+              </div>
+
               {/* Filter Bar */}
               <ProjectsFilterBar
                 selectedCategory={selectedCategory}
@@ -111,12 +131,17 @@ export default function ProjectsPageClient() {
               {/* Projects Grid */}
               {filteredProjects.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7">
-                  {filteredProjects.map((project) => (
-                    <ProjectCard
+                  {filteredProjects.map((project, idx) => (
+                    <CardFadeReveal
                       key={project.id}
-                      project={project}
-                      onOpenDetails={setActiveModalProject}
-                    />
+                      index={idx}
+                      className="h-full"
+                    >
+                      <ProjectCard
+                        project={project}
+                        onOpenDetails={setActiveModalProject}
+                      />
+                    </CardFadeReveal>
                   ))}
                 </div>
               ) : (
@@ -144,12 +169,6 @@ export default function ProjectsPageClient() {
               )}
             </div>
           </section>
-
-          {/* Regional Capacity Hubs */}
-          <ProjectsRegionalBreakdown onSelectRegion={setSelectedRegion} />
-
-          {/* Engineering Rigor & Technical Standards */}
-          <ProjectsEngineeringStandards />
 
           {/* Enterprise Partnership CTA Section */}
           <ProjectsCtaSection />

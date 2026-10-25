@@ -38,7 +38,7 @@ export const metadata: Metadata = {
       "Explore Solvex Energy's multi-gigawatt clean energy portfolio across 23+ Indian states: utility solar, floating PV, wind-solar hybrids, and C&I open access arrays.",
     images: [
       {
-        url: `${SITE_CONFIG.url}/images/solar_plant_3.png`,
+        url: `${SITE_CONFIG.url}/projects/project4.jpg`,
         width: 1200,
         height: 630,
         alt: "Solvex Energy Clean Energy Projects Portfolio",
@@ -50,7 +50,7 @@ export const metadata: Metadata = {
     title: "Clean Energy Projects & Portfolio | Solvex Energy Solutions",
     description:
       "Explore Solvex Energy's multi-gigawatt clean energy portfolio across 23+ Indian states: utility solar, floating PV, wind-solar hybrids, and C&I open access arrays.",
-    images: [`${SITE_CONFIG.url}/images/solar_plant_3.png`],
+    images: [`${SITE_CONFIG.url}/projects/project4.jpg`],
   },
 };
 
@@ -69,7 +69,7 @@ export default function ProjectsPage() {
     },
     mainEntity: {
       "@type": "ItemList",
-      itemListElement: PROJECTS_DATA.slice(0, 8).map((proj, idx) => ({
+      itemListElement: PROJECTS_DATA.map((proj, idx) => ({
         "@type": "ListItem",
         position: idx + 1,
         item: {

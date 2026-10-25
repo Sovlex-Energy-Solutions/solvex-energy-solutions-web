@@ -53,9 +53,9 @@ export default function ProjectCard({ project, onOpenDetails }: ProjectCardProps
             </span>
           </div>
 
-          {/* Location on bottom of image */}
-          <div className="absolute bottom-2.5 left-3 right-3 flex items-center gap-1.5 text-xs text-white/95 font-medium drop-shadow-sm pointer-events-none">
-            <MapPin className="w-3.5 h-3.5 text-emerald-300 shrink-0" />
+          {/* Location on bottom-right of image with glass backdrop so it doesn't overlap left badge */}
+          <div className="absolute bottom-2.5 right-3 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md text-[11px] text-white/95 font-medium drop-shadow-sm pointer-events-none">
+            <MapPin className="w-3 h-3 text-emerald-300 shrink-0" />
             <span className="truncate">
               {project.state} • {project.region} India
             </span>

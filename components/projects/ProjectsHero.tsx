@@ -4,7 +4,6 @@ import React from "react";
 import { ArrowDown, Sun, ShieldCheck, Zap, Globe2, Leaf } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 import { WordStaggerHeading } from "@/components/ui/word-stagger-heading";
-import { SubheadingReveal } from "@/components/ui/subheading-reveal";
 import { CardFadeReveal } from "@/components/ui/card-fade-reveal";
 import { PROJECTS_METRICS } from "@/data/projects-data";
 
@@ -61,14 +60,17 @@ export default function ProjectsHero() {
             </span>
           </WordStaggerHeading>
 
-          <SubheadingReveal
+          <WordStaggerHeading
+            as="p"
             className="text-sm sm:text-base lg:text-lg text-zinc-600 font-normal leading-relaxed max-w-2xl"
-            delay={0.18}
+            delay={0.25}
+            staggerDelay={0.015}
+            duration={0.45}
           >
             {isHindi
               ? "गीगावाट-स्तरीय यूटिलिटी पार्क, फ्लोटिंग सोलर, पवन-सौर हाइब्रिड और वाणिज्यिक ओपन एक्सेस रूफटॉप इंस्टॉलेशन — भारत के सबसे भरोसेमंद ऊर्जा ऑफ-टेकर्स को स्वच्छ शक्ति प्रदान करते हुए।"
               : "A verified national footprint spanning gigawatt-scale utility solar, wind-solar hybrids, battery storage (BESS), and captive C&I rooftop arrays powering India's leading industrial enterprises."}
-          </SubheadingReveal>
+          </WordStaggerHeading>
         </div>
 
         {/* 4 Key Metric Stat Cards */}
