@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useMemo } from "react";
-import { motion, type Variants, useReducedMotion } from "motion/react";
+import React, { useMemo, useRef } from "react";
+import { motion, type Variants, useReducedMotion, useInView } from "motion/react";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -57,7 +57,7 @@ function parseTokens(children: React.ReactNode, prefix = "w"): { tokens: ParsedT
         tokens.push({
           type: "word",
           content: chunk,
-          key: `${prefix}-${counter++}-${chunk}`,
+          key: `${prefix}-${counter++}`,
         });
       });
       return;
@@ -111,6 +111,11 @@ export function WordStaggerHeading({
   id,
 }: WordStaggerHeadingProps) {
   const shouldReduceMotion = useReducedMotion();
+  const containerRef = useRef<HTMLElement>(null);
+  const isInView = useInView(containerRef, {
+    once,
+    margin: viewportMargin as NonNullable<Parameters<typeof useInView>[1]>["margin"],
+  });
 
   const { tokens, textContent } = useMemo(() => {
     return parseTokens(children);
@@ -127,12 +132,12 @@ export function WordStaggerHeading({
       hidden: {},
       visible: {
         transition: {
-          staggerChildren: staggerDelay,
-          delayChildren: delay,
+          staggerChildren: isInView ? 0 : staggerDelay,
+          delayChildren: isInView ? 0 : delay,
         },
       },
     };
-  }, [staggerDelay, delay, shouldReduceMotion]);
+  }, [staggerDelay, delay, shouldReduceMotion, isInView]);
 
   const wordVariants: Variants = useMemo(() => {
     if (shouldReduceMotion) {
@@ -157,6 +162,14 @@ export function WordStaggerHeading({
     };
   }, [duration, yOffset, shouldReduceMotion]);
 
+  if (shouldReduceMotion) {
+    return (
+      <Tag id={id} className={cn("inline-block", className)}>
+        {children}
+      </Tag>
+    );
+  }
+
   return (
     <Tag id={id} className={cn("inline-block", className)}>
       {/* Screen-reader accessible full text representation */}
@@ -164,12 +177,12 @@ export function WordStaggerHeading({
 
       {/* Visually animated words with bottom-to-top staggered reveal */}
       <motion.span
+        ref={containerRef}
         aria-hidden="true"
         className="inline"
         variants={containerVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once, margin: viewportMargin }}
+        initial={isInView ? false : "hidden"}
+        animate={isInView ? "visible" : "hidden"}
       >
         {tokens.map((token) => {
           if (token.type === "linebreak") {
@@ -193,7 +206,12 @@ export function WordStaggerHeading({
               key={token.key}
               className="inline-block overflow-hidden align-top mr-[0.26em] last:mr-0 pb-[0.06em] -mb-[0.06em]"
             >
-              <motion.span className="inline-block will-change-transform" variants={wordVariants}>
+              <motion.span
+                className="inline-block will-change-transform"
+                variants={wordVariants}
+                initial={isInView ? false : "hidden"}
+                animate={isInView ? "visible" : "hidden"}
+              >
                 {token.content}
               </motion.span>
             </span>

@@ -89,6 +89,214 @@ export default function HeroSection() {
     setActiveSlide(index);
   }, []);
 
+  // Clean up any active SplitText instances and timeline
+  const cleanupSplitText = useCallback(() => {
+    if (textAnimTimelineRef.current) {
+      textAnimTimelineRef.current.kill();
+      textAnimTimelineRef.current = null;
+    }
+    if (headlineSplitRef.current) {
+      try {
+        headlineSplitRef.current.revert();
+      } catch {
+        // Ignore revert error if DOM was already updated
+      }
+      headlineSplitRef.current = null;
+    }
+    if (subheadSplitRef.current) {
+      try {
+        subheadSplitRef.current.revert();
+      } catch {
+        // Ignore revert error
+      }
+      subheadSplitRef.current = null;
+    }
+  }, []);
+
+  /** Update the DOM text content of headline and subhead to match current slide */
+  const updateTextContent = useCallback(() => {
+    const slide = HERO_SLIDES[activeSlide] || HERO_SLIDES[0];
+    const headlineEl = headlineRef.current;
+    const subheadEl = subheadRef.current;
+    if (headlineEl) {
+      headlineEl.textContent = isHindi ? slide.headingHi : slide.heading;
+      gsap.set(headlineEl, { opacity: 1, y: 0 });
+    }
+    if (subheadEl) {
+      subheadEl.textContent = isHindi ? slide.subheadingHi : slide.subheading;
+      gsap.set(subheadEl, { opacity: 1, y: 0 });
+    }
+  }, [activeSlide, isHindi]);
+
+  /** Animate existing text out (upward fade) before swapping content */
+  const animateTextOut = useCallback((onComplete: () => void) => {
+    cleanupSplitText();
+
+    const headlineEl = headlineRef.current;
+    const subheadEl = subheadRef.current;
+    if (!headlineEl || !subheadEl) {
+      onComplete();
+      return;
+    }
+
+    const tl = gsap.timeline({
+      onComplete: () => {
+        onComplete();
+      },
+    });
+
+    tl.to([headlineEl, subheadEl], {
+      opacity: 0,
+      y: -15,
+      duration: 0.25,
+      ease: "power2.in",
+      stagger: 0.04,
+    });
+
+    textAnimTimelineRef.current = tl;
+  }, [cleanupSplitText]);
+
+  /**
+   * GSAP SplitText animation
+   * Uses word-splitting for Hindi (to keep ligatures and matras intact) and char/word for English
+   */
+  const animateTextIn = useCallback((isInitial: boolean) => {
+    cleanupSplitText();
+
+    const headlineEl = headlineRef.current;
+    const subheadEl = subheadRef.current;
+    if (!headlineEl || !subheadEl) return;
+
+    // Ensure the DOM has the latest text content before splitting
+    const slide = HERO_SLIDES[activeSlide] || HERO_SLIDES[0];
+    headlineEl.textContent = isHindi ? slide.headingHi : slide.heading;
+    subheadEl.textContent = isHindi ? slide.subheadingHi : slide.subheading;
+
+    // Reset position and make visible so SplitText can measure accurately
+    gsap.set([headlineEl, subheadEl], { opacity: 1, y: 0 });
+
+    try {
+      if (isHindi) {
+        // For Hindi: split by words ONLY so Devanagari ligatures and combining marks are preserved
+        headlineSplitRef.current = new SplitText(headlineEl, {
+          type: "words",
+        });
+        subheadSplitRef.current = new SplitText(subheadEl, {
+          type: "words",
+        });
+
+        const headlineWords = headlineSplitRef.current.words || [];
+        const subheadWords = subheadSplitRef.current.words || [];
+
+        gsap.set(headlineWords, {
+          opacity: 0,
+          y: 28,
+        });
+        gsap.set(subheadWords, {
+          opacity: 0,
+          y: 18,
+        });
+
+        const tl = gsap.timeline({
+          defaults: {
+            ease: "power3.out",
+          },
+          onComplete: () => {
+            gsap.set([headlineWords, subheadWords], { opacity: 1, y: 0 });
+          },
+        });
+
+        tl.to(headlineWords, {
+          opacity: 1,
+          y: 0,
+          duration: isInitial ? 0.6 : 0.5,
+          stagger: 0.035,
+        });
+
+        tl.to(
+          subheadWords,
+          {
+            opacity: 1,
+            y: 0,
+            duration: isInitial ? 0.5 : 0.4,
+            stagger: 0.015,
+          },
+          "-=0.25"
+        );
+
+        textAnimTimelineRef.current = tl;
+      } else {
+        // For English: character-by-character split
+        headlineSplitRef.current = new SplitText(headlineEl, {
+          type: "chars,words",
+        });
+        subheadSplitRef.current = new SplitText(subheadEl, {
+          type: "chars,words",
+        });
+
+        const headlineChars = headlineSplitRef.current.chars || [];
+        const subheadChars = subheadSplitRef.current.chars || [];
+
+        gsap.set(headlineChars, {
+          opacity: 0,
+          y: 40,
+          rotateX: -20,
+          transformOrigin: "center bottom",
+        });
+        gsap.set(subheadChars, {
+          opacity: 0,
+          y: 25,
+          rotateX: -15,
+          transformOrigin: "center bottom",
+        });
+
+        const tl = gsap.timeline({
+          defaults: {
+            ease: "power3.out",
+          },
+          onComplete: () => {
+            gsap.set([headlineChars, subheadChars], { opacity: 1, y: 0, rotateX: 0 });
+          },
+        });
+
+        tl.to(headlineChars, {
+          opacity: 1,
+          y: 0,
+          rotateX: 0,
+          duration: isInitial ? 0.65 : 0.55,
+          stagger: {
+            each: 0.018,
+            from: "start",
+          },
+        });
+
+        tl.to(
+          subheadChars,
+          {
+            opacity: 1,
+            y: 0,
+            rotateX: 0,
+            duration: isInitial ? 0.5 : 0.4,
+            stagger: {
+              each: 0.008,
+              from: "start",
+            },
+          },
+          isInitial ? "-=0.35" : "-=0.3"
+        );
+
+        textAnimTimelineRef.current = tl;
+      }
+    } catch (err) {
+      console.warn("SplitText fallback applied:", err);
+      gsap.fromTo(
+        [headlineEl, subheadEl],
+        { opacity: 0, y: 15 },
+        { opacity: 1, y: 0, duration: 0.45, stagger: 0.1, ease: "power2.out" }
+      );
+    }
+  }, [activeSlide, isHindi, cleanupSplitText]);
+
   // Initial reveal animation (runs once when cinematic reveal completes)
   useEffect(() => {
     if (!isRevealed) {
@@ -158,8 +366,7 @@ export default function HeroSection() {
     }, heroRef);
 
     return () => ctx.revert();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isRevealed]);
+  }, [isRevealed, animateTextIn]);
 
   // Animate text on slide change (after first reveal)
   useEffect(() => {
@@ -177,166 +384,41 @@ export default function HeroSection() {
 
     // Reduced motion check
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      cleanupSplitText();
       updateTextContent();
       return;
     }
 
     animateTextOut(() => {
+      cleanupSplitText();
       updateTextContent();
       animateTextIn(false);
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeSlide]);
+  }, [activeSlide, isRevealed, cleanupSplitText, updateTextContent, animateTextOut, animateTextIn]);
 
-  // Handle language change — update text + re-animate
+  // Handle language change — update text + re-animate cleanly
   useEffect(() => {
     if (!isRevealed || !hasAnimatedRef.current) return;
+
+    // Clean up previous SplitText and animation FIRST
+    cleanupSplitText();
     updateTextContent();
-    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      animateTextIn(false);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isHindi]);
 
-  /** Update the DOM text content of headline and subhead to match current slide */
-  function updateTextContent() {
-    const slide = HERO_SLIDES[activeSlide] || HERO_SLIDES[0];
-    const headlineEl = headlineRef.current;
-    const subheadEl = subheadRef.current;
-    if (headlineEl) headlineEl.textContent = isHindi ? slide.headingHi : slide.heading;
-    if (subheadEl) subheadEl.textContent = isHindi ? slide.subheadingHi : slide.subheading;
-  }
-
-  /** Animate existing text out (upward fade) before swapping content */
-  function animateTextOut(onComplete: () => void) {
-    // Kill any running animation
-    if (textAnimTimelineRef.current) {
-      textAnimTimelineRef.current.kill();
-    }
-
-    const headlineEl = headlineRef.current;
-    const subheadEl = subheadRef.current;
-    if (!headlineEl || !subheadEl) {
-      onComplete();
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      if (headlineRef.current) gsap.set(headlineRef.current, { opacity: 1, y: 0 });
+      if (subheadRef.current) gsap.set(subheadRef.current, { opacity: 1, y: 0 });
       return;
     }
 
-    // Revert previous SplitText before creating new ones for the exit animation
-    if (headlineSplitRef.current) {
-      headlineSplitRef.current.revert();
-      headlineSplitRef.current = null;
-    }
-    if (subheadSplitRef.current) {
-      subheadSplitRef.current.revert();
-      subheadSplitRef.current = null;
-    }
+    animateTextIn(false);
+  }, [isHindi, isRevealed, cleanupSplitText, updateTextContent, animateTextIn]);
 
-    const tl = gsap.timeline({
-      onComplete: () => {
-        onComplete();
-      },
-    });
-
-    tl.to([headlineEl, subheadEl], {
-      opacity: 0,
-      y: -20,
-      duration: 0.3,
-      ease: "power2.in",
-      stagger: 0.05,
-    });
-
-    textAnimTimelineRef.current = tl;
-  }
-
-  /**
-   * GSAP SplitText character-by-character animation
-   * Heading and subheading chars sweep up from below with staggered easing
-   */
-  function animateTextIn(isInitial: boolean) {
-    // Kill any running text animation
-    if (textAnimTimelineRef.current) {
-      textAnimTimelineRef.current.kill();
-    }
-
-    // Revert previous SplitText instances to restore clean DOM
-    if (headlineSplitRef.current) {
-      headlineSplitRef.current.revert();
-      headlineSplitRef.current = null;
-    }
-    if (subheadSplitRef.current) {
-      subheadSplitRef.current.revert();
-      subheadSplitRef.current = null;
-    }
-
-    const headlineEl = headlineRef.current;
-    const subheadEl = subheadRef.current;
-    if (!headlineEl || !subheadEl) return;
-
-    // Reset position and make visible so SplitText can measure
-    gsap.set([headlineEl, subheadEl], { opacity: 1, y: 0 });
-
-    // Create SplitText instances — split into words then chars for smoother flow
-    headlineSplitRef.current = new SplitText(headlineEl, {
-      type: "chars,words",
-    });
-    subheadSplitRef.current = new SplitText(subheadEl, {
-      type: "chars,words",
-    });
-
-    const headlineChars = headlineSplitRef.current.chars;
-    const subheadChars = subheadSplitRef.current.chars;
-
-    // Set initial state for characters — translate from below with subtle 3D rotation
-    gsap.set(headlineChars, {
-      opacity: 0,
-      y: 45,
-      rotateX: -25,
-      transformOrigin: "center bottom",
-    });
-    gsap.set(subheadChars, {
-      opacity: 0,
-      y: 30,
-      rotateX: -15,
-      transformOrigin: "center bottom",
-    });
-
-    // Build the timeline
-    const tl = gsap.timeline({
-      defaults: {
-        ease: "power3.out",
-      },
-    });
-
-    // Heading chars sweep up from bottom
-    tl.to(headlineChars, {
-      opacity: 1,
-      y: 0,
-      rotateX: 0,
-      duration: isInitial ? 0.65 : 0.55,
-      stagger: {
-        each: 0.02,
-        from: "start",
-      },
-    });
-
-    // Subheading chars sweep up (overlapping start for fluidity)
-    tl.to(
-      subheadChars,
-      {
-        opacity: 1,
-        y: 0,
-        rotateX: 0,
-        duration: isInitial ? 0.5 : 0.4,
-        stagger: {
-          each: 0.008,
-          from: "start",
-        },
-      },
-      isInitial ? "-=0.35" : "-=0.3"
-    );
-
-    textAnimTimelineRef.current = tl;
-  }
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      cleanupSplitText();
+    };
+  }, [cleanupSplitText]);
 
   // Get current slide content for initial render
   const currentSlide = HERO_SLIDES[activeSlide] || HERO_SLIDES[0];
@@ -369,20 +451,22 @@ export default function HeroSection() {
             <span>{isHindi ? "राष्ट्रीय क्लीन एनर्जी अग्रणी // पीएम सूर्य घर प्रमाणित" : "National Clean Energy Pioneer // PM Surya Ghar Certified"}</span>
           </div>
 
-          {/* Dynamic Headline Display — animated per-character by GSAP SplitText */}
+          {/* Dynamic Headline Display — animated by GSAP SplitText */}
           <h1
             ref={headlineRef}
             className="headline-display text-4xl sm:text-5xl lg:text-[62px] font-normal tracking-[-1.2px] text-white leading-[1.08] will-change-[transform,opacity]"
             style={{ perspective: "600px" }}
+            suppressHydrationWarning
           >
             {heading}
           </h1>
 
-          {/* Dynamic Subhead — animated per-character by GSAP SplitText */}
+          {/* Dynamic Subhead — animated by GSAP SplitText */}
           <p
             ref={subheadRef}
             className="body-lg text-base lg:text-lg max-w-2xl font-normal text-white/95 leading-relaxed tracking-[-0.2px] will-change-[transform,opacity]"
             style={{ perspective: "400px" }}
+            suppressHydrationWarning
           >
             {subheading}
           </p>

@@ -74,6 +74,17 @@ export default function GoogleAnalyticsLoader() {
     }
   }, [hasConsent, isHydrated, activeGaId]);
 
+  // Initialize gtag dataLayer and configuration as soon as consent is granted
+  useEffect(() => {
+    if (isHydrated && hasConsent && activeGaId) {
+      const initialized = initGoogleAnalytics(activeGaId);
+      if (initialized && !scriptLoadedRef.current) {
+        scriptLoadedRef.current = true;
+        trackPageView();
+      }
+    }
+  }, [hasConsent, isHydrated, activeGaId]);
+
   // Fail-closed gate: Absolutely NO script is rendered until hydration, explicit opt-in, AND resolved ID
   if (!isHydrated || !hasConsent || !activeGaId) {
     return null;
@@ -94,6 +105,22 @@ export default function GoogleAnalyticsLoader() {
         src={`https://www.googletagmanager.com/gtag/js?id=${activeGaId}`}
         strategy="afterInteractive"
         onLoad={handleScriptLoad}
+      />
+      <Script
+        id="google-analytics-init"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${activeGaId}', {
+              send_page_view: false,
+              anonymize_ip: true,
+              cookie_flags: 'SameSite=Lax;Secure'
+            });
+          `,
+        }}
       />
       <Suspense fallback={null}>
         <NavigationTracker hasConsent={hasConsent} />
