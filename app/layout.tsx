@@ -5,6 +5,7 @@ import { LanguageProvider } from "@/context/LanguageContext";
 import QuickContactWidget from "@/components/ui/QuickContactWidget";
 import ProductEnquiryDialog from "@/components/forms/ProductEnquiryDialog";
 import GoogleAnalyticsLoader from "@/components/analytics/GoogleAnalyticsLoader";
+import { CookieConsentBanner, LegalModal } from "@/components/ui/consent-and-legal-modals";
 import { siteMetadata, viewport as siteViewport } from "@/config/metadata";
 import { siteJsonLd } from "@/config/jsonld";
 import { CinematicRevealProvider } from "@/components/ui/cinematic-load-reveal";
@@ -70,6 +71,9 @@ export default function RootLayout({
             {children}
             {/* Privacy-First Google Analytics 4 Loader (Basic Consent Mode: Blocks all tags until consent) */}
             <GoogleAnalyticsLoader />
+            {/* Global Consent & Legal Compliance Modals (DPDP Act 2023 & Enterprise Compliance) */}
+            <CookieConsentBanner />
+            <LegalModal />
             {/* Global Quick Contact Speed Dial (Working Call & WhatsApp) */}
             <QuickContactWidget />
             {/* Global Product & Subsidy Enquiry Dialog */}

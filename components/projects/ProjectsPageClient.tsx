@@ -3,7 +3,6 @@
 import React, { useState, useMemo } from "react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import { CookieConsentBanner, LegalModal } from "@/components/ui/consent-and-legal-modals";
 import ProjectsHero from "./ProjectsHero";
 import ProjectsFilterBar from "./ProjectsFilterBar";
 import ProjectCard from "./ProjectCard";
@@ -180,10 +179,6 @@ export default function ProjectsPageClient() {
           project={activeModalProject}
           onClose={() => setActiveModalProject(null)}
         />
-
-        {/* Global Legal & Consent Modals */}
-        <CookieConsentBanner />
-        <LegalModal />
       </div>
   );
 }
