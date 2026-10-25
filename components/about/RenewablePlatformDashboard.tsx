@@ -31,10 +31,12 @@ export default function RenewablePlatformDashboard({
 
   return (
     <section
-      id="scale-and-impact"
-      aria-label="Scale and Impact Dashboard"
-      className={`py-12 sm:py-16 bg-white text-zinc-900 relative overflow-hidden ${className}`}
+      id="about-us"
+      aria-label="About Solvex Energy"
+      className={`py-12 sm:py-16 bg-white text-zinc-900 relative overflow-hidden scroll-mt-20 sm:scroll-mt-24 ${className}`}
     >
+      <span id="about" className="sr-only" />
+      <span id="scale-and-impact" className="sr-only" />
       {/* Background Cinematic Video & Multi-Stop Gradient Overlays */}
       <div
         className="absolute inset-0 pointer-events-none select-none z-0 overflow-hidden"

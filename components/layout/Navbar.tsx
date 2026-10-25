@@ -74,6 +74,20 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [pathname]);
 
+  // Handle cross-page or direct hash link navigation (e.g., coming from /projects to /#about-us)
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.location.hash) {
+      const targetId = window.location.hash.slice(1);
+      const targetElement = document.getElementById(targetId);
+      if (targetElement) {
+        const timer = setTimeout(() => {
+          targetElement.scrollIntoView({ behavior: "smooth" });
+        }, 150);
+        return () => clearTimeout(timer);
+      }
+    }
+  }, [pathname]);
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -196,6 +210,17 @@ export default function Navbar() {
                     : "text-white/80 hover:text-white font-normal"
                 }`}
                 href={link.href}
+                onClick={(e) => {
+                  if (!link.isRoute && !isSubPage && link.href.startsWith("#")) {
+                    e.preventDefault();
+                    const targetId = link.href.slice(1);
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                      targetElement.scrollIntoView({ behavior: "smooth" });
+                      window.history.pushState(null, "", link.href);
+                    }
+                  }
+                }}
               >
                 <span>{link.label}</span>
                 {isActive && (
@@ -352,7 +377,18 @@ export default function Navbar() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  onClick={() => setMobileMenuOpen(false)}
+                  onClick={(e) => {
+                    setMobileMenuOpen(false);
+                    if (!link.isRoute && !isSubPage && link.href.startsWith("#")) {
+                      e.preventDefault();
+                      const targetId = link.href.slice(1);
+                      const targetElement = document.getElementById(targetId);
+                      if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: "smooth" });
+                        window.history.pushState(null, "", link.href);
+                      }
+                    }
+                  }}
                   className={`px-3.5 py-2.5 rounded-xl text-sm font-medium tracking-[-0.2px] transition-all duration-200 flex items-center justify-between group ${
                     isActive
                       ? isLightNavbar
