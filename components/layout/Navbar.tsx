@@ -15,9 +15,10 @@ export default function Navbar() {
   const { isRevealed } = useCinematicReveal();
   const { t } = useLanguage();
   const pathname = usePathname();
-  const isAboutPage = pathname === "/about-us" || pathname === "/about";
+  const isSubPage = pathname !== "/";
 
   const [scrolled, setScrolled] = useState(false);
+  const isLightNavbar = isSubPage || scrolled;
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
   const hasAnimatedRef = useRef(false);
@@ -71,7 +72,7 @@ export default function Navbar() {
     handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [pathname]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -110,21 +111,25 @@ export default function Navbar() {
   }, [mobileMenuOpen]);
 
   const navLinks = [
-    { href: "/about-us", label: t("navigation.about"), isRoute: true },
-    { href: isAboutPage ? "/#products-categories" : "#products-categories", label: t("navigation.products") },
-    { href: isAboutPage ? "/#spgs-combos" : "#spgs-combos", label: t("navigation.combos") },
-    { href: isAboutPage ? "/#solar-inverters" : "#solar-inverters", label: t("navigation.inverters") },
-    { href: isAboutPage ? "/#solar-pcu" : "#solar-pcu", label: t("navigation.pcu") },
-    { href: isAboutPage ? "/#solutions" : "#solutions", label: t("navigation.solutions") },
-    { href: isAboutPage ? "/#calculator" : "#calculator", label: t("navigation.calculator") },
-    { href: isAboutPage ? "/#faq" : "#faq", label: t("navigation.faq") },
+    { href: isSubPage ? "/#about-us" : "#about-us", label: t("navigation.about") },
+    { href: isSubPage ? "/#products-categories" : "#products-categories", label: t("navigation.products") },
+    { href: isSubPage ? "/#spgs-combos" : "#spgs-combos", label: t("navigation.combos") },
+    { href: isSubPage ? "/#solar-inverters" : "#solar-inverters", label: t("navigation.inverters") },
+    { href: isSubPage ? "/#solar-pcu" : "#solar-pcu", label: t("navigation.pcu") },
+    { href: "/projects", label: t("navigation.projects", "Projects"), isRoute: true },
+    { href: isSubPage ? "/#calculator" : "#calculator", label: t("navigation.calculator") },
+    { href: isSubPage ? "/#faq" : "#faq", label: t("navigation.faq") },
   ];
 
   return (
     <header
       ref={headerRef}
       style={!isRevealed ? { opacity: 0, transform: "translateY(-24px)" } : undefined}
-      className="fixed top-0 inset-x-0 z-50 pointer-events-none transition-all duration-500 ease-out"
+      className={`fixed top-0 inset-x-0 z-50 pointer-events-none transition-all duration-500 ease-out ${
+        isSubPage && !scrolled
+          ? "bg-white/80 backdrop-blur-2xl backdrop-saturate-[180%] border-b border-black/10 shadow-xs"
+          : "bg-transparent border-b border-transparent"
+      }`}
     >
       <div
         className={`pointer-events-auto mx-auto transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
@@ -159,14 +164,14 @@ export default function Navbar() {
           >
             <span
               className={`text-base sm:text-lg font-bold tracking-[-0.03em] uppercase leading-none font-sans transition-colors duration-300 ${
-                scrolled ? "text-[#18181B]" : "text-white"
+                isLightNavbar ? "text-[#18181B]" : "text-white"
               }`}
             >
               Solvex
             </span>
             <span
               className={`text-[8.5px] sm:text-[9.5px] font-semibold tracking-[0.22em] uppercase leading-tight font-sans mt-0.5 transition-colors duration-300 ${
-                scrolled ? "text-[#059669]" : "text-emerald-400"
+                isLightNavbar ? "text-[#059669]" : "text-emerald-400"
               }`}
             >
               Energy Solutions
@@ -177,16 +182,16 @@ export default function Navbar() {
         {/* Desktop Navigation Links */}
         <nav className="hidden lg:flex items-center gap-5 xl:gap-6 shrink-0">
           {navLinks.map((link) => {
-            const isActive = link.isRoute && isAboutPage;
+            const isActive = link.isRoute && pathname === link.href;
             return (
               <Link
                 key={link.href}
                 className={`text-sm tracking-[-0.2px] whitespace-nowrap transition-all duration-200 relative ${
                   isActive
-                    ? scrolled
+                    ? isLightNavbar
                       ? "text-[#059669] font-medium"
                       : "text-emerald-300 font-medium"
-                    : scrolled
+                    : isLightNavbar
                     ? "text-[#71717A] hover:text-[#18181B] font-normal"
                     : "text-white/80 hover:text-white font-normal"
                 }`}
@@ -194,7 +199,11 @@ export default function Navbar() {
               >
                 <span>{link.label}</span>
                 {isActive && (
-                  <span className="absolute -bottom-1 left-0 right-0 h-0.5 rounded-full bg-emerald-400 animate-fadeIn" />
+                  <span
+                    className={`absolute -bottom-1 left-0 right-0 h-0.5 rounded-full ${
+                      isLightNavbar ? "bg-[#059669]" : "bg-emerald-400"
+                    } animate-fadeIn`}
+                  />
                 )}
               </Link>
             );
@@ -203,14 +212,14 @@ export default function Navbar() {
 
         {/* Right CTAs */}
         <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-          {/* Desktop Language Switcher - visible only on lg+ screens; on smaller screens it lives inside the hamburger menu */}
+          {/* Desktop Language Switcher */}
           <div className="hidden lg:flex items-center shrink-0">
-            <LanguageSwitcher scrolled={scrolled} />
+            <LanguageSwitcher scrolled={isLightNavbar} />
           </div>
 
           <div
             className={`hidden xl:flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-normal whitespace-nowrap shrink-0 transition-all duration-300 ${
-              scrolled
+              isLightNavbar
                 ? "border border-black/10 bg-zinc-50/80 backdrop-blur-sm text-[#71717A]"
                 : "border border-white/20 bg-white/10 backdrop-blur-md text-white/90"
             }`}
@@ -222,11 +231,11 @@ export default function Navbar() {
           {/* Primary Pill Button */}
           <a
             className={`rounded-full h-[36px] sm:h-[40px] px-4 sm:px-5 text-xs sm:text-sm font-normal tracking-[-0.2px] whitespace-nowrap transition-all inline-flex items-center justify-center shrink-0 cursor-pointer active:scale-95 ${
-              scrolled
+              isLightNavbar
                 ? "bg-[#059669] text-white hover:bg-[#047857] shadow-xs"
                 : "bg-white text-[#18181B] hover:bg-neutral-100 shadow-sm"
             }`}
-            href={isAboutPage ? "/#partner-form" : "#partner-form"}
+            href={isSubPage ? "/#partner-form" : "#partner-form"}
             onClick={() =>
               trackEvent("cta_click", {
                 cta_name: "navbar_partner_button",
@@ -237,11 +246,11 @@ export default function Navbar() {
             {t("common.partnerLogin")}
           </a>
 
-          {/* Mobile hamburger button - translucent in both unscrolled and scrolled states */}
+          {/* Mobile hamburger button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className={`lg:hidden p-2 rounded-full border transition-all duration-300 cursor-pointer shrink-0 ${
-              scrolled
+              isLightNavbar
                 ? "text-[#18181B] border-black/10 bg-white/60 hover:bg-white/90 backdrop-blur-md shadow-xs active:scale-95"
                 : "text-white border-white/20 bg-white/10 hover:bg-white/20 backdrop-blur-md shadow-xs active:scale-95"
             }`}
@@ -258,7 +267,7 @@ export default function Navbar() {
         <div
           onClick={() => setMobileMenuOpen(false)}
           className={`fixed inset-0 lg:hidden pointer-events-auto transition-opacity duration-300 ${
-            scrolled ? "bg-black/25" : "bg-black/40"
+            isLightNavbar ? "bg-black/25" : "bg-black/40"
           }`}
           style={{
             backdropFilter: "blur(10px)",
@@ -276,15 +285,15 @@ export default function Navbar() {
             WebkitBackdropFilter: "blur(24px) saturate(180%)",
           }}
           className={`relative z-10 lg:hidden pointer-events-auto mx-auto w-[94%] sm:w-[90%] max-w-5xl mt-2 p-5 rounded-2xl border transition-all duration-300 shadow-2xl space-y-4 max-h-[calc(100dvh-88px)] overflow-y-auto ${
-            scrolled
-              ? "bg-white/75 hover:bg-white/80 border-black/10 text-[#18181B] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.15),inset_0_1px_1px_rgba(255,255,255,0.9)]"
+            isLightNavbar
+              ? "bg-white/85 hover:bg-white/90 border-black/10 text-[#18181B] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.15),inset_0_1px_1px_rgba(255,255,255,0.9)]"
               : "bg-slate-950/45 sm:bg-slate-950/50 border-white/20 text-white shadow-[0_25px_60px_-15px_rgba(0,0,0,0.6),inset_0_1px_1px_rgba(255,255,255,0.2)]"
           }`}
         >
           {/* Drawer Header */}
           <div
             className={`flex items-center justify-between pb-3 border-b ${
-              scrolled ? "border-black/10" : "border-white/15"
+              isLightNavbar ? "border-black/10" : "border-white/15"
             }`}
           >
             <div className="flex items-center gap-2.5">
@@ -300,14 +309,14 @@ export default function Navbar() {
               <div className="flex flex-col">
                 <span
                   className={`text-sm font-bold tracking-tight uppercase leading-none font-sans ${
-                    scrolled ? "text-[#18181B]" : "text-white"
+                    isLightNavbar ? "text-[#18181B]" : "text-white"
                   }`}
                 >
                   Solvex
                 </span>
                 <span
                   className={`text-[8px] font-semibold tracking-wider uppercase leading-tight font-sans ${
-                    scrolled ? "text-[#059669]" : "text-emerald-400"
+                    isLightNavbar ? "text-[#059669]" : "text-emerald-400"
                   }`}
                 >
                   Energy Solutions
@@ -316,7 +325,7 @@ export default function Navbar() {
             </div>
             <div
               className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-normal ${
-                scrolled
+                isLightNavbar
                   ? "border border-black/10 bg-zinc-100/90 text-[#18181B]"
                   : "border border-white/20 bg-white/10 text-white/90"
               }`}
@@ -329,16 +338,16 @@ export default function Navbar() {
           {/* Mobile Language Switcher (shown only inside hamburger menu on smaller screens) */}
           <div className="pt-0.5">
             <LanguageSwitcher
-              scrolled={scrolled}
+              scrolled={isLightNavbar}
               isMobile
               onSelect={() => setMobileMenuOpen(false)}
             />
           </div>
 
-          {/* Navigation Links - clear, bold, high-contrast & visible in both scrolled and unscrolled states */}
+          {/* Navigation Links */}
           <nav className="flex flex-col gap-1 pt-1">
             {navLinks.map((link) => {
-              const isActive = link.isRoute && isAboutPage;
+              const isActive = link.isRoute && pathname === link.href;
               return (
                 <Link
                   key={link.href}
@@ -346,10 +355,10 @@ export default function Navbar() {
                   onClick={() => setMobileMenuOpen(false)}
                   className={`px-3.5 py-2.5 rounded-xl text-sm font-medium tracking-[-0.2px] transition-all duration-200 flex items-center justify-between group ${
                     isActive
-                      ? scrolled
+                      ? isLightNavbar
                         ? "text-[#059669] bg-emerald-50 font-semibold"
                         : "text-emerald-300 bg-white/10 font-semibold"
-                      : scrolled
+                      : isLightNavbar
                       ? "text-[#18181B] hover:text-[#059669] hover:bg-black/5 active:bg-black/10"
                       : "text-white hover:text-emerald-300 hover:bg-white/10 active:bg-white/15"
                   }`}
@@ -359,7 +368,7 @@ export default function Navbar() {
                     className={`text-xs transition-transform duration-200 group-hover:translate-x-1 ${
                       isActive
                         ? "text-[#059669]"
-                        : scrolled
+                        : isLightNavbar
                         ? "text-zinc-400 group-hover:text-[#059669]"
                         : "text-white/40 group-hover:text-emerald-300"
                     }`}
@@ -370,7 +379,7 @@ export default function Navbar() {
               );
             })}
             <a
-              href={isAboutPage ? "/#partner-form" : "#partner-form"}
+              href={isSubPage ? "/#partner-form" : "#partner-form"}
               onClick={() => {
                 setMobileMenuOpen(false);
                 trackEvent("cta_click", {
@@ -379,7 +388,7 @@ export default function Navbar() {
                 });
               }}
               className={`mt-2 h-[44px] rounded-full flex items-center justify-center text-sm font-medium tracking-[-0.2px] transition-all active:scale-[0.98] cursor-pointer ${
-                scrolled
+                isLightNavbar
                   ? "bg-[#059669] text-white hover:bg-[#047857] shadow-sm"
                   : "bg-white text-[#18181B] hover:bg-neutral-100 shadow-md"
               }`}
