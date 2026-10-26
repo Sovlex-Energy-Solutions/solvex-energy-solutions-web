@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { ShoppingBag, Briefcase } from "lucide-react";
 import { CardFadeReveal } from "@/components/ui/card-fade-reveal";
 import { useLanguage } from "@/context/LanguageContext";
+import { SlidingTabs } from "@/components/ui/sliding-tabs";
 import { ContactInfoCard } from "./ContactInfoCard";
 import { BuyerEnquiryForm } from "./BuyerEnquiryForm";
 import { PartnerEnquiryForm } from "./PartnerEnquiryForm";
@@ -27,32 +28,26 @@ export function ContactSection() {
               <div className="card-superpower p-6 sm:p-8 bg-white shadow-sm flex flex-col gap-6">
                 {/* Tab Switcher */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-black/10">
-                  <div className="flex items-center gap-1.5 p-1 bg-zinc-100/90 rounded-full w-fit">
-                    <button
-                      type="button"
-                      onClick={() => setActiveTab("buyer")}
-                      className={`px-4 py-2 rounded-full text-xs font-semibold transition-all flex items-center gap-2 cursor-pointer ${
-                        activeTab === "buyer"
-                          ? "bg-[#059669] text-white shadow-xs"
-                          : "text-zinc-600 hover:text-zinc-900"
-                      }`}
-                    >
-                      <ShoppingBag className="w-3.5 h-3.5" />
-                      <span>{isHindi ? "सोलर कोटेशन व सर्वे" : "Solar Quote & Survey"}</span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setActiveTab("partner")}
-                      className={`px-4 py-2 rounded-full text-xs font-semibold transition-all flex items-center gap-2 cursor-pointer ${
-                        activeTab === "partner"
-                          ? "bg-[#059669] text-white shadow-xs"
-                          : "text-zinc-600 hover:text-zinc-900"
-                      }`}
-                    >
-                      <Briefcase className="w-3.5 h-3.5" />
-                      <span>{isHindi ? "फ्रैंचाइज़ी व डीलरशिप" : "Franchise & Dealership"}</span>
-                    </button>
-                  </div>
+                  <SlidingTabs
+                    tabs={[
+                      {
+                        id: "buyer",
+                        label: isHindi ? "सोलर कोटेशन व सर्वे" : "Solar Quote & Survey",
+                        icon: <ShoppingBag className="w-3.5 h-3.5" />,
+                      },
+                      {
+                        id: "partner",
+                        label: isHindi ? "फ्रैंचाइज़ी व डीलरशिप" : "Franchise & Dealership",
+                        icon: <Briefcase className="w-3.5 h-3.5" />,
+                      },
+                    ]}
+                    activeId={activeTab}
+                    onChange={(id) => setActiveTab(id as "buyer" | "partner")}
+                    wrapperClassName="w-fit"
+                    className="bg-zinc-100/90 border-0 p-1"
+                    pillClassName="bg-[#059669]"
+                    buttonClassName="font-semibold text-xs px-4 py-2"
+                  />
 
                   <span className="font-mono text-[10px] tracking-wider uppercase text-emerald-800 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full font-medium w-fit">
                     {activeTab === "buyer" ? "PM SURYA GHAR ELIGIBLE" : "FY 2026 TERRITORY INTAKE"}
