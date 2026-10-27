@@ -428,7 +428,7 @@ export default function HeroSection() {
   return (
     <section
       ref={heroRef}
-      className="relative w-full overflow-hidden min-h-[740px] lg:min-h-[860px] flex items-center pt-28 pb-24 lg:pt-36 lg:pb-32"
+      className="relative w-full overflow-hidden min-h-[840px] sm:min-h-[760px] lg:min-h-[860px] flex items-center pt-28 pb-24 lg:pt-36 lg:pb-32"
       id="hero"
     >
       {/* Dynamic Background Media Slider with Cross-Fade & Calibrated Scrim */}
@@ -451,30 +451,33 @@ export default function HeroSection() {
             <span>{isHindi ? "राष्ट्रीय क्लीन एनर्जी अग्रणी // पीएम सूर्य घर प्रमाणित" : "National Clean Energy Pioneer // PM Surya Ghar Certified"}</span>
           </div>
 
-          {/* Dynamic Headline Display — animated by GSAP SplitText */}
-          <h1
-            ref={headlineRef}
-            className="headline-display text-4xl sm:text-5xl lg:text-[62px] font-normal tracking-[-1.2px] text-white leading-[1.08] will-change-[transform,opacity]"
-            style={{ perspective: "600px" }}
-            suppressHydrationWarning
-          >
-            {heading}
-          </h1>
+          {/* Dynamic Headline & Subhead container with reserved min-height to prevent layout shifts on slide transition */}
+          <div className="flex flex-col gap-4 min-h-[220px] sm:min-h-[175px] lg:min-h-[210px] justify-start w-full">
+            {/* Dynamic Headline Display — animated by GSAP SplitText */}
+            <h1
+              ref={headlineRef}
+              className="headline-display text-4xl sm:text-5xl lg:text-[62px] font-normal tracking-[-1.2px] text-white leading-[1.08] will-change-[transform,opacity]"
+              style={{ perspective: "600px" }}
+              suppressHydrationWarning
+            >
+              {heading}
+            </h1>
 
-          {/* Dynamic Subhead — animated by GSAP SplitText */}
-          <p
-            ref={subheadRef}
-            className="body-lg text-base lg:text-lg max-w-2xl font-normal text-white/95 leading-relaxed tracking-[-0.2px] will-change-[transform,opacity]"
-            style={{ perspective: "400px" }}
-            suppressHydrationWarning
-          >
-            {subheading}
-          </p>
+            {/* Dynamic Subhead — animated by GSAP SplitText */}
+            <p
+              ref={subheadRef}
+              className="body-lg text-base lg:text-lg max-w-2xl font-normal text-white/95 leading-relaxed tracking-[-0.2px] will-change-[transform,opacity]"
+              style={{ perspective: "400px" }}
+              suppressHydrationWarning
+            >
+              {subheading}
+            </p>
+          </div>
 
           {/* Pill Action Buttons — static across all slides */}
           <div
             ref={actionsRef}
-            className="flex flex-wrap items-center gap-3 sm:gap-4 pt-2 will-change-[transform,opacity]"
+            className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 pt-2 w-full sm:w-auto will-change-[transform,opacity]"
           >
             <button
               type="button"
@@ -485,7 +488,7 @@ export default function HeroSection() {
                 });
                 setIsFranchiseOpen(true);
               }}
-              className="group h-[52px] px-7 sm:px-8 bg-primary text-white hover:bg-primary-hover rounded-full text-sm sm:text-base font-normal tracking-[-0.2px] inline-flex items-center justify-center gap-2 transition-all duration-200 shadow-md hover:shadow-lg active:scale-[0.98] cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#059669] focus:ring-offset-2"
+              className="group h-[52px] w-full sm:w-auto px-7 sm:px-8 bg-primary text-white hover:bg-primary-hover rounded-full text-sm sm:text-base font-normal tracking-[-0.2px] inline-flex items-center justify-center gap-2 transition-all duration-200 shadow-md hover:shadow-lg active:scale-[0.98] cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#059669] focus:ring-offset-2"
             >
               <span>{isHindi ? "पार्टनर आवेदन करें" : "Apply for Franchise"}</span>
               <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
@@ -503,24 +506,11 @@ export default function HeroSection() {
                   capacity: "3",
                 });
               }}
-              className="h-[52px] px-6 sm:px-7 bg-white text-[#18181B] hover:bg-zinc-100 rounded-full text-sm sm:text-base font-normal tracking-[-0.2px] inline-flex items-center justify-center gap-2 transition-all duration-200 shadow-md hover:shadow-lg active:scale-[0.98] cursor-pointer"
+              className="h-[52px] w-full sm:w-auto px-6 sm:px-7 bg-white text-[#18181B] hover:bg-zinc-100 rounded-full text-sm sm:text-base font-normal tracking-[-0.2px] inline-flex items-center justify-center gap-2 transition-all duration-200 shadow-md hover:shadow-lg active:scale-[0.98] cursor-pointer"
             >
               <Sun className="w-4 h-4 text-amber-500 shrink-0" />
               <span>{isHindi ? "सोलर कोटेशन व सब्सिडी" : "Get Solar Quote"}</span>
             </button>
-
-            <a
-              href="#about-us"
-              onClick={() =>
-                trackEvent("cta_click", {
-                  cta_name: "explore_infra",
-                  source: "hero",
-                })
-              }
-              className="h-[52px] px-6 sm:px-7 bg-black/40 text-white backdrop-blur-md border border-white/35 hover:bg-black/60 rounded-full text-sm sm:text-base font-normal tracking-[-0.2px] inline-flex items-center justify-center gap-2 transition-all duration-200 active:scale-[0.98] cursor-pointer shadow-md"
-            >
-              <span>{isHindi ? "इन्फ्रास्ट्रक्चर" : "Explore"}</span>
-            </a>
           </div>
 
           {/* Trust Highlights Deck — static across all slides */}

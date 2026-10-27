@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import {
@@ -12,7 +12,6 @@ import {
   Trophy,
   ShieldCheck,
   Zap,
-  Cpu,
   Layers,
   Wrench,
   FlaskConical,
@@ -32,6 +31,8 @@ interface SlideItem {
   alt: string;
   Icon: React.ElementType;
 }
+
+const AUTOPLAY_DELAY = 5000;
 
 const rawSlides = [
   {
@@ -152,11 +153,15 @@ export default function HeroSlider() {
 
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
-  const [progress, setProgress] = useState(0);
+  const isPlayingRef = useRef(isPlaying);
+  isPlayingRef.current = isPlaying;
+
+  const progressBarRef = useRef<HTMLDivElement>(null);
+  const animationFrameId = useRef<number | null>(null);
 
   const [plugins] = useState(() => [
     Autoplay({
-      delay: 5000,
+      delay: AUTOPLAY_DELAY,
       stopOnInteraction: false,
       stopOnMouseEnter: true,
     }),
@@ -170,10 +175,73 @@ export default function HeroSlider() {
     plugins
   );
 
+  const updateProgressBar = useCallback(() => {
+    const autoplay = emblaApi?.plugins()?.autoplay;
+    if (!autoplay) return;
+
+    const timeUntilNext = autoplay.timeUntilNext();
+    if (timeUntilNext === null) return;
+
+    const delay = (autoplay.options.delay as number) || AUTOPLAY_DELAY;
+    const progress = Math.min(100, Math.max(0, (1 - timeUntilNext / delay) * 100));
+
+    if (progressBarRef.current) {
+      progressBarRef.current.style.transform = `scaleX(${progress / 100})`;
+    }
+
+    animationFrameId.current = requestAnimationFrame(updateProgressBar);
+  }, [emblaApi]);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+
+    const autoplay = emblaApi.plugins()?.autoplay;
+    if (!autoplay) return;
+
+    const onTimerSet = () => {
+      if (animationFrameId.current) {
+        cancelAnimationFrame(animationFrameId.current);
+      }
+      animationFrameId.current = requestAnimationFrame(updateProgressBar);
+    };
+
+    const onTimerStopped = () => {
+      if (animationFrameId.current) {
+        cancelAnimationFrame(animationFrameId.current);
+      }
+      if (!isPlayingRef.current && progressBarRef.current) {
+        progressBarRef.current.style.transform = "scaleX(0)";
+      }
+    };
+
+    const onAutoplayPlay = () => {
+      // Guard against pointer/drag interactions resuming autoplay if user paused it
+      if (!isPlayingRef.current) {
+        autoplay.stop();
+      }
+    };
+
+    emblaApi.on("autoplay:timerset", onTimerSet);
+    emblaApi.on("autoplay:timerstopped", onTimerStopped);
+    emblaApi.on("autoplay:play", onAutoplayPlay);
+
+    if (autoplay.isPlaying()) {
+      onTimerSet();
+    }
+
+    return () => {
+      if (animationFrameId.current) {
+        cancelAnimationFrame(animationFrameId.current);
+      }
+      emblaApi.off("autoplay:timerset", onTimerSet);
+      emblaApi.off("autoplay:timerstopped", onTimerStopped);
+      emblaApi.off("autoplay:play", onAutoplayPlay);
+    };
+  }, [emblaApi, updateProgressBar]);
+
   const onSelect = useCallback(() => {
     if (!emblaApi) return;
     setSelectedIndex(emblaApi.selectedScrollSnap());
-    setProgress(0);
   }, [emblaApi]);
 
   useEffect(() => {
@@ -186,38 +254,36 @@ export default function HeroSlider() {
     };
   }, [emblaApi, onSelect]);
 
-  useEffect(() => {
-    if (!isPlaying) return;
-    const raf = requestAnimationFrame(() => setProgress(0));
-    const intervalTime = 50;
-    const step = (intervalTime / 5000) * 100;
-
-    const timer = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) return 100;
-        return prev + step;
-      });
-    }, intervalTime);
-
-    return () => {
-      cancelAnimationFrame(raf);
-      clearInterval(timer);
-    };
-  }, [selectedIndex, isPlaying]);
+  const resetAutoplayTimer = useCallback(() => {
+    if (!emblaApi) return;
+    if (isPlaying) {
+      const autoplay = emblaApi.plugins()?.autoplay;
+      autoplay?.reset();
+    }
+    if (progressBarRef.current) {
+      progressBarRef.current.style.transform = "scaleX(0)";
+    }
+  }, [emblaApi, isPlaying]);
 
   const scrollPrev = useCallback(() => {
-    if (emblaApi) emblaApi.scrollPrev();
-  }, [emblaApi]);
+    if (!emblaApi) return;
+    emblaApi.scrollPrev();
+    resetAutoplayTimer();
+  }, [emblaApi, resetAutoplayTimer]);
 
   const scrollNext = useCallback(() => {
-    if (emblaApi) emblaApi.scrollNext();
-  }, [emblaApi]);
+    if (!emblaApi) return;
+    emblaApi.scrollNext();
+    resetAutoplayTimer();
+  }, [emblaApi, resetAutoplayTimer]);
 
   const scrollTo = useCallback(
     (index: number) => {
-      if (emblaApi) emblaApi.scrollTo(index);
+      if (!emblaApi) return;
+      emblaApi.scrollTo(index);
+      resetAutoplayTimer();
     },
-    [emblaApi]
+    [emblaApi, resetAutoplayTimer]
   );
 
   const toggleAutoplay = useCallback(() => {
@@ -227,6 +293,9 @@ export default function HeroSlider() {
     if (isPlaying) {
       autoplay.stop();
       setIsPlaying(false);
+      if (progressBarRef.current) {
+        progressBarRef.current.style.transform = "scaleX(0)";
+      }
     } else {
       autoplay.play();
       setIsPlaying(true);
@@ -340,10 +409,11 @@ export default function HeroSlider() {
             </button>
 
             {/* Top Auto-Play Progress Line */}
-            <div className="absolute top-0 left-0 right-0 h-[2px] bg-white/20 z-20 overflow-hidden">
+            <div className="absolute top-0 left-0 right-0 h-[2px] bg-white/20 z-20 overflow-hidden pointer-events-none">
               <div
-                className="h-full bg-primary transition-[width] duration-75 ease-linear"
-                style={{ width: `${progress}%` }}
+                ref={progressBarRef}
+                className="h-full w-full bg-primary origin-left will-change-transform"
+                style={{ transform: "scaleX(0)" }}
               />
             </div>
           </div>

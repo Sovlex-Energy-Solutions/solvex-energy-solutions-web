@@ -518,6 +518,9 @@
     }
   },
   "calculator": {
+    "sectionBadge": "SOLAR YIELD & FINANCIAL SIMULATOR",
+    "sectionTitle": "Estimate Your Solar Generation & Financial Returns",
+    "sectionDescription": "Simulate shadow-free kilowatt capacity, anticipated power bill savings, and environmental offsets calibrated to regional irradiance indices and prevailing DISCOM tariff slabs.",
     "badge": "PHOTOVOLTAIC AUDIT CORE",
     "title": "Rooftop Generation & Financial Simulator",
     "description": "Calculate shadow-free kilowatt capacity, anticipated tariff savings, and lifecycle carbon offset tailored to regional irradiance indices.",

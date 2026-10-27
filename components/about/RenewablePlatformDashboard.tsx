@@ -72,7 +72,7 @@ export default function RenewablePlatformDashboard({
               {/* Title with word-by-word bottom-to-top staggered reveal */}
               <WordStaggerHeading
                 as="h2"
-                className="text-3xl sm:text-4xl lg:text-[44px] font-medium text-zinc-900 tracking-tight leading-[1.12]"
+                className="text-3xl sm:text-4xl lg:text-[44px] text-zinc-900 tracking-tight leading-[1.12]"
               >
                 {isHindi ? "सॉल्वेक्स के बारे में: भारत के" : "About Solvex: Powering India's"}
                 <br />

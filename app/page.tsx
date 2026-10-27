@@ -8,7 +8,8 @@ import TopSellingPCUSection from "@/components/sections/TopSellingPCUSection";
 import RenewablePlatformDashboard from "@/components/about/RenewablePlatformDashboard";
 import WhyChooseSection from "@/components/sections/WhyChooseSection";
 import ProjectsSection from "@/components/sections/ProjectsSection";
-import PartnersAndCalculatorSection from "@/components/sections/PartnersAndCalculatorSection";
+import CalculatorSection from "@/components/sections/CalculatorSection";
+import TestimonialsSection from "@/components/sections/TestimonialsSection";
 import FaqSection from "@/components/sections/FaqSection";
 import ContactSection from "@/components/sections/ContactSection";
 import Footer from "@/components/layout/Footer";
@@ -27,7 +28,8 @@ export default function Home() {
         <TopSellingPCUSection />
         <WhyChooseSection />
         <ProjectsSection />
-        <PartnersAndCalculatorSection />
+        <CalculatorSection />
+        <TestimonialsSection />
         <FaqSection />
         <ContactSection />
       </main>

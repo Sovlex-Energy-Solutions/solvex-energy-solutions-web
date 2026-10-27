@@ -196,7 +196,7 @@ export default function ProductEnquiryDialog({
       <DialogContent className="sm:max-w-[580px] max-h-[92vh] overflow-y-auto p-0 rounded-2xl bg-white border border-black/10 shadow-2xl text-[#18181B]">
         {/* Header */}
         <div className="p-6 pb-4 border-b border-black/10 bg-[#FAFAFA]">
-          <div className="flex items-center gap-2 mb-2">
+          <div className="flex items-center gap-2 mb-2 pr-8 sm:pr-10">
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium">
               <Zap className="w-3.5 h-3.5" />
               <span>{isHindi ? "सोलर उत्पाद व सब्सिडी पूछताछ" : "Solar Systems & Subsidy Inquiry"}</span>
